@@ -1,5 +1,6 @@
 import Core from './Core';
 import smoothscroll from 'smoothscroll-polyfill';
+import virtualScroll from 'virtual-scroll';
 
 export default class extends Core {
     constructor(options = {}) {
@@ -12,12 +13,26 @@ export default class extends Core {
             window.scrollTo(0, 0);
         }
 
-        window.addEventListener('scroll', this.checkScroll, false);
-
         if (window.smoothscrollPolyfill === undefined) {
             window.smoothscrollPolyfill = smoothscroll;
             window.smoothscrollPolyfill.polyfill();
         }
+
+        this.vs = new virtualScroll({
+            el: this.scrollFromAnywhere ? document : this.el,
+            mouseMultiplier: navigator.platform.indexOf('Win') > -1 ? 1 : 0.4,
+            firefoxMultiplier: this.firefoxMultiplier,
+            touchMultiplier: this.touchMultiplier,
+            useKeyboard: false,
+            passive: true
+        });
+
+        this.vs.on((e) => {
+            requestAnimationFrame(() => {
+                this.checkScroll(e)
+            });
+            
+        });
     }
 
     init() {
@@ -29,7 +44,7 @@ export default class extends Core {
         super.init();
     }
 
-    checkScroll() {
+    checkScroll(e) {
         super.checkScroll();
 
         if (this.getDirection) {
@@ -41,7 +56,25 @@ export default class extends Core {
             this.speedTs = Date.now();
         }
 
-        this.instance.scroll.y = window.pageYOffset;
+        let delta;
+        const gestureDirection =
+            this[this.context] && this[this.context].gestureDirection
+                ? this[this.context].gestureDirection
+                : this.gestureDirection;
+
+        if (gestureDirection === 'both') {
+            delta = e.deltaX + e.deltaY;
+        } else if (gestureDirection === 'vertical') {
+            delta = e.deltaY;
+        } else if (gestureDirection === 'horizontal') {
+            delta = e.deltaX;
+        } else {
+            delta = e.deltaY;
+        }
+
+        this.instance.scroll[this.directionAxis] -= delta * this.multiplier;
+
+        console.log(this.instance.scroll);
 
         if (Object.entries(this.els).length) {
             if (!this.hasScrollTicking) {

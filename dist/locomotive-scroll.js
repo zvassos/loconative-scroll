@@ -1,4 +1,4 @@
-/* locomotive-scroll v4.1.3 | MIT License | https://github.com/locomotivemtl/locomotive-scroll */
+/* locomotive-scroll v4.1.4 | MIT License | https://github.com/locomotivemtl/locomotive-scroll */
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
   typeof define === 'function' && define.amd ? define(factory) :
@@ -25,55 +25,6 @@
     if (protoProps) _defineProperties(Constructor.prototype, protoProps);
     if (staticProps) _defineProperties(Constructor, staticProps);
     return Constructor;
-  }
-
-  function _defineProperty(obj, key, value) {
-    if (key in obj) {
-      Object.defineProperty(obj, key, {
-        value: value,
-        enumerable: true,
-        configurable: true,
-        writable: true
-      });
-    } else {
-      obj[key] = value;
-    }
-
-    return obj;
-  }
-
-  function ownKeys(object, enumerableOnly) {
-    var keys = Object.keys(object);
-
-    if (Object.getOwnPropertySymbols) {
-      var symbols = Object.getOwnPropertySymbols(object);
-      if (enumerableOnly) symbols = symbols.filter(function (sym) {
-        return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-      });
-      keys.push.apply(keys, symbols);
-    }
-
-    return keys;
-  }
-
-  function _objectSpread2(target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i] != null ? arguments[i] : {};
-
-      if (i % 2) {
-        ownKeys(Object(source), true).forEach(function (key) {
-          _defineProperty(target, key, source[key]);
-        });
-      } else if (Object.getOwnPropertyDescriptors) {
-        Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
-      } else {
-        ownKeys(Object(source)).forEach(function (key) {
-          Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
-        });
-      }
-    }
-
-    return target;
   }
 
   function _inherits(subClass, superClass) {
@@ -189,20 +140,8 @@
     return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
   }
 
-  function _toConsumableArray(arr) {
-    return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
-  }
-
-  function _arrayWithoutHoles(arr) {
-    if (Array.isArray(arr)) return _arrayLikeToArray(arr);
-  }
-
   function _arrayWithHoles(arr) {
     if (Array.isArray(arr)) return arr;
-  }
-
-  function _iterableToArray(iter) {
-    if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);
   }
 
   function _iterableToArrayLimit(arr, i) {
@@ -247,10 +186,6 @@
     for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
 
     return arr2;
-  }
-
-  function _nonIterableSpread() {
-    throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
   }
 
   function _nonIterableRest() {
@@ -1073,300 +1008,6 @@
   });
   var smoothscroll_1 = smoothscroll.polyfill;
 
-  var _default$1 = /*#__PURE__*/function (_Core) {
-    _inherits(_default, _Core);
-
-    var _super = _createSuper(_default);
-
-    function _default() {
-      var _this;
-
-      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-      _classCallCheck(this, _default);
-
-      _this = _super.call(this, options);
-
-      if (_this.resetNativeScroll) {
-        if (history.scrollRestoration) {
-          history.scrollRestoration = 'manual';
-        }
-
-        window.scrollTo(0, 0);
-      }
-
-      window.addEventListener('scroll', _this.checkScroll, false);
-
-      if (window.smoothscrollPolyfill === undefined) {
-        window.smoothscrollPolyfill = smoothscroll;
-        window.smoothscrollPolyfill.polyfill();
-      }
-
-      return _this;
-    }
-
-    _createClass(_default, [{
-      key: "init",
-      value: function init() {
-        this.instance.scroll.y = window.pageYOffset;
-        this.addElements();
-        this.detectElements();
-
-        _get(_getPrototypeOf(_default.prototype), "init", this).call(this);
-      }
-    }, {
-      key: "checkScroll",
-      value: function checkScroll() {
-        var _this2 = this;
-
-        _get(_getPrototypeOf(_default.prototype), "checkScroll", this).call(this);
-
-        if (this.getDirection) {
-          this.addDirection();
-        }
-
-        if (this.getSpeed) {
-          this.addSpeed();
-          this.speedTs = Date.now();
-        }
-
-        this.instance.scroll.y = window.pageYOffset;
-
-        if (Object.entries(this.els).length) {
-          if (!this.hasScrollTicking) {
-            requestAnimationFrame(function () {
-              _this2.detectElements();
-            });
-            this.hasScrollTicking = true;
-          }
-        }
-      }
-    }, {
-      key: "addDirection",
-      value: function addDirection() {
-        if (window.pageYOffset > this.instance.scroll.y) {
-          if (this.instance.direction !== 'down') {
-            this.instance.direction = 'down';
-          }
-        } else if (window.pageYOffset < this.instance.scroll.y) {
-          if (this.instance.direction !== 'up') {
-            this.instance.direction = 'up';
-          }
-        }
-      }
-    }, {
-      key: "addSpeed",
-      value: function addSpeed() {
-        if (window.pageYOffset != this.instance.scroll.y) {
-          this.instance.speed = (window.pageYOffset - this.instance.scroll.y) / Math.max(1, Date.now() - this.speedTs);
-        } else {
-          this.instance.speed = 0;
-        }
-      }
-    }, {
-      key: "resize",
-      value: function resize() {
-        if (Object.entries(this.els).length) {
-          this.windowHeight = window.innerHeight;
-          this.updateElements();
-        }
-      }
-    }, {
-      key: "addElements",
-      value: function addElements() {
-        var _this3 = this;
-
-        this.els = {};
-        var els = this.el.querySelectorAll('[data-' + this.name + ']');
-        els.forEach(function (el, index) {
-          var BCR = el.getBoundingClientRect();
-          var cl = el.dataset[_this3.name + 'Class'] || _this3["class"];
-          var id = typeof el.dataset[_this3.name + 'Id'] === 'string' ? el.dataset[_this3.name + 'Id'] : index;
-          var top;
-          var left;
-          var offset = typeof el.dataset[_this3.name + 'Offset'] === 'string' ? el.dataset[_this3.name + 'Offset'].split(',') : _this3.offset;
-          var repeat = el.dataset[_this3.name + 'Repeat'];
-          var call = el.dataset[_this3.name + 'Call'];
-          var target = el.dataset[_this3.name + 'Target'];
-          var targetEl;
-
-          if (target !== undefined) {
-            targetEl = document.querySelector("".concat(target));
-          } else {
-            targetEl = el;
-          }
-
-          var targetElBCR = targetEl.getBoundingClientRect();
-          top = targetElBCR.top + _this3.instance.scroll.y;
-          left = targetElBCR.left + _this3.instance.scroll.x;
-          var bottom = top + targetEl.offsetHeight;
-          var right = left + targetEl.offsetWidth;
-
-          if (repeat == 'false') {
-            repeat = false;
-          } else if (repeat != undefined) {
-            repeat = true;
-          } else {
-            repeat = _this3.repeat;
-          }
-
-          var relativeOffset = _this3.getRelativeOffset(offset);
-
-          top = top + relativeOffset[0];
-          bottom = bottom - relativeOffset[1];
-          var mappedEl = {
-            el: el,
-            targetEl: targetEl,
-            id: id,
-            "class": cl,
-            top: top,
-            bottom: bottom,
-            left: left,
-            right: right,
-            offset: offset,
-            progress: 0,
-            repeat: repeat,
-            inView: false,
-            call: call
-          };
-          _this3.els[id] = mappedEl;
-
-          if (el.classList.contains(cl)) {
-            _this3.setInView(_this3.els[id], id);
-          }
-        });
-      }
-    }, {
-      key: "updateElements",
-      value: function updateElements() {
-        var _this4 = this;
-
-        Object.entries(this.els).forEach(function (_ref) {
-          var _ref2 = _slicedToArray(_ref, 2),
-              i = _ref2[0],
-              el = _ref2[1];
-
-          var top = el.targetEl.getBoundingClientRect().top + _this4.instance.scroll.y;
-
-          var bottom = top + el.targetEl.offsetHeight;
-
-          var relativeOffset = _this4.getRelativeOffset(el.offset);
-
-          _this4.els[i].top = top + relativeOffset[0];
-          _this4.els[i].bottom = bottom - relativeOffset[1];
-        });
-        this.hasScrollTicking = false;
-      }
-    }, {
-      key: "getRelativeOffset",
-      value: function getRelativeOffset(offset) {
-        var relativeOffset = [0, 0];
-
-        if (offset) {
-          for (var i = 0; i < offset.length; i++) {
-            if (typeof offset[i] == 'string') {
-              if (offset[i].includes('%')) {
-                relativeOffset[i] = parseInt(offset[i].replace('%', '') * this.windowHeight / 100);
-              } else {
-                relativeOffset[i] = parseInt(offset[i]);
-              }
-            } else {
-              relativeOffset[i] = offset[i];
-            }
-          }
-        }
-
-        return relativeOffset;
-      }
-      /**
-       * Scroll to a desired target.
-       *
-       * @param  Available options :
-       *          target {node, string, "top", "bottom", int} - The DOM element we want to scroll to
-       *          options {object} - Options object for additionnal settings.
-       * @return {void}
-       */
-
-    }, {
-      key: "scrollTo",
-      value: function scrollTo(target) {
-        var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-        // Parse options
-        var offset = parseInt(options.offset) || 0; // An offset to apply on top of given `target` or `sourceElem`'s target
-
-        var callback = options.callback ? options.callback : false; // function called when scrollTo completes (note that it won't wait for lerp to stabilize)
-
-        if (typeof target === 'string') {
-          // Selector or boundaries
-          if (target === 'top') {
-            target = this.html;
-          } else if (target === 'bottom') {
-            target = this.html.offsetHeight - window.innerHeight;
-          } else {
-            target = document.querySelector(target); // If the query fails, abort
-
-            if (!target) {
-              return;
-            }
-          }
-        } else if (typeof target === 'number') {
-          // Absolute coordinate
-          target = parseInt(target);
-        } else if (target && target.tagName) ; else {
-          console.warn('`target` parameter is not valid');
-          return;
-        } // We have a target that is not a coordinate yet, get it
-
-
-        if (typeof target !== 'number') {
-          offset = target.getBoundingClientRect().top + offset + this.instance.scroll.y;
-        } else {
-          offset = target + offset;
-        }
-
-        var isTargetReached = function isTargetReached() {
-          return parseInt(window.pageYOffset) === parseInt(offset);
-        };
-
-        if (callback) {
-          if (isTargetReached()) {
-            callback();
-            return;
-          } else {
-            var onScroll = function onScroll() {
-              if (isTargetReached()) {
-                window.removeEventListener('scroll', onScroll);
-                callback();
-              }
-            };
-
-            window.addEventListener('scroll', onScroll);
-          }
-        }
-
-        window.scrollTo({
-          top: offset,
-          behavior: options.duration === 0 ? 'auto' : 'smooth'
-        });
-      }
-    }, {
-      key: "update",
-      value: function update() {
-        this.addElements();
-        this.detectElements();
-      }
-    }, {
-      key: "destroy",
-      value: function destroy() {
-        _get(_getPrototypeOf(_default.prototype), "destroy", this).call(this);
-
-        window.removeEventListener('scroll', this.checkScroll, false);
-      }
-    }]);
-
-    return _default;
-  }(_default);
-
   /*
   object-assign
   (c) Sindre Sorhus
@@ -1891,168 +1532,7 @@
       this._unbind();
   };
 
-  function lerp(start, end, amt) {
-    return (1 - amt) * start + amt * end;
-  }
-
-  function getTranslate(el) {
-    var translate = {};
-    if (!window.getComputedStyle) return;
-    var style = getComputedStyle(el);
-    var transform = style.transform || style.webkitTransform || style.mozTransform;
-    var mat = transform.match(/^matrix3d\((.+)\)$/);
-
-    if (mat) {
-      translate.x = mat ? parseFloat(mat[1].split(', ')[12]) : 0;
-      translate.y = mat ? parseFloat(mat[1].split(', ')[13]) : 0;
-    } else {
-      mat = transform.match(/^matrix\((.+)\)$/);
-      translate.x = mat ? parseFloat(mat[1].split(', ')[4]) : 0;
-      translate.y = mat ? parseFloat(mat[1].split(', ')[5]) : 0;
-    }
-
-    return translate;
-  }
-
-  /**
-   * Returns an array containing all the parent nodes of the given node
-   * @param  {object} node
-   * @return {array} parent nodes
-   */
-  function getParents(elem) {
-    // Set up a parent array
-    var parents = []; // Push each parent element to the array
-
-    for (; elem && elem !== document; elem = elem.parentNode) {
-      parents.push(elem);
-    } // Return our parent array
-
-
-    return parents;
-  } // https://gomakethings.com/how-to-get-the-closest-parent-element-with-a-matching-selector-using-vanilla-javascript/
-
-  /**
-   * https://github.com/gre/bezier-easing
-   * BezierEasing - use bezier curve for transition easing function
-   * by Gaëtan Renaudeau 2014 - 2015 – MIT License
-   */
-
-  // These values are established by empiricism with tests (tradeoff: performance VS precision)
-  var NEWTON_ITERATIONS = 4;
-  var NEWTON_MIN_SLOPE = 0.001;
-  var SUBDIVISION_PRECISION = 0.0000001;
-  var SUBDIVISION_MAX_ITERATIONS = 10;
-
-  var kSplineTableSize = 11;
-  var kSampleStepSize = 1.0 / (kSplineTableSize - 1.0);
-
-  var float32ArraySupported = typeof Float32Array === 'function';
-
-  function A (aA1, aA2) { return 1.0 - 3.0 * aA2 + 3.0 * aA1; }
-  function B (aA1, aA2) { return 3.0 * aA2 - 6.0 * aA1; }
-  function C (aA1)      { return 3.0 * aA1; }
-
-  // Returns x(t) given t, x1, and x2, or y(t) given t, y1, and y2.
-  function calcBezier (aT, aA1, aA2) { return ((A(aA1, aA2) * aT + B(aA1, aA2)) * aT + C(aA1)) * aT; }
-
-  // Returns dx/dt given t, x1, and x2, or dy/dt given t, y1, and y2.
-  function getSlope (aT, aA1, aA2) { return 3.0 * A(aA1, aA2) * aT * aT + 2.0 * B(aA1, aA2) * aT + C(aA1); }
-
-  function binarySubdivide (aX, aA, aB, mX1, mX2) {
-    var currentX, currentT, i = 0;
-    do {
-      currentT = aA + (aB - aA) / 2.0;
-      currentX = calcBezier(currentT, mX1, mX2) - aX;
-      if (currentX > 0.0) {
-        aB = currentT;
-      } else {
-        aA = currentT;
-      }
-    } while (Math.abs(currentX) > SUBDIVISION_PRECISION && ++i < SUBDIVISION_MAX_ITERATIONS);
-    return currentT;
-  }
-
-  function newtonRaphsonIterate (aX, aGuessT, mX1, mX2) {
-   for (var i = 0; i < NEWTON_ITERATIONS; ++i) {
-     var currentSlope = getSlope(aGuessT, mX1, mX2);
-     if (currentSlope === 0.0) {
-       return aGuessT;
-     }
-     var currentX = calcBezier(aGuessT, mX1, mX2) - aX;
-     aGuessT -= currentX / currentSlope;
-   }
-   return aGuessT;
-  }
-
-  function LinearEasing (x) {
-    return x;
-  }
-
-  var src$1 = function bezier (mX1, mY1, mX2, mY2) {
-    if (!(0 <= mX1 && mX1 <= 1 && 0 <= mX2 && mX2 <= 1)) {
-      throw new Error('bezier x values must be in [0, 1] range');
-    }
-
-    if (mX1 === mY1 && mX2 === mY2) {
-      return LinearEasing;
-    }
-
-    // Precompute samples table
-    var sampleValues = float32ArraySupported ? new Float32Array(kSplineTableSize) : new Array(kSplineTableSize);
-    for (var i = 0; i < kSplineTableSize; ++i) {
-      sampleValues[i] = calcBezier(i * kSampleStepSize, mX1, mX2);
-    }
-
-    function getTForX (aX) {
-      var intervalStart = 0.0;
-      var currentSample = 1;
-      var lastSample = kSplineTableSize - 1;
-
-      for (; currentSample !== lastSample && sampleValues[currentSample] <= aX; ++currentSample) {
-        intervalStart += kSampleStepSize;
-      }
-      --currentSample;
-
-      // Interpolate to provide an initial guess for t
-      var dist = (aX - sampleValues[currentSample]) / (sampleValues[currentSample + 1] - sampleValues[currentSample]);
-      var guessForT = intervalStart + dist * kSampleStepSize;
-
-      var initialSlope = getSlope(guessForT, mX1, mX2);
-      if (initialSlope >= NEWTON_MIN_SLOPE) {
-        return newtonRaphsonIterate(aX, guessForT, mX1, mX2);
-      } else if (initialSlope === 0.0) {
-        return guessForT;
-      } else {
-        return binarySubdivide(aX, intervalStart, intervalStart + kSampleStepSize, mX1, mX2);
-      }
-    }
-
-    return function BezierEasing (x) {
-      // Because JavaScript number are imprecise, we should guarantee the extremes are right.
-      if (x === 0) {
-        return 0;
-      }
-      if (x === 1) {
-        return 1;
-      }
-      return calcBezier(getTForX(x), mY1, mY2);
-    };
-  };
-
-  var keyCodes$1 = {
-    LEFT: 37,
-    UP: 38,
-    RIGHT: 39,
-    DOWN: 40,
-    SPACE: 32,
-    TAB: 9,
-    PAGEUP: 33,
-    PAGEDOWN: 34,
-    HOME: 36,
-    END: 35
-  };
-
-  var _default$2 = /*#__PURE__*/function (_Core) {
+  var _default$1 = /*#__PURE__*/function (_Core) {
     _inherits(_default, _Core);
 
     var _super = _createSuper(_default);
@@ -2064,305 +1544,64 @@
 
       _classCallCheck(this, _default);
 
-      if (history.scrollRestoration) {
-        history.scrollRestoration = 'manual';
+      _this = _super.call(this, options);
+
+      if (_this.resetNativeScroll) {
+        if (history.scrollRestoration) {
+          history.scrollRestoration = 'manual';
+        }
+
+        window.scrollTo(0, 0);
       }
 
-      window.scrollTo(0, 0);
-      _this = _super.call(this, options);
-      if (_this.inertia) _this.lerp = _this.inertia * 0.1;
-      _this.isScrolling = false;
-      _this.isDraggingScrollbar = false;
-      _this.isTicking = false;
-      _this.hasScrollTicking = false;
-      _this.parallaxElements = {};
-      _this.stop = false;
-      _this.scrollbarContainer = options.scrollbarContainer;
-      _this.checkKey = _this.checkKey.bind(_assertThisInitialized(_this));
-      window.addEventListener('keydown', _this.checkKey, false);
+      if (window.smoothscrollPolyfill === undefined) {
+        window.smoothscrollPolyfill = smoothscroll;
+        window.smoothscrollPolyfill.polyfill();
+      }
+
+      _this.vs = new src({
+        el: _this.scrollFromAnywhere ? document : _this.el,
+        mouseMultiplier: navigator.platform.indexOf('Win') > -1 ? 1 : 0.4,
+        firefoxMultiplier: _this.firefoxMultiplier,
+        touchMultiplier: _this.touchMultiplier,
+        useKeyboard: false,
+        passive: true
+      });
+
+      _this.vs.on(function (e) {
+        requestAnimationFrame(function () {
+          _this.checkScroll(e);
+        });
+      });
+
       return _this;
     }
 
     _createClass(_default, [{
       key: "init",
       value: function init() {
-        var _this2 = this;
-
-        this.html.classList.add(this.smoothClass);
-        this.html.setAttribute("data-".concat(this.name, "-direction"), this.direction);
-        this.instance = _objectSpread2({
-          delta: {
-            x: this.initPosition.x,
-            y: this.initPosition.y
-          },
-          scroll: {
-            x: this.initPosition.x,
-            y: this.initPosition.y
-          }
-        }, this.instance);
-        this.vs = new src({
-          el: this.scrollFromAnywhere ? document : this.el,
-          mouseMultiplier: navigator.platform.indexOf('Win') > -1 ? 1 : 0.4,
-          firefoxMultiplier: this.firefoxMultiplier,
-          touchMultiplier: this.touchMultiplier,
-          useKeyboard: false,
-          passive: true
-        });
-        this.vs.on(function (e) {
-          if (_this2.stop) {
-            return;
-          }
-
-          if (!_this2.isDraggingScrollbar) {
-            requestAnimationFrame(function () {
-              _this2.updateDelta(e);
-
-              if (!_this2.isScrolling) _this2.startScrolling();
-            });
-          }
-        });
-        this.setScrollLimit();
-        this.initScrollBar();
-        this.addSections();
+        this.instance.scroll.y = window.pageYOffset;
         this.addElements();
-        this.checkScroll(true);
-        this.transformElements(true, true);
+        this.detectElements();
 
         _get(_getPrototypeOf(_default.prototype), "init", this).call(this);
       }
     }, {
-      key: "setScrollLimit",
-      value: function setScrollLimit() {
-        this.instance.limit.y = this.el.offsetHeight - this.windowHeight;
-
-        if (this.direction === 'horizontal') {
-          var totalWidth = 0;
-          var nodes = this.el.children;
-
-          for (var i = 0; i < nodes.length; i++) {
-            totalWidth += nodes[i].offsetWidth;
-          }
-
-          this.instance.limit.x = totalWidth - this.windowWidth;
-        }
-      }
-    }, {
-      key: "startScrolling",
-      value: function startScrolling() {
-        this.startScrollTs = Date.now(); // Record timestamp
-
-        this.isScrolling = true;
-        this.checkScroll();
-        this.html.classList.add(this.scrollingClass);
-      }
-    }, {
-      key: "stopScrolling",
-      value: function stopScrolling() {
-        cancelAnimationFrame(this.checkScrollRaf); // Prevent checkScroll to continue looping
-        //Pevent scrollbar glitch/locking
-
-        this.startScrollTs = undefined;
-
-        if (this.scrollToRaf) {
-          cancelAnimationFrame(this.scrollToRaf);
-          this.scrollToRaf = null;
-        }
-
-        this.isScrolling = false;
-        this.instance.scroll.y = Math.round(this.instance.scroll.y);
-        this.html.classList.remove(this.scrollingClass);
-      }
-    }, {
-      key: "checkKey",
-      value: function checkKey(e) {
-        var _this3 = this;
-
-        if (this.stop) {
-          // If we are stopped, we don't want any scroll to occur because of a keypress
-          // Prevent tab to scroll to activeElement
-          if (e.keyCode == keyCodes$1.TAB) {
-            requestAnimationFrame(function () {
-              // Make sure native scroll is always at top of page
-              _this3.html.scrollTop = 0;
-              document.body.scrollTop = 0;
-              _this3.html.scrollLeft = 0;
-              document.body.scrollLeft = 0;
-            });
-          }
-
-          return;
-        }
-
-        switch (e.keyCode) {
-          case keyCodes$1.TAB:
-            // Do not remove the RAF
-            // It allows to override the browser's native scrollTo, which is essential
-            requestAnimationFrame(function () {
-              // Make sure native scroll is always at top of page
-              _this3.html.scrollTop = 0;
-              document.body.scrollTop = 0;
-              _this3.html.scrollLeft = 0;
-              document.body.scrollLeft = 0; // Request scrollTo on the focusedElement, putting it at the center of the screen
-
-              _this3.scrollTo(document.activeElement, {
-                offset: -window.innerHeight / 2
-              });
-            });
-            break;
-
-          case keyCodes$1.UP:
-            if (this.isActiveElementScrollSensitive()) {
-              this.instance.delta[this.directionAxis] -= 240;
-            }
-
-            break;
-
-          case keyCodes$1.DOWN:
-            if (this.isActiveElementScrollSensitive()) {
-              this.instance.delta[this.directionAxis] += 240;
-            }
-
-            break;
-
-          case keyCodes$1.PAGEUP:
-            this.instance.delta[this.directionAxis] -= window.innerHeight;
-            break;
-
-          case keyCodes$1.PAGEDOWN:
-            this.instance.delta[this.directionAxis] += window.innerHeight;
-            break;
-
-          case keyCodes$1.HOME:
-            this.instance.delta[this.directionAxis] -= this.instance.limit[this.directionAxis];
-            break;
-
-          case keyCodes$1.END:
-            this.instance.delta[this.directionAxis] += this.instance.limit[this.directionAxis];
-            break;
-
-          case keyCodes$1.SPACE:
-            if (this.isActiveElementScrollSensitive()) {
-              if (e.shiftKey) {
-                this.instance.delta[this.directionAxis] -= window.innerHeight;
-              } else {
-                this.instance.delta[this.directionAxis] += window.innerHeight;
-              }
-            }
-
-            break;
-
-          default:
-            return;
-        }
-
-        if (this.instance.delta[this.directionAxis] < 0) this.instance.delta[this.directionAxis] = 0;
-        if (this.instance.delta[this.directionAxis] > this.instance.limit[this.directionAxis]) this.instance.delta[this.directionAxis] = this.instance.limit[this.directionAxis];
-        this.stopScrolling(); // Stop any movement, allows to kill any other `scrollTo` still happening
-
-        this.isScrolling = true;
-        this.checkScroll();
-        this.html.classList.add(this.scrollingClass);
-      }
-    }, {
-      key: "isActiveElementScrollSensitive",
-      value: function isActiveElementScrollSensitive() {
-        return !(document.activeElement instanceof HTMLInputElement) && !(document.activeElement instanceof HTMLTextAreaElement) && !(document.activeElement instanceof HTMLButtonElement) && !(document.activeElement instanceof HTMLSelectElement);
-      }
-    }, {
       key: "checkScroll",
-      value: function checkScroll() {
-        var _this4 = this;
+      value: function checkScroll(e) {
+        var _this2 = this;
 
-        var forced = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+        _get(_getPrototypeOf(_default.prototype), "checkScroll", this).call(this);
 
-        if (forced || this.isScrolling || this.isDraggingScrollbar) {
-          if (!this.hasScrollTicking) {
-            this.checkScrollRaf = requestAnimationFrame(function () {
-              return _this4.checkScroll();
-            });
-            this.hasScrollTicking = true;
-          }
-
-          this.updateScroll();
-          var distance = Math.abs(this.instance.delta[this.directionAxis] - this.instance.scroll[this.directionAxis]);
-          var timeSinceStart = Date.now() - this.startScrollTs; // Get the time since the scroll was started: the scroll can be stopped again only past 100ms
-
-          if (!this.animatingScroll && timeSinceStart > 100 && (distance < 0.5 && this.instance.delta[this.directionAxis] != 0 || distance < 0.5 && this.instance.delta[this.directionAxis] == 0)) {
-            this.stopScrolling();
-          }
-
-          Object.entries(this.sections).forEach(function (_ref) {
-            var _ref2 = _slicedToArray(_ref, 2),
-                i = _ref2[0],
-                section = _ref2[1];
-
-            if (section.persistent || _this4.instance.scroll[_this4.directionAxis] > section.offset[_this4.directionAxis] && _this4.instance.scroll[_this4.directionAxis] < section.limit[_this4.directionAxis]) {
-              if (_this4.direction === 'horizontal') {
-                _this4.transform(section.el, -_this4.instance.scroll[_this4.directionAxis], 0);
-              } else {
-                _this4.transform(section.el, 0, -_this4.instance.scroll[_this4.directionAxis]);
-              }
-
-              if (!section.inView) {
-                section.inView = true;
-                section.el.style.opacity = 1;
-                section.el.style.pointerEvents = 'all';
-                section.el.setAttribute("data-".concat(_this4.name, "-section-inview"), '');
-              }
-            } else {
-              if (section.inView || forced) {
-                section.inView = false;
-                section.el.style.opacity = 0;
-                section.el.style.pointerEvents = 'none';
-                section.el.removeAttribute("data-".concat(_this4.name, "-section-inview"));
-              }
-
-              _this4.transform(section.el, 0, 0);
-            }
-          });
-
-          if (this.getDirection) {
-            this.addDirection();
-          }
-
-          if (this.getSpeed) {
-            this.addSpeed();
-            this.speedTs = Date.now();
-          }
-
-          this.detectElements();
-          this.transformElements();
-
-          if (this.hasScrollbar) {
-            var scrollBarTranslation = this.instance.scroll[this.directionAxis] / this.instance.limit[this.directionAxis] * this.scrollBarLimit[this.directionAxis];
-
-            if (this.direction === 'horizontal') {
-              this.transform(this.scrollbarThumb, scrollBarTranslation, 0);
-            } else {
-              this.transform(this.scrollbarThumb, 0, scrollBarTranslation);
-            }
-          }
-
-          _get(_getPrototypeOf(_default.prototype), "checkScroll", this).call(this);
-
-          this.hasScrollTicking = false;
+        if (this.getDirection) {
+          this.addDirection();
         }
-      }
-    }, {
-      key: "resize",
-      value: function resize() {
-        this.windowHeight = window.innerHeight;
-        this.windowWidth = window.innerWidth;
-        this.checkContext();
-        this.windowMiddle = {
-          x: this.windowWidth / 2,
-          y: this.windowHeight / 2
-        };
-        this.update();
-      }
-    }, {
-      key: "updateDelta",
-      value: function updateDelta(e) {
+
+        if (this.getSpeed) {
+          this.addSpeed();
+          this.speedTs = Date.now();
+        }
+
         var delta;
         var gestureDirection = this[this.context] && this[this.context].gestureDirection ? this[this.context].gestureDirection : this.gestureDirection;
 
@@ -2376,222 +1615,65 @@
           delta = e.deltaY;
         }
 
-        this.instance.delta[this.directionAxis] -= delta * this.multiplier;
-        if (this.instance.delta[this.directionAxis] < 0) this.instance.delta[this.directionAxis] = 0;
-        if (this.instance.delta[this.directionAxis] > this.instance.limit[this.directionAxis]) this.instance.delta[this.directionAxis] = this.instance.limit[this.directionAxis];
-      }
-    }, {
-      key: "updateScroll",
-      value: function updateScroll(e) {
-        if (this.isScrolling || this.isDraggingScrollbar) {
-          this.instance.scroll[this.directionAxis] = lerp(this.instance.scroll[this.directionAxis], this.instance.delta[this.directionAxis], this.lerp);
-        } else {
-          if (this.instance.scroll[this.directionAxis] > this.instance.limit[this.directionAxis]) {
-            this.setScroll(this.instance.scroll[this.directionAxis], this.instance.limit[this.directionAxis]);
-          } else if (this.instance.scroll.y < 0) {
-            this.setScroll(this.instance.scroll[this.directionAxis], 0);
-          } else {
-            this.setScroll(this.instance.scroll[this.directionAxis], this.instance.delta[this.directionAxis]);
+        this.instance.scroll[this.directionAxis] -= delta * this.multiplier;
+        console.log(this.instance.scroll);
+
+        if (Object.entries(this.els).length) {
+          if (!this.hasScrollTicking) {
+            requestAnimationFrame(function () {
+              _this2.detectElements();
+            });
+            this.hasScrollTicking = true;
           }
         }
       }
     }, {
       key: "addDirection",
       value: function addDirection() {
-        if (this.instance.delta.y > this.instance.scroll.y) {
+        if (window.pageYOffset > this.instance.scroll.y) {
           if (this.instance.direction !== 'down') {
             this.instance.direction = 'down';
           }
-        } else if (this.instance.delta.y < this.instance.scroll.y) {
+        } else if (window.pageYOffset < this.instance.scroll.y) {
           if (this.instance.direction !== 'up') {
             this.instance.direction = 'up';
-          }
-        }
-
-        if (this.instance.delta.x > this.instance.scroll.x) {
-          if (this.instance.direction !== 'right') {
-            this.instance.direction = 'right';
-          }
-        } else if (this.instance.delta.x < this.instance.scroll.x) {
-          if (this.instance.direction !== 'left') {
-            this.instance.direction = 'left';
           }
         }
       }
     }, {
       key: "addSpeed",
       value: function addSpeed() {
-        if (this.instance.delta[this.directionAxis] != this.instance.scroll[this.directionAxis]) {
-          this.instance.speed = (this.instance.delta[this.directionAxis] - this.instance.scroll[this.directionAxis]) / Math.max(1, Date.now() - this.speedTs);
+        if (window.pageYOffset != this.instance.scroll.y) {
+          this.instance.speed = (window.pageYOffset - this.instance.scroll.y) / Math.max(1, Date.now() - this.speedTs);
         } else {
           this.instance.speed = 0;
         }
       }
     }, {
-      key: "initScrollBar",
-      value: function initScrollBar() {
-        this.scrollbar = document.createElement('span');
-        this.scrollbarThumb = document.createElement('span');
-        this.scrollbar.classList.add("".concat(this.scrollbarClass));
-        this.scrollbarThumb.classList.add("".concat(this.scrollbarClass, "_thumb"));
-        this.scrollbar.append(this.scrollbarThumb);
-
-        if (this.scrollbarContainer) {
-          this.scrollbarContainer.append(this.scrollbar);
-        } else {
-          document.body.append(this.scrollbar);
-        } // Scrollbar Events
-
-
-        this.getScrollBar = this.getScrollBar.bind(this);
-        this.releaseScrollBar = this.releaseScrollBar.bind(this);
-        this.moveScrollBar = this.moveScrollBar.bind(this);
-        this.scrollbarThumb.addEventListener('mousedown', this.getScrollBar);
-        window.addEventListener('mouseup', this.releaseScrollBar);
-        window.addEventListener('mousemove', this.moveScrollBar); // Set scrollbar values
-
-        this.hasScrollbar = false;
-
-        if (this.direction == 'horizontal') {
-          if (this.instance.limit.x + this.windowWidth <= this.windowWidth) {
-            return;
-          }
-        } else {
-          if (this.instance.limit.y + this.windowHeight <= this.windowHeight) {
-            return;
-          }
-        }
-
-        this.hasScrollbar = true;
-        this.scrollbarBCR = this.scrollbar.getBoundingClientRect();
-        this.scrollbarHeight = this.scrollbarBCR.height;
-        this.scrollbarWidth = this.scrollbarBCR.width;
-
-        if (this.direction === 'horizontal') {
-          this.scrollbarThumb.style.width = "".concat(this.scrollbarWidth * this.scrollbarWidth / (this.instance.limit.x + this.scrollbarWidth), "px");
-        } else {
-          this.scrollbarThumb.style.height = "".concat(this.scrollbarHeight * this.scrollbarHeight / (this.instance.limit.y + this.scrollbarHeight), "px");
-        }
-
-        this.scrollbarThumbBCR = this.scrollbarThumb.getBoundingClientRect();
-        this.scrollBarLimit = {
-          x: this.scrollbarWidth - this.scrollbarThumbBCR.width,
-          y: this.scrollbarHeight - this.scrollbarThumbBCR.height
-        };
-      }
-    }, {
-      key: "reinitScrollBar",
-      value: function reinitScrollBar() {
-        this.hasScrollbar = false;
-
-        if (this.direction == 'horizontal') {
-          if (this.instance.limit.x + this.windowWidth <= this.windowWidth) {
-            return;
-          }
-        } else {
-          if (this.instance.limit.y + this.windowHeight <= this.windowHeight) {
-            return;
-          }
-        }
-
-        this.hasScrollbar = true;
-        this.scrollbarBCR = this.scrollbar.getBoundingClientRect();
-        this.scrollbarHeight = this.scrollbarBCR.height;
-        this.scrollbarWidth = this.scrollbarBCR.width;
-
-        if (this.direction === 'horizontal') {
-          this.scrollbarThumb.style.width = "".concat(this.scrollbarWidth * this.scrollbarWidth / (this.instance.limit.x + this.scrollbarWidth), "px");
-        } else {
-          this.scrollbarThumb.style.height = "".concat(this.scrollbarHeight * this.scrollbarHeight / (this.instance.limit.y + this.scrollbarHeight), "px");
-        }
-
-        this.scrollbarThumbBCR = this.scrollbarThumb.getBoundingClientRect();
-        this.scrollBarLimit = {
-          x: this.scrollbarWidth - this.scrollbarThumbBCR.width,
-          y: this.scrollbarHeight - this.scrollbarThumbBCR.height
-        };
-      }
-    }, {
-      key: "destroyScrollBar",
-      value: function destroyScrollBar() {
-        this.scrollbarThumb.removeEventListener('mousedown', this.getScrollBar);
-        window.removeEventListener('mouseup', this.releaseScrollBar);
-        window.removeEventListener('mousemove', this.moveScrollBar);
-        this.scrollbar.remove();
-      }
-    }, {
-      key: "getScrollBar",
-      value: function getScrollBar(e) {
-        this.isDraggingScrollbar = true;
-        this.checkScroll();
-        this.html.classList.remove(this.scrollingClass);
-        this.html.classList.add(this.draggingClass);
-      }
-    }, {
-      key: "releaseScrollBar",
-      value: function releaseScrollBar(e) {
-        this.isDraggingScrollbar = false;
-
-        if (this.isScrolling) {
-          this.html.classList.add(this.scrollingClass);
-        }
-
-        this.html.classList.remove(this.draggingClass);
-      }
-    }, {
-      key: "moveScrollBar",
-      value: function moveScrollBar(e) {
-        var _this5 = this;
-
-        if (this.isDraggingScrollbar) {
-          requestAnimationFrame(function () {
-            var x = (e.clientX - _this5.scrollbarBCR.left) * 100 / _this5.scrollbarWidth * _this5.instance.limit.x / 100;
-            var y = (e.clientY - _this5.scrollbarBCR.top) * 100 / _this5.scrollbarHeight * _this5.instance.limit.y / 100;
-
-            if (y > 0 && y < _this5.instance.limit.y) {
-              _this5.instance.delta.y = y;
-            }
-
-            if (x > 0 && x < _this5.instance.limit.x) {
-              _this5.instance.delta.x = x;
-            }
-          });
+      key: "resize",
+      value: function resize() {
+        if (Object.entries(this.els).length) {
+          this.windowHeight = window.innerHeight;
+          this.updateElements();
         }
       }
     }, {
       key: "addElements",
       value: function addElements() {
-        var _this6 = this;
+        var _this3 = this;
 
         this.els = {};
-        this.parallaxElements = {}; // this.sections.forEach((section, y) => {
-
-        var els = this.el.querySelectorAll("[data-".concat(this.name, "]"));
+        var els = this.el.querySelectorAll('[data-' + this.name + ']');
         els.forEach(function (el, index) {
-          // Try and find the target's parent section
-          var targetParents = getParents(el);
-          var section = Object.entries(_this6.sections).map(function (_ref3) {
-            var _ref4 = _slicedToArray(_ref3, 2),
-                key = _ref4[0],
-                section = _ref4[1];
-
-            return section;
-          }).find(function (section) {
-            return targetParents.includes(section.el);
-          });
-          var cl = el.dataset[_this6.name + 'Class'] || _this6["class"];
-          var id = typeof el.dataset[_this6.name + 'Id'] === 'string' ? el.dataset[_this6.name + 'Id'] : 'el' + index;
+          var BCR = el.getBoundingClientRect();
+          var cl = el.dataset[_this3.name + 'Class'] || _this3["class"];
+          var id = typeof el.dataset[_this3.name + 'Id'] === 'string' ? el.dataset[_this3.name + 'Id'] : index;
           var top;
           var left;
-          var repeat = el.dataset[_this6.name + 'Repeat'];
-          var call = el.dataset[_this6.name + 'Call'];
-          var position = el.dataset[_this6.name + 'Position'];
-          var delay = el.dataset[_this6.name + 'Delay'];
-          var direction = el.dataset[_this6.name + 'Direction'];
-          var sticky = typeof el.dataset[_this6.name + 'Sticky'] === 'string';
-          var speed = el.dataset[_this6.name + 'Speed'] ? parseFloat(el.dataset[_this6.name + 'Speed']) / 10 : false;
-          var offset = typeof el.dataset[_this6.name + 'Offset'] === 'string' ? el.dataset[_this6.name + 'Offset'].split(',') : _this6.offset;
-          var target = el.dataset[_this6.name + 'Target'];
+          var offset = typeof el.dataset[_this3.name + 'Offset'] === 'string' ? el.dataset[_this3.name + 'Offset'].split(',') : _this3.offset;
+          var repeat = el.dataset[_this3.name + 'Repeat'];
+          var call = el.dataset[_this3.name + 'Call'];
+          var target = el.dataset[_this3.name + 'Target'];
           var targetEl;
 
           if (target !== undefined) {
@@ -2601,96 +1683,29 @@
           }
 
           var targetElBCR = targetEl.getBoundingClientRect();
-
-          if (section === null) {
-            top = targetElBCR.top + _this6.instance.scroll.y - getTranslate(targetEl).y;
-            left = targetElBCR.left + _this6.instance.scroll.x - getTranslate(targetEl).x;
-          } else {
-            if (!section.inView) {
-              top = targetElBCR.top - getTranslate(section.el).y - getTranslate(targetEl).y;
-              left = targetElBCR.left - getTranslate(section.el).x - getTranslate(targetEl).x;
-            } else {
-              top = targetElBCR.top + _this6.instance.scroll.y - getTranslate(targetEl).y;
-              left = targetElBCR.left + _this6.instance.scroll.x - getTranslate(targetEl).x;
-            }
-          }
-
+          top = targetElBCR.top + _this3.instance.scroll.y;
+          left = targetElBCR.left + _this3.instance.scroll.x;
           var bottom = top + targetEl.offsetHeight;
           var right = left + targetEl.offsetWidth;
-          var middle = {
-            x: (right - left) / 2 + left,
-            y: (bottom - top) / 2 + top
-          };
-
-          if (sticky) {
-            var elBCR = el.getBoundingClientRect();
-            var elTop = elBCR.top;
-            var elLeft = elBCR.left;
-            var elDistance = {
-              x: elLeft - left,
-              y: elTop - top
-            };
-            top += window.innerHeight;
-            left += window.innerWidth;
-            bottom = elTop + targetEl.offsetHeight - el.offsetHeight - elDistance[_this6.directionAxis];
-            right = elLeft + targetEl.offsetWidth - el.offsetWidth - elDistance[_this6.directionAxis];
-            middle = {
-              x: (right - left) / 2 + left,
-              y: (bottom - top) / 2 + top
-            };
-          }
 
           if (repeat == 'false') {
             repeat = false;
           } else if (repeat != undefined) {
             repeat = true;
           } else {
-            repeat = _this6.repeat;
+            repeat = _this3.repeat;
           }
 
-          var relativeOffset = [0, 0];
+          var relativeOffset = _this3.getRelativeOffset(offset);
 
-          if (offset) {
-            if (_this6.direction === 'horizontal') {
-              for (var i = 0; i < offset.length; i++) {
-                if (typeof offset[i] == 'string') {
-                  if (offset[i].includes('%')) {
-                    relativeOffset[i] = parseInt(offset[i].replace('%', '') * _this6.windowWidth / 100);
-                  } else {
-                    relativeOffset[i] = parseInt(offset[i]);
-                  }
-                } else {
-                  relativeOffset[i] = offset[i];
-                }
-              }
-
-              left = left + relativeOffset[0];
-              right = right - relativeOffset[1];
-            } else {
-              for (var i = 0; i < offset.length; i++) {
-                if (typeof offset[i] == 'string') {
-                  if (offset[i].includes('%')) {
-                    relativeOffset[i] = parseInt(offset[i].replace('%', '') * _this6.windowHeight / 100);
-                  } else {
-                    relativeOffset[i] = parseInt(offset[i]);
-                  }
-                } else {
-                  relativeOffset[i] = offset[i];
-                }
-              }
-
-              top = top + relativeOffset[0];
-              bottom = bottom - relativeOffset[1];
-            }
-          }
-
+          top = top + relativeOffset[0];
+          bottom = bottom - relativeOffset[1];
           var mappedEl = {
             el: el,
+            targetEl: targetEl,
             id: id,
             "class": cl,
-            section: section,
             top: top,
-            middle: middle,
             bottom: bottom,
             left: left,
             right: right,
@@ -2698,209 +1713,81 @@
             progress: 0,
             repeat: repeat,
             inView: false,
-            call: call,
-            speed: speed,
-            delay: delay,
-            position: position,
-            target: targetEl,
-            direction: direction,
-            sticky: sticky
+            call: call
           };
-          _this6.els[id] = mappedEl;
+          _this3.els[id] = mappedEl;
 
           if (el.classList.contains(cl)) {
-            _this6.setInView(_this6.els[id], id);
-          }
-
-          if (speed !== false || sticky) {
-            _this6.parallaxElements[id] = mappedEl;
-          }
-        }); // });
-      }
-    }, {
-      key: "addSections",
-      value: function addSections() {
-        var _this7 = this;
-
-        this.sections = {};
-        var sections = this.el.querySelectorAll("[data-".concat(this.name, "-section]"));
-
-        if (sections.length === 0) {
-          sections = [this.el];
-        }
-
-        sections.forEach(function (section, index) {
-          var id = typeof section.dataset[_this7.name + 'Id'] === 'string' ? section.dataset[_this7.name + 'Id'] : 'section' + index;
-          var sectionBCR = section.getBoundingClientRect();
-          var offset = {
-            x: sectionBCR.left - window.innerWidth * 1.5 - getTranslate(section).x,
-            y: sectionBCR.top - window.innerHeight * 1.5 - getTranslate(section).y
-          };
-          var limit = {
-            x: offset.x + sectionBCR.width + window.innerWidth * 2,
-            y: offset.y + sectionBCR.height + window.innerHeight * 2
-          };
-          var persistent = typeof section.dataset[_this7.name + 'Persistent'] === 'string';
-          section.setAttribute('data-scroll-section-id', id);
-          var mappedSection = {
-            el: section,
-            offset: offset,
-            limit: limit,
-            inView: false,
-            persistent: persistent,
-            id: id
-          };
-          _this7.sections[id] = mappedSection;
-        });
-      }
-    }, {
-      key: "transform",
-      value: function transform(element, x, y, delay) {
-        var transform;
-
-        if (!delay) {
-          transform = "matrix3d(1,0,0.00,0,0.00,1,0.00,0,0,0,1,0,".concat(x, ",").concat(y, ",0,1)");
-        } else {
-          var start = getTranslate(element);
-          var lerpX = lerp(start.x, x, delay);
-          var lerpY = lerp(start.y, y, delay);
-          transform = "matrix3d(1,0,0.00,0,0.00,1,0.00,0,0,0,1,0,".concat(lerpX, ",").concat(lerpY, ",0,1)");
-        }
-
-        element.style.webkitTransform = transform;
-        element.style.msTransform = transform;
-        element.style.transform = transform;
-      }
-    }, {
-      key: "transformElements",
-      value: function transformElements(isForced) {
-        var _this8 = this;
-
-        var setAllElements = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-        var scrollRight = this.instance.scroll.x + this.windowWidth;
-        var scrollBottom = this.instance.scroll.y + this.windowHeight;
-        var scrollMiddle = {
-          x: this.instance.scroll.x + this.windowMiddle.x,
-          y: this.instance.scroll.y + this.windowMiddle.y
-        };
-        Object.entries(this.parallaxElements).forEach(function (_ref5) {
-          var _ref6 = _slicedToArray(_ref5, 2),
-              i = _ref6[0],
-              current = _ref6[1];
-
-          var transformDistance = false;
-
-          if (isForced) {
-            transformDistance = 0;
-          }
-
-          if (current.inView || setAllElements) {
-            switch (current.position) {
-              case 'top':
-                transformDistance = _this8.instance.scroll[_this8.directionAxis] * -current.speed;
-                break;
-
-              case 'elementTop':
-                transformDistance = (scrollBottom - current.top) * -current.speed;
-                break;
-
-              case 'bottom':
-                transformDistance = (_this8.instance.limit[_this8.directionAxis] - scrollBottom + _this8.windowHeight) * current.speed;
-                break;
-
-              case 'left':
-                transformDistance = _this8.instance.scroll[_this8.directionAxis] * -current.speed;
-                break;
-
-              case 'elementLeft':
-                transformDistance = (scrollRight - current.left) * -current.speed;
-                break;
-
-              case 'right':
-                transformDistance = (_this8.instance.limit[_this8.directionAxis] - scrollRight + _this8.windowHeight) * current.speed;
-                break;
-
-              default:
-                transformDistance = (scrollMiddle[_this8.directionAxis] - current.middle[_this8.directionAxis]) * -current.speed;
-                break;
-            }
-          }
-
-          if (current.sticky) {
-            if (current.inView) {
-              if (_this8.direction === 'horizontal') {
-                transformDistance = _this8.instance.scroll.x - current.left + window.innerWidth;
-              } else {
-                transformDistance = _this8.instance.scroll.y - current.top + window.innerHeight;
-              }
-            } else {
-              if (_this8.direction === 'horizontal') {
-                if (_this8.instance.scroll.x < current.left - window.innerWidth && _this8.instance.scroll.x < current.left - window.innerWidth / 2) {
-                  transformDistance = 0;
-                } else if (_this8.instance.scroll.x > current.right && _this8.instance.scroll.x > current.right + 100) {
-                  transformDistance = current.right - current.left + window.innerWidth;
-                } else {
-                  transformDistance = false;
-                }
-              } else {
-                if (_this8.instance.scroll.y < current.top - window.innerHeight && _this8.instance.scroll.y < current.top - window.innerHeight / 2) {
-                  transformDistance = 0;
-                } else if (_this8.instance.scroll.y > current.bottom && _this8.instance.scroll.y > current.bottom + 100) {
-                  transformDistance = current.bottom - current.top + window.innerHeight;
-                } else {
-                  transformDistance = false;
-                }
-              }
-            }
-          }
-
-          if (transformDistance !== false) {
-            if (current.direction === 'horizontal' || _this8.direction === 'horizontal' && current.direction !== 'vertical') {
-              _this8.transform(current.el, transformDistance, 0, isForced ? false : current.delay);
-            } else {
-              _this8.transform(current.el, 0, transformDistance, isForced ? false : current.delay);
-            }
+            _this3.setInView(_this3.els[id], id);
           }
         });
+      }
+    }, {
+      key: "updateElements",
+      value: function updateElements() {
+        var _this4 = this;
+
+        Object.entries(this.els).forEach(function (_ref) {
+          var _ref2 = _slicedToArray(_ref, 2),
+              i = _ref2[0],
+              el = _ref2[1];
+
+          var top = el.targetEl.getBoundingClientRect().top + _this4.instance.scroll.y;
+
+          var bottom = top + el.targetEl.offsetHeight;
+
+          var relativeOffset = _this4.getRelativeOffset(el.offset);
+
+          _this4.els[i].top = top + relativeOffset[0];
+          _this4.els[i].bottom = bottom - relativeOffset[1];
+        });
+        this.hasScrollTicking = false;
+      }
+    }, {
+      key: "getRelativeOffset",
+      value: function getRelativeOffset(offset) {
+        var relativeOffset = [0, 0];
+
+        if (offset) {
+          for (var i = 0; i < offset.length; i++) {
+            if (typeof offset[i] == 'string') {
+              if (offset[i].includes('%')) {
+                relativeOffset[i] = parseInt(offset[i].replace('%', '') * this.windowHeight / 100);
+              } else {
+                relativeOffset[i] = parseInt(offset[i]);
+              }
+            } else {
+              relativeOffset[i] = offset[i];
+            }
+          }
+        }
+
+        return relativeOffset;
       }
       /**
        * Scroll to a desired target.
        *
        * @param  Available options :
        *          target {node, string, "top", "bottom", int} - The DOM element we want to scroll to
-       *          options {object} - Options object for additionnal settings.
+       *          options {object} - Options object for additional settings.
        * @return {void}
        */
 
     }, {
       key: "scrollTo",
       value: function scrollTo(target) {
-        var _this9 = this;
-
         var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
         // Parse options
         var offset = parseInt(options.offset) || 0; // An offset to apply on top of given `target` or `sourceElem`'s target
 
-        var duration = !isNaN(parseInt(options.duration)) ? parseInt(options.duration) : 1000; // Duration of the scroll animation in milliseconds
-
-        var easing = options.easing || [0.25, 0.0, 0.35, 1.0]; // An array of 4 floats between 0 and 1 defining the bezier curve for the animation's easing. See http://greweb.me/bezier-easing-editor/example/
-
-        var disableLerp = options.disableLerp ? true : false; // Lerp effect won't be applied if set to true
-
         var callback = options.callback ? options.callback : false; // function called when scrollTo completes (note that it won't wait for lerp to stabilize)
-
-        easing = src$1.apply(void 0, _toConsumableArray(easing));
 
         if (typeof target === 'string') {
           // Selector or boundaries
           if (target === 'top') {
-            target = 0;
+            target = this.html;
           } else if (target === 'bottom') {
-            target = this.instance.limit.y;
-          } else if (target === 'left') {
-            target = 0;
-          } else if (target === 'right') {
-            target = this.instance.limit.x;
+            target = this.html.offsetHeight - window.innerHeight;
           } else {
             target = document.querySelector(target); // If the query fails, abort
 
@@ -2918,146 +1805,48 @@
 
 
         if (typeof target !== 'number') {
-          // Verify the given target belongs to this scroll scope
-          var targetInScope = getParents(target).includes(this.el);
-
-          if (!targetInScope) {
-            // If the target isn't inside our main element, abort any action
-            return;
-          } // Get target offset from top
-
-
-          var targetBCR = target.getBoundingClientRect();
-          var offsetTop = targetBCR.top;
-          var offsetLeft = targetBCR.left; // Try and find the target's parent section
-
-          var targetParents = getParents(target);
-          var parentSection = targetParents.find(function (candidate) {
-            return Object.entries(_this9.sections) // Get sections associative array as a regular array
-            .map(function (_ref7) {
-              var _ref8 = _slicedToArray(_ref7, 2),
-                  key = _ref8[0],
-                  section = _ref8[1];
-
-              return section;
-            }) // map to section only (we dont need the key here)
-            .find(function (section) {
-              return section.el == candidate;
-            }); // finally find the section that matches the candidate
-          });
-          var parentSectionOffset = 0;
-
-          if (parentSection) {
-            parentSectionOffset = getTranslate(parentSection)[this.directionAxis]; // We got a parent section, store it's current offset to remove it later
-          } else {
-            // if no parent section is found we need to use instance scroll directly
-            parentSectionOffset = -this.instance.scroll[this.directionAxis];
-          } // Final value of scroll destination : offsetTop + (optional offset given in options) - (parent's section translate)
-
-
-          if (this.direction === 'horizontal') {
-            offset = offsetLeft + offset - parentSectionOffset;
-          } else {
-            offset = offsetTop + offset - parentSectionOffset;
-          }
+          offset = target.getBoundingClientRect().top + offset + this.instance.scroll.y;
         } else {
           offset = target + offset;
-        } // Actual scrollto
-        // ==========================================================================
-        // Setup
+        }
 
-
-        var scrollStart = parseFloat(this.instance.delta[this.directionAxis]);
-        var scrollTarget = Math.max(0, Math.min(offset, this.instance.limit[this.directionAxis])); // Make sure our target is in the scroll boundaries
-
-        var scrollDiff = scrollTarget - scrollStart;
-
-        var render = function render(p) {
-          if (disableLerp) {
-            if (_this9.direction === 'horizontal') {
-              _this9.setScroll(scrollStart + scrollDiff * p, _this9.instance.delta.y);
-            } else {
-              _this9.setScroll(_this9.instance.delta.x, scrollStart + scrollDiff * p);
-            }
-          } else {
-            _this9.instance.delta[_this9.directionAxis] = scrollStart + scrollDiff * p;
-          }
-        }; // Prepare the scroll
-
-
-        this.animatingScroll = true; // This boolean allows to prevent `checkScroll()` from calling `stopScrolling` when the animation is slow (i.e. at the beginning of an EaseIn)
-
-        this.stopScrolling(); // Stop any movement, allows to kill any other `scrollTo` still happening
-
-        this.startScrolling(); // Restart the scroll
-        // Start the animation loop
-
-        var start = Date.now();
-
-        var loop = function loop() {
-          var p = (Date.now() - start) / duration; // Animation progress
-
-          if (p > 1) {
-            // Animation ends
-            render(1);
-            _this9.animatingScroll = false;
-            if (duration == 0) _this9.update();
-            if (callback) callback();
-          } else {
-            _this9.scrollToRaf = requestAnimationFrame(loop);
-            render(easing(p));
-          }
+        var isTargetReached = function isTargetReached() {
+          return parseInt(window.pageYOffset) === parseInt(offset);
         };
 
-        loop();
+        if (callback) {
+          if (isTargetReached()) {
+            callback();
+            return;
+          } else {
+            var onScroll = function onScroll() {
+              if (isTargetReached()) {
+                window.removeEventListener('scroll', onScroll);
+                callback();
+              }
+            };
+
+            window.addEventListener('scroll', onScroll);
+          }
+        }
+
+        window.scrollTo({
+          top: offset,
+          behavior: options.duration === 0 ? 'auto' : 'smooth'
+        });
       }
     }, {
       key: "update",
       value: function update() {
-        this.setScrollLimit();
-        this.addSections();
         this.addElements();
         this.detectElements();
-        this.updateScroll();
-        this.transformElements(true);
-        this.reinitScrollBar();
-        this.checkScroll(true);
-      }
-    }, {
-      key: "startScroll",
-      value: function startScroll() {
-        this.stop = false;
-      }
-    }, {
-      key: "stopScroll",
-      value: function stopScroll() {
-        this.stop = true;
-      }
-    }, {
-      key: "setScroll",
-      value: function setScroll(x, y) {
-        this.instance = _objectSpread2(_objectSpread2({}, this.instance), {}, {
-          scroll: {
-            x: x,
-            y: y
-          },
-          delta: {
-            x: x,
-            y: y
-          },
-          speed: 0
-        });
       }
     }, {
       key: "destroy",
       value: function destroy() {
         _get(_getPrototypeOf(_default.prototype), "destroy", this).call(this);
 
-        this.stopScrolling();
-        this.html.classList.remove(this.smoothClass);
-        this.vs.destroy();
-        this.destroyScrollBar();
-        window.removeEventListener('keydown', this.checkKey, false);
+        window.removeEventListener('scroll', this.checkScroll, false);
       }
     }]);
 
@@ -3088,13 +1877,7 @@
       value: function init() {
         this.options.isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1 || window.innerWidth < this.tablet.breakpoint;
         this.options.isTablet = this.options.isMobile && window.innerWidth >= this.tablet.breakpoint;
-
-        if (this.smooth && !this.options.isMobile || this.tablet.smooth && this.options.isTablet || this.smartphone.smooth && this.options.isMobile && !this.options.isTablet) {
-          this.scroll = new _default$2(this.options);
-        } else {
-          this.scroll = new _default$1(this.options);
-        }
-
+        this.scroll = new _default$1(this.options);
         this.scroll.init();
 
         if (window.location.hash) {
