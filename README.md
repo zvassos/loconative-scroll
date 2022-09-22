@@ -1,30 +1,28 @@
-[![](https://img.shields.io/npm/v/locomotive-scroll)](https://www.npmjs.com/package/locomotive-scroll)
-[![](https://img.shields.io/npm/dm/locomotive-scroll)](https://www.npmjs.com/package/locomotive-scroll)
-
 <p align="center">
-    <a href="https://github.com/locomotivemtl/locomotive-scroll">
-        <img src="https://user-images.githubusercontent.com/4596862/58807621-67aeec00-85e6-11e9-8e3a-3fe4123ee76c.png" height="140">
-    </a>
+    🚧 WIP 🚧
 </p>
 <h1 align="center">Locomotive (native) Scroll</h1>
-<p align="center">Merged with Lenis by Studio Freight to optimize the scrolling experience and keep native scrolling. I decided to merge the best of (for me) 2 great libraries for scrolling experiences<br>Detection of elements in viewport & smooth native scrolling</p>
+<p align="center">
+Detection of elements in viewport & smooth native scrolling.<br>
+The great locomotive-scroll without Smooth Class, merged with Lenis by Studio Freight to optimize the scrolling experience and keep native scrolling. I decided to merge the best of (for me) 2 great librairies for scrolling experiences.</p>
 
-<p align="center">No more Smooth Class = no more hikacking of the scroll</p>
+<p align="center">No more Smooth Class = no more hikacking of the scroll.</p>
 
-<h2 align="center">Why locomotive-scroll as base</h2>
+<h2>Why locomotive-scroll as base</h2>
 
-<p align="center">Great managment and detections of everything linked to the scroll<p>
+<p>Great managment and detections of everything linked to the scroll. <a href="https://github.com/locomotivemtl/locomotive-scroll" target="_blank">See more.</a><p>
 
 <ul>
     <li>In view class on scoped elements</li>
     <li>JS callback to call everything you want when an element is in the viewport</li>
     <li>Get the progress from the bottom to the top of each current elements (currently in the viewport)</li>
     <li>Choose if the detection is repeatable or not</li>
+    <li>Context managment to set different options on tablet, mobile and desktop</li>
 </ul>
 
-<h2 align="center">And why Lenis by Studio Freight ?</h2>
+<h2>And why Lenis by Studio Freight ?</h2>
 
-<p align="center">Native smooth scrolling without scroll hijacking<p>
+<p>Native smooth scrolling without scroll hijacking. <a href="https://github.com/studio-freight/lenis" target="_blank">See more.</a><p>
 
 <ul>
     <li>Performant</li>
@@ -35,7 +33,7 @@
 
 
 
-## Installation
+## Installation - deprecated!
 
 ```sh
 # npm install locomotive-scroll
@@ -55,7 +53,7 @@ With simple detection.
 #### CSS
 Add the base styles to your CSS file.
 
-[`locomotive-scroll.css`](https://github.com/locomotivemtl/locomotive-scroll/blob/master/dist/locomotive-scroll.css)
+[`locomotive-scroll.css`](https://github.com/quentinhocde/locomotive-scroll/blob/master/dist/locomotive-scroll.css)
 
 #### JS
 
@@ -75,7 +73,7 @@ const scroll = new LocomotiveScroll();
     })();
 </script>
 ```
-_Get the [JS file](https://github.com/locomotivemtl/locomotive-scroll/blob/master/dist/locomotive-scroll.min.js)._
+_Get the [JS file](https://github.com/quentinhocde/locomotive-scroll/blob/master/dist/locomotive-scroll.min.js)._
 
 ### Smooth
 With smooth scrolling.
@@ -171,7 +169,7 @@ scroll.on('call', (func, way, obj) => {
 | ----------------------- | ------------------------ | ---------------------------------------------------------------------------------------- |
 | `data-scroll`           |                          | Detect if in-view.                                                                       |
 | `data-scroll-id`        | `string`                 | (Optional) Useful if you want to scope your element and get the progress of your element in the viewport for example. |
-| `data-scroll-container` |                          | Defines the scroll container. Required for [basic styling](https://github.com/locomotivemtl/locomotive-scroll/blob/master/dist/locomotive-scroll.css).                                                                                     |
+| `data-scroll-container` |                          | Defines the scroll container. Required for [basic styling](https://github.com/quentinhocde/locomotive-scroll/blob/master/dist/locomotive-scroll.css).                                                                                     |
 | `data-scroll-section`   |                          | Defines a scrollable section. Splitting your page into sections may improve performance. |
 | `data-scroll-class`     | `string`                 | Element in-view class.                                                                   |
 | `data-scroll-offset`    | `string`                 | Element in-view trigger offset : `bottom,top`<br>First value is `bottom` offset, second (optional) is `top` offset.<br> Percent is relative to viewport height, otherwise it's absolute pixels.<br>E.g. `"10"`, `"100,50%"`, `"25%, 15%"`  |
