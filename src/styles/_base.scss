@@ -1,4 +1,6 @@
 html {
+    scroll-behavior: initial;
+    
     &.has-scroll-smooth {
         overflow: hidden;
     }

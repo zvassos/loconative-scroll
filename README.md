@@ -6,15 +6,13 @@
         <img src="https://user-images.githubusercontent.com/4596862/58807621-67aeec00-85e6-11e9-8e3a-3fe4123ee76c.png" height="140">
     </a>
 </p>
-<h1 align="center">Locomotive Scroll</h1>
-<p align="center">Detection of elements in viewport & smooth scrolling with parallax effects.</p>
+<h1 align="center">Locomotive (native) Scroll, updated by Quentin Hocdé. </h1>
+<p align="center">Merged with Lenis by Studio Freight to optimize the scrolling experience and keep native scrolling. I decided to merge the best of (for me) 2 great libraries for scrolling experiences<br>Detection of elements in viewport & smooth native scrolling</p>
 
 ## Installation
 
-> ⚠️ Scroll-hijacking is a controversial practice that can cause usability, accessibility, and performance issues. Please use responsibly.
-
 ```sh
-npm install locomotive-scroll
+# npm install locomotive-scroll
 ```
 
 ## Usage
@@ -54,20 +52,7 @@ const scroll = new LocomotiveScroll();
 _Get the [JS file](https://github.com/locomotivemtl/locomotive-scroll/blob/master/dist/locomotive-scroll.min.js)._
 
 ### Smooth
-With smooth scrolling and parallax.
-
-```html
-<div data-scroll-container>
-    <div data-scroll-section>
-        <h1 data-scroll>Hey</h1>
-        <p data-scroll>👋</p>
-    </div>
-    <div data-scroll-section>
-        <h2 data-scroll data-scroll-speed="1">What's up?</h2>
-        <p data-scroll data-scroll-speed="2">😬</p>
-    </div>
-</div>
-```
+With smooth scrolling.
 
 ```js
 import LocomotiveScroll from 'locomotive-scroll';
@@ -77,8 +62,6 @@ const scroll = new LocomotiveScroll({
     smooth: true
 });
 ```
-
-_Note: scroll-sections are optional but recommended to improve performance, particularly in long pages._
 
 ### Advanced
 Make it do what you want.
@@ -97,11 +80,16 @@ const target = document.querySelector('#js-target');
 scroll.scrollTo(target);
 ```
 
+### DOM data-attributes shortcuts
+```html
+<a href="#mySection" data-scroll-to>Go to my section</a> 
+```
+
 #### With events
 
 ```html
 <!-- Using modularJS -->
-<div data-scroll data-scroll-call="function, module">Trigger</div>
+<div data-scroll data-scroll-call="function, module, moduleID">Trigger</div>
 <!-- Using jQuery events -->
 <div data-scroll data-scroll-call="EVENT_NAME">Trigger</div>
 <!-- Or do it your own way 😎 -->
@@ -113,12 +101,12 @@ import LocomotiveScroll from 'locomotive-scroll';
 
 const scroll = new LocomotiveScroll();
 
-scroll.on('call', func => {
-    // Using modularJS
-    this.call(...func);
-    // Using jQuery events
-    $(document).trigger(func);
-    // Or do it your own way 😎
+scroll.on('call', (func, way, obj) => {
+    
+    // func = [function, module, moduleID]
+    // way = 'enter' or 'leave'
+    // obj = JS object from locomotive-scroll
+
 });
 ```
 
@@ -133,21 +121,20 @@ scroll.on('call', func => {
 | `smooth`                | `boolean` | `false`                | Smooth scrolling.                                                                                                                                                                                                                                                                                  |
 | `initPosition`          | `object`  | `{ x: 0, y: 0 }`       | ![Smooth only][smooth-only]<br>An `object` defining the initial scroll coordinates on a smooth instance. For example: `{ x: 0, y: 1000 }` |
 | `direction`             | `string`  | `vertical`             | ![Smooth only][smooth-only]<br>Scroll direction: `vertical` or `horizontal`                                                                                                                                                                                                                        |
-| `lerp`                  | `number`  | `0.1`                  | ![Smooth only][smooth-only]<br>Linear interpolation (lerp) intensity. Float between `0` and `1`.<br>This defines the "smoothness" intensity. The closer to `0`, the smoother.                                                                                                                      |
-| `getDirection`          | `boolean` | `false`                | Add direction to scroll event.                                                                                                                                                                                                                                                                     |
-| `getSpeed`              | `boolean` | `false`                | Add speed to scroll event.                                                                                                                                                                                                                                                                         |
+| `duration`                  | `number`  | `1.2`                  | ![Smooth only][smooth-only             |
+| `easing`                  | `number`  | `(t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)),` | ![Smooth only][smooth-only</br>https://easings.net|
+                                                                                                                        
 | `class`                 | `string`  | `is-inview`            | Element in-view class.                                                                                                                                                                                                                                                                             |
 | `initClass`             | `string`  | `has-scroll-init`      | Initialize class.                                                                                                                                                                                                                                                                                  |
 | `scrollingClass`        | `string`  | `has-scroll-scrolling` | Is scrolling class.                                                                                                                                                                                                                                                                                |
-| `draggingClass`         | `string`  | `has-scroll-dragging`  | Is dragging class.                                                                                                                                                                                                                                                                                 |
-| `smoothClass`           | `string`  | `has-scroll-smooth`    | Has smooth scrolling class.                                                                                                                                                                                                                                                                        |
-| `scrollbarContainer`    | `object`  | `false`                | ![Smooth only][smooth-only]<br>Specifies the container element for the scrollbar to be appended in. If false, scrollbar will be appended to the body. |
-| `scrollbarClass`        | `string`  | `c-scrollbar`          | ![Smooth only][smooth-only]<br>Scrollbar element class.                                                                                                                                                                                                                                                                           |
+                                                                                                                                                                                                                                                
+| `smoothClass`           | `string`  | `has-scroll-smooth`    | Has smooth scrolling class.   |
+                                                                                                                        
 | `multiplier`            | `number`  | `1`                    | ![Smooth only][smooth-only]<br>Factor applied to the scroll delta, allowing to boost/reduce scrolling speed (regardless of the platform).                                                                                                                                                          |
 | `firefoxMultiplier`     | `number`  | `50`                   | ![Smooth only][smooth-only]<br>Boost scrolling speed of Firefox on Windows.                                                                                                                                                                                                                        |
 | `touchMultiplier`       | `number`  | `2`                    | ![Smooth only][smooth-only]<br>Multiply touch action to scroll faster than finger movement.                                                                                                                                                                                                         |
 | `scrollFromAnywhere`    | `boolean` | `false`                | ![Smooth only][smooth-only]<br>By default locomotive-scroll listens for scroll events only on the scroll container (`el` option). With this option set to true, it listens on the whole document instead.                                                                                          |
-| `gestureDirection`     | `string` | `vertical`                | ![Smooth only][smooth-only]<br>Defines which gesture direction(s) scrolls in your instance. You can use : <ul><li>`vertical`</li><li>`horizontal`</li><li>`both`</li></ul>                                                                                                                                                                                                         |
+
 | `tablet` & `smartphone` | `object`  |                        | Object allowing to override some options for a particular context. You can specify: <ul><li>`smooth`</li><li>`direction`</li><li>`horizontalGesture`</li></ul>For `tablet` context you can also define `breakpoint` (_integer_, defaults to 1024) to set the max-width breakpoint for tablets.     |
 | `reloadOnContextChange` | `boolean` | `false`                | Allows to reload the page when switching between `desktop`, `tablet` and `smartphone` contexts. It can be useful if your page changes a lot between contexts and you want to reset everything.                                                                                                     |
 | `resetNativeScroll` | `boolean` | `true`                | Sets `history.scrollRestoration = 'manual'` and calls `window.scrollTo(0, 0)` on locomotive-scroll init in Native Class. Useful if you use transitions with native scrolling, otherwise we advise to set it to `false` if you don't want to break History API's scroll restoration feature. |
@@ -165,8 +152,7 @@ scroll.on('call', func => {
 | `data-scroll-repeat`    | `boolean`                | Element in-view detection repeat.                                                        |
 | `data-scroll-call`      | `string`                 | Element in-view trigger call event.                                                      |
 | `data-scroll-position`  | `string`                 | `top`, `bottom`, `left` or `right`<br>Window position of in-view trigger.                |
-| `data-scroll-speed`     | `number`                 | ![Smooth only][smooth-only]<br>Element parallax speed. A negative value will reverse the direction. |
-| `data-scroll-delay`     | `number`                 | ![Smooth only][smooth-only]<br>Element's parallax lerp delay.                            |
+| `data-scroll-speed`     | `number`                 | ![Smooth only][smooth-only]<br>Element parallax speed. A negative value will reverse the direction. |                          |
 | `data-scroll-direction` | `string`                 | ![Smooth only][smooth-only]<br>Element's parallax direction. `vertical` or `horizontal`  |
 | `data-scroll-sticky`    |                          | ![Smooth only][smooth-only]<br>Sticky element. Starts and stops at `data-scroll-target` position. |
 | `data-scroll-target`    | `string`                 | ![Smooth only][smooth-only]<br>Target element's in-view position.                        |
@@ -216,26 +202,16 @@ scroll.on('scroll', (args) => {
 | Name             | Description                                                        |
 | ---------------- | ------------------------------------------------------------------ |
 | [Virtual Scroll] | Custom scroll event with inertia/momentum.                         |
-| [modularScroll]  | Elements in viewport detection. Forked from it, not a dependency.  |
-| [bezier-easing]  | Allows to define an easing to `scrollTo` movement                  |
+| [Lenis]  | Elements in viewport detection. Forked from it, not a dependency.  |
 
 [instance events]: #instance-events
 [Virtual Scroll]: https://github.com/ayamflow/virtual-scroll
-[modularScroll]: https://github.com/modularorg/modularscroll
-[bezier-easing]: https://github.com/gre/bezier-easing
-
+[Lenis]: https://github.com/studio-freight/lenis/
 
 ## Browser support
 
 Works on most modern browsers. Chrome, Firefox, Safari, Edge...
 
-To get IE 11 support, you need polyfills.
-You can use your own or include these before our script.
-
-```html
-<script nomodule src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/7.6.0/polyfill.min.js" crossorigin="anonymous"></script>
-<script nomodule src="https://polyfill.io/v3/polyfill.min.js?features=Object.assign%2CElement.prototype.append%2CNodeList.prototype.forEach%2CCustomEvent%2Csmoothscroll" crossorigin="anonymous"></script>
-```
 
 ## Who's using Locomotive Scroll?
 - [thierrychopain.com](https://thierrychopain.com/)
@@ -256,6 +232,7 @@ You can use your own or include these before our script.
 
 ## Related
 
+- [Locomotive Scroll 🚂](https://github.com/locomotivemtl/locomotive-scroll)
 - [Locomotive Boilerplate 🚂](https://github.com/locomotivemtl/locomotive-boilerplate)
 
 [smooth-only]: https://img.shields.io/badge/smooth-only-blue

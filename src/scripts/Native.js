@@ -19,10 +19,10 @@ export default class extends Core {
         }
 
         this.lenis = new Lenis({
-            duration: 1.2,
-            easing: (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)), // https://easings.net
+            duration: this.duration,
+            easing: this.easing,
             direction: 'vertical',
-            smooth: true,
+            smooth: this.smooth,
             smoothTouch: false,
             touchMultiplier: 2
         });
