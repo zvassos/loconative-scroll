@@ -197,7 +197,7 @@
     name: 'scroll',
     offset: [0, 0],
     repeat: false,
-    smooth: false,
+    smooth: true,
     initPosition: {
       x: 0,
       y: 0
@@ -205,7 +205,6 @@
     direction: 'vertical',
     gestureDirection: 'vertical',
     reloadOnContextChange: false,
-    lerp: 0.1,
     "class": 'is-inview',
     scrollbarContainer: false,
     scrollbarClass: 'c-scrollbar',
@@ -213,8 +212,11 @@
     draggingClass: 'has-scroll-dragging',
     smoothClass: 'has-scroll-smooth',
     initClass: 'has-scroll-init',
-    getSpeed: false,
-    getDirection: false,
+    duration: 1.2,
+    easing: function easing(t) {
+      return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+    },
+    // https://easings.net
     scrollFromAnywhere: false,
     multiplier: 1,
     firefoxMultiplier: 50,
@@ -257,11 +259,15 @@
       this.listeners = {};
       this.hasScrollTicking = false;
       this.hasCallEventSet = false;
-      this.checkScroll = this.checkScroll.bind(this);
+      this.onScroll = this.onScroll.bind(this);
       this.checkResize = this.checkResize.bind(this);
       this.checkEvent = this.checkEvent.bind(this);
       this.instance = {
         scroll: {
+          x: 0,
+          y: 0
+        },
+        delta: {
           x: 0,
           y: 0
         },
@@ -294,10 +300,7 @@
         this.instance.direction = null;
       }
 
-      if (this.getDirection) {
-        this.instance.speed = 0;
-      }
-
+      this.instance.speed = 0;
       this.html.classList.add(this.initClass);
       window.addEventListener('resize', this.checkResize, false);
     }
@@ -308,8 +311,8 @@
         this.initEvents();
       }
     }, {
-      key: "checkScroll",
-      value: function checkScroll() {
+      key: "onScroll",
+      value: function onScroll() {
         this.dispatchScroll();
       }
     }, {
@@ -537,10 +540,14 @@
       }
     }, {
       key: "startScroll",
-      value: function startScroll() {}
+      value: function startScroll() {
+        this.stop = false;
+      }
     }, {
       key: "stopScroll",
-      value: function stopScroll() {}
+      value: function stopScroll() {
+        this.stop = true;
+      }
     }, {
       key: "setScroll",
       value: function setScroll(x, y) {
@@ -1008,95 +1015,6 @@
   });
   var smoothscroll_1 = smoothscroll.polyfill;
 
-  /*
-  object-assign
-  (c) Sindre Sorhus
-  @license MIT
-  */
-  /* eslint-disable no-unused-vars */
-  var getOwnPropertySymbols = Object.getOwnPropertySymbols;
-  var hasOwnProperty = Object.prototype.hasOwnProperty;
-  var propIsEnumerable = Object.prototype.propertyIsEnumerable;
-
-  function toObject(val) {
-  	if (val === null || val === undefined) {
-  		throw new TypeError('Object.assign cannot be called with null or undefined');
-  	}
-
-  	return Object(val);
-  }
-
-  function shouldUseNative() {
-  	try {
-  		if (!Object.assign) {
-  			return false;
-  		}
-
-  		// Detect buggy property enumeration order in older V8 versions.
-
-  		// https://bugs.chromium.org/p/v8/issues/detail?id=4118
-  		var test1 = new String('abc');  // eslint-disable-line no-new-wrappers
-  		test1[5] = 'de';
-  		if (Object.getOwnPropertyNames(test1)[0] === '5') {
-  			return false;
-  		}
-
-  		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
-  		var test2 = {};
-  		for (var i = 0; i < 10; i++) {
-  			test2['_' + String.fromCharCode(i)] = i;
-  		}
-  		var order2 = Object.getOwnPropertyNames(test2).map(function (n) {
-  			return test2[n];
-  		});
-  		if (order2.join('') !== '0123456789') {
-  			return false;
-  		}
-
-  		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
-  		var test3 = {};
-  		'abcdefghijklmnopqrst'.split('').forEach(function (letter) {
-  			test3[letter] = letter;
-  		});
-  		if (Object.keys(Object.assign({}, test3)).join('') !==
-  				'abcdefghijklmnopqrst') {
-  			return false;
-  		}
-
-  		return true;
-  	} catch (err) {
-  		// We don't expect any of the above to throw, but better to be safe.
-  		return false;
-  	}
-  }
-
-  var objectAssign = shouldUseNative() ? Object.assign : function (target, source) {
-  	var from;
-  	var to = toObject(target);
-  	var symbols;
-
-  	for (var s = 1; s < arguments.length; s++) {
-  		from = Object(arguments[s]);
-
-  		for (var key in from) {
-  			if (hasOwnProperty.call(from, key)) {
-  				to[key] = from[key];
-  			}
-  		}
-
-  		if (getOwnPropertySymbols) {
-  			symbols = getOwnPropertySymbols(from);
-  			for (var i = 0; i < symbols.length; i++) {
-  				if (propIsEnumerable.call(from, symbols[i])) {
-  					to[symbols[i]] = from[symbols[i]];
-  				}
-  			}
-  		}
-  	}
-
-  	return to;
-  };
-
   function E () {
     // Keep this empty so it's easier to inherit from
     // (via https://github.com/lipsmack from https://github.com/scottcorgan/tiny-emitter/issues/3)
@@ -1162,375 +1080,14 @@
   };
 
   var tinyEmitter = E;
+  var TinyEmitter = E;
+  tinyEmitter.TinyEmitter = TinyEmitter;
 
-  var lethargy = createCommonjsModule(function (module, exports) {
-  // Generated by CoffeeScript 1.9.2
-  (function() {
-    var root;
-
-    root =  exports !== null ? exports : this;
-
-    root.Lethargy = (function() {
-      function Lethargy(stability, sensitivity, tolerance, delay) {
-        this.stability = stability != null ? Math.abs(stability) : 8;
-        this.sensitivity = sensitivity != null ? 1 + Math.abs(sensitivity) : 100;
-        this.tolerance = tolerance != null ? 1 + Math.abs(tolerance) : 1.1;
-        this.delay = delay != null ? delay : 150;
-        this.lastUpDeltas = (function() {
-          var i, ref, results;
-          results = [];
-          for (i = 1, ref = this.stability * 2; 1 <= ref ? i <= ref : i >= ref; 1 <= ref ? i++ : i--) {
-            results.push(null);
-          }
-          return results;
-        }).call(this);
-        this.lastDownDeltas = (function() {
-          var i, ref, results;
-          results = [];
-          for (i = 1, ref = this.stability * 2; 1 <= ref ? i <= ref : i >= ref; 1 <= ref ? i++ : i--) {
-            results.push(null);
-          }
-          return results;
-        }).call(this);
-        this.deltasTimestamp = (function() {
-          var i, ref, results;
-          results = [];
-          for (i = 1, ref = this.stability * 2; 1 <= ref ? i <= ref : i >= ref; 1 <= ref ? i++ : i--) {
-            results.push(null);
-          }
-          return results;
-        }).call(this);
-      }
-
-      Lethargy.prototype.check = function(e) {
-        var lastDelta;
-        e = e.originalEvent || e;
-        if (e.wheelDelta != null) {
-          lastDelta = e.wheelDelta;
-        } else if (e.deltaY != null) {
-          lastDelta = e.deltaY * -40;
-        } else if ((e.detail != null) || e.detail === 0) {
-          lastDelta = e.detail * -40;
-        }
-        this.deltasTimestamp.push(Date.now());
-        this.deltasTimestamp.shift();
-        if (lastDelta > 0) {
-          this.lastUpDeltas.push(lastDelta);
-          this.lastUpDeltas.shift();
-          return this.isInertia(1);
-        } else {
-          this.lastDownDeltas.push(lastDelta);
-          this.lastDownDeltas.shift();
-          return this.isInertia(-1);
-        }
-      };
-
-      Lethargy.prototype.isInertia = function(direction) {
-        var lastDeltas, lastDeltasNew, lastDeltasOld, newAverage, newSum, oldAverage, oldSum;
-        lastDeltas = direction === -1 ? this.lastDownDeltas : this.lastUpDeltas;
-        if (lastDeltas[0] === null) {
-          return direction;
-        }
-        if (this.deltasTimestamp[(this.stability * 2) - 2] + this.delay > Date.now() && lastDeltas[0] === lastDeltas[(this.stability * 2) - 1]) {
-          return false;
-        }
-        lastDeltasOld = lastDeltas.slice(0, this.stability);
-        lastDeltasNew = lastDeltas.slice(this.stability, this.stability * 2);
-        oldSum = lastDeltasOld.reduce(function(t, s) {
-          return t + s;
-        });
-        newSum = lastDeltasNew.reduce(function(t, s) {
-          return t + s;
-        });
-        oldAverage = oldSum / lastDeltasOld.length;
-        newAverage = newSum / lastDeltasNew.length;
-        if (Math.abs(oldAverage) < Math.abs(newAverage * this.tolerance) && (this.sensitivity < Math.abs(newAverage))) {
-          return direction;
-        } else {
-          return false;
-        }
-      };
-
-      Lethargy.prototype.showLastUpDeltas = function() {
-        return this.lastUpDeltas;
-      };
-
-      Lethargy.prototype.showLastDownDeltas = function() {
-        return this.lastDownDeltas;
-      };
-
-      return Lethargy;
-
-    })();
-
-  }).call(commonjsGlobal);
+  var virtualscroll = createCommonjsModule(function (module, exports) {
+  !function(e,t){module.exports=t();}(commonjsGlobal,function(){var e=0;function t(t){return "__private_"+e+++"_"+t}function i(e,t){if(!Object.prototype.hasOwnProperty.call(e,t))throw new TypeError("attempted to use private field on non-instance");return e}function n(){}n.prototype={on:function(e,t,i){var n=this.e||(this.e={});return (n[e]||(n[e]=[])).push({fn:t,ctx:i}),this},once:function(e,t,i){var n=this;function o(){n.off(e,o),t.apply(i,arguments);}return o._=t,this.on(e,o,i)},emit:function(e){for(var t=[].slice.call(arguments,1),i=((this.e||(this.e={}))[e]||[]).slice(),n=0,o=i.length;n<o;n++)i[n].fn.apply(i[n].ctx,t);return this},off:function(e,t){var i=this.e||(this.e={}),n=i[e],o=[];if(n&&t)for(var s=0,h=n.length;s<h;s++)n[s].fn!==t&&n[s].fn._!==t&&o.push(n[s]);return o.length?i[e]=o:delete i[e],this}};var o=n;o.TinyEmitter=n;var s,h="virtualscroll",r=t("options"),a=t("el"),l=t("emitter"),u=t("event"),c=t("touchStart"),d=t("bodyTouchAction");return function(){function e(e){var t=this;Object.defineProperty(this,r,{writable:!0,value:void 0}),Object.defineProperty(this,a,{writable:!0,value:void 0}),Object.defineProperty(this,l,{writable:!0,value:void 0}),Object.defineProperty(this,u,{writable:!0,value:void 0}),Object.defineProperty(this,c,{writable:!0,value:void 0}),Object.defineProperty(this,d,{writable:!0,value:void 0}),this._onWheel=function(e){var n=i(t,r)[r],o=i(t,u)[u];o.deltaX=e.wheelDeltaX||-1*e.deltaX,o.deltaY=e.wheelDeltaY||-1*e.deltaY,s.isFirefox&&1===e.deltaMode&&(o.deltaX*=n.firefoxMultiplier,o.deltaY*=n.firefoxMultiplier),o.deltaX*=n.mouseMultiplier,o.deltaY*=n.mouseMultiplier,t._notify(e);},this._onMouseWheel=function(e){var n=i(t,u)[u];n.deltaX=e.wheelDeltaX?e.wheelDeltaX:0,n.deltaY=e.wheelDeltaY?e.wheelDeltaY:e.wheelDelta,t._notify(e);},this._onTouchStart=function(e){var n=e.targetTouches?e.targetTouches[0]:e;i(t,c)[c].x=n.pageX,i(t,c)[c].y=n.pageY;},this._onTouchMove=function(e){var n=i(t,r)[r];n.preventTouch&&!e.target.classList.contains(n.unpreventTouchClass)&&e.preventDefault();var o=i(t,u)[u],s=e.targetTouches?e.targetTouches[0]:e;o.deltaX=(s.pageX-i(t,c)[c].x)*n.touchMultiplier,o.deltaY=(s.pageY-i(t,c)[c].y)*n.touchMultiplier,i(t,c)[c].x=s.pageX,i(t,c)[c].y=s.pageY,t._notify(e);},this._onKeyDown=function(e){var n=i(t,u)[u];n.deltaX=n.deltaY=0;var o=window.innerHeight-40;switch(e.keyCode){case 37:case 38:n.deltaY=i(t,r)[r].keyStep;break;case 39:case 40:n.deltaY=-i(t,r)[r].keyStep;break;case 32:n.deltaY=o*(e.shiftKey?1:-1);break;default:return}t._notify(e);},i(this,a)[a]=window,e&&e.el&&(i(this,a)[a]=e.el,delete e.el),s||(s={hasWheelEvent:"onwheel"in document,hasMouseWheelEvent:"onmousewheel"in document,hasTouch:"ontouchstart"in document,hasTouchWin:navigator.msMaxTouchPoints&&navigator.msMaxTouchPoints>1,hasPointer:!!window.navigator.msPointerEnabled,hasKeyDown:"onkeydown"in document,isFirefox:navigator.userAgent.indexOf("Firefox")>-1}),i(this,r)[r]=Object.assign({mouseMultiplier:1,touchMultiplier:2,firefoxMultiplier:15,keyStep:120,preventTouch:!1,unpreventTouchClass:"vs-touchmove-allowed",useKeyboard:!0,useTouch:!0},e),i(this,l)[l]=new o,i(this,u)[u]={y:0,x:0,deltaX:0,deltaY:0},i(this,c)[c]={x:null,y:null},i(this,d)[d]=null,void 0!==i(this,r)[r].passive&&(this.listenerOptions={passive:i(this,r)[r].passive});}var t=e.prototype;return t._notify=function(e){var t=i(this,u)[u];t.x+=t.deltaX,t.y+=t.deltaY,i(this,l)[l].emit(h,{x:t.x,y:t.y,deltaX:t.deltaX,deltaY:t.deltaY,originalEvent:e});},t._bind=function(){s.hasWheelEvent&&i(this,a)[a].addEventListener("wheel",this._onWheel,this.listenerOptions),s.hasMouseWheelEvent&&i(this,a)[a].addEventListener("mousewheel",this._onMouseWheel,this.listenerOptions),s.hasTouch&&i(this,r)[r].useTouch&&(i(this,a)[a].addEventListener("touchstart",this._onTouchStart,this.listenerOptions),i(this,a)[a].addEventListener("touchmove",this._onTouchMove,this.listenerOptions)),s.hasPointer&&s.hasTouchWin&&(i(this,d)[d]=document.body.style.msTouchAction,document.body.style.msTouchAction="none",i(this,a)[a].addEventListener("MSPointerDown",this._onTouchStart,!0),i(this,a)[a].addEventListener("MSPointerMove",this._onTouchMove,!0)),s.hasKeyDown&&i(this,r)[r].useKeyboard&&document.addEventListener("keydown",this._onKeyDown);},t._unbind=function(){s.hasWheelEvent&&i(this,a)[a].removeEventListener("wheel",this._onWheel),s.hasMouseWheelEvent&&i(this,a)[a].removeEventListener("mousewheel",this._onMouseWheel),s.hasTouch&&(i(this,a)[a].removeEventListener("touchstart",this._onTouchStart),i(this,a)[a].removeEventListener("touchmove",this._onTouchMove)),s.hasPointer&&s.hasTouchWin&&(document.body.style.msTouchAction=i(this,d)[d],i(this,a)[a].removeEventListener("MSPointerDown",this._onTouchStart,!0),i(this,a)[a].removeEventListener("MSPointerMove",this._onTouchMove,!0)),s.hasKeyDown&&i(this,r)[r].useKeyboard&&document.removeEventListener("keydown",this._onKeyDown);},t.on=function(e,t){i(this,l)[l].on(h,e,t);var n=i(this,l)[l].e;n&&n[h]&&1===n[h].length&&this._bind();},t.off=function(e,t){i(this,l)[l].off(h,e,t);var n=i(this,l)[l].e;(!n[h]||n[h].length<=0)&&this._unbind();},t.destroy=function(){i(this,l)[l].off(),this._unbind();},e}()});
   });
 
-  var support = (function getSupport() {
-      return {
-          hasWheelEvent: 'onwheel' in document,
-          hasMouseWheelEvent: 'onmousewheel' in document,
-          hasTouch: ('ontouchstart' in window) || window.TouchEvent || window.DocumentTouch && document instanceof DocumentTouch,
-          hasTouchWin: navigator.msMaxTouchPoints && navigator.msMaxTouchPoints > 1,
-          hasPointer: !!window.navigator.msPointerEnabled,
-          hasKeyDown: 'onkeydown' in document,
-          isFirefox: navigator.userAgent.indexOf('Firefox') > -1
-      };
-  })();
-
-  var toString = Object.prototype.toString,
-      hasOwnProperty$1 = Object.prototype.hasOwnProperty;
-
-  var bindallStandalone = function(object) {
-      if(!object) return console.warn('bindAll requires at least one argument.');
-
-      var functions = Array.prototype.slice.call(arguments, 1);
-
-      if (functions.length === 0) {
-
-          for (var method in object) {
-              if(hasOwnProperty$1.call(object, method)) {
-                  if(typeof object[method] == 'function' && toString.call(object[method]) == "[object Function]") {
-                      functions.push(method);
-                  }
-              }
-          }
-      }
-
-      for(var i = 0; i < functions.length; i++) {
-          var f = functions[i];
-          object[f] = bind(object[f], object);
-      }
-  };
-
-  /*
-      Faster bind without specific-case checking. (see https://coderwall.com/p/oi3j3w).
-      bindAll is only needed for events binding so no need to make slow fixes for constructor
-      or partial application.
-  */
-  function bind(func, context) {
-    return function() {
-      return func.apply(context, arguments);
-    };
-  }
-
-  var Lethargy = lethargy.Lethargy;
-
-
-
-  var EVT_ID = 'virtualscroll';
-
-  var src = VirtualScroll;
-
-  var keyCodes = {
-      LEFT: 37,
-      UP: 38,
-      RIGHT: 39,
-      DOWN: 40,
-      SPACE: 32
-  };
-
-  function VirtualScroll(options) {
-      bindallStandalone(this, '_onWheel', '_onMouseWheel', '_onTouchStart', '_onTouchMove', '_onKeyDown');
-
-      this.el = window;
-      if (options && options.el) {
-          this.el = options.el;
-          delete options.el;
-      }
-      this.options = objectAssign({
-          mouseMultiplier: 1,
-          touchMultiplier: 2,
-          firefoxMultiplier: 15,
-          keyStep: 120,
-          preventTouch: false,
-          unpreventTouchClass: 'vs-touchmove-allowed',
-          limitInertia: false,
-          useKeyboard: true,
-          useTouch: true
-      }, options);
-
-      if (this.options.limitInertia) this._lethargy = new Lethargy();
-
-      this._emitter = new tinyEmitter();
-      this._event = {
-          y: 0,
-          x: 0,
-          deltaX: 0,
-          deltaY: 0
-      };
-      this.touchStartX = null;
-      this.touchStartY = null;
-      this.bodyTouchAction = null;
-
-      if (this.options.passive !== undefined) {
-          this.listenerOptions = {passive: this.options.passive};
-      }
-  }
-
-  VirtualScroll.prototype._notify = function(e) {
-      var evt = this._event;
-      evt.x += evt.deltaX;
-      evt.y += evt.deltaY;
-
-     this._emitter.emit(EVT_ID, {
-          x: evt.x,
-          y: evt.y,
-          deltaX: evt.deltaX,
-          deltaY: evt.deltaY,
-          originalEvent: e
-     });
-  };
-
-  VirtualScroll.prototype._onWheel = function(e) {
-      var options = this.options;
-      if (this._lethargy && this._lethargy.check(e) === false) return;
-      var evt = this._event;
-
-      // In Chrome and in Firefox (at least the new one)
-      evt.deltaX = e.wheelDeltaX || e.deltaX * -1;
-      evt.deltaY = e.wheelDeltaY || e.deltaY * -1;
-
-      // for our purpose deltamode = 1 means user is on a wheel mouse, not touch pad
-      // real meaning: https://developer.mozilla.org/en-US/docs/Web/API/WheelEvent#Delta_modes
-      if(support.isFirefox && e.deltaMode == 1) {
-          evt.deltaX *= options.firefoxMultiplier;
-          evt.deltaY *= options.firefoxMultiplier;
-      }
-
-      evt.deltaX *= options.mouseMultiplier;
-      evt.deltaY *= options.mouseMultiplier;
-
-      this._notify(e);
-  };
-
-  VirtualScroll.prototype._onMouseWheel = function(e) {
-      if (this.options.limitInertia && this._lethargy.check(e) === false) return;
-
-      var evt = this._event;
-
-      // In Safari, IE and in Chrome if 'wheel' isn't defined
-      evt.deltaX = (e.wheelDeltaX) ? e.wheelDeltaX : 0;
-      evt.deltaY = (e.wheelDeltaY) ? e.wheelDeltaY : e.wheelDelta;
-
-      this._notify(e);
-  };
-
-  VirtualScroll.prototype._onTouchStart = function(e) {
-      var t = (e.targetTouches) ? e.targetTouches[0] : e;
-      this.touchStartX = t.pageX;
-      this.touchStartY = t.pageY;
-  };
-
-  VirtualScroll.prototype._onTouchMove = function(e) {
-      var options = this.options;
-      if(options.preventTouch
-          && !e.target.classList.contains(options.unpreventTouchClass)) {
-          e.preventDefault();
-      }
-
-      var evt = this._event;
-
-      var t = (e.targetTouches) ? e.targetTouches[0] : e;
-
-      evt.deltaX = (t.pageX - this.touchStartX) * options.touchMultiplier;
-      evt.deltaY = (t.pageY - this.touchStartY) * options.touchMultiplier;
-
-      this.touchStartX = t.pageX;
-      this.touchStartY = t.pageY;
-
-      this._notify(e);
-  };
-
-  VirtualScroll.prototype._onKeyDown = function(e) {
-      var evt = this._event;
-      evt.deltaX = evt.deltaY = 0;
-      var windowHeight = window.innerHeight - 40;
-
-      switch(e.keyCode) {
-          case keyCodes.LEFT:
-          case keyCodes.UP:
-              evt.deltaY = this.options.keyStep;
-              break;
-
-          case keyCodes.RIGHT:
-          case keyCodes.DOWN:
-              evt.deltaY = - this.options.keyStep;
-              break;
-          case  e.shiftKey:
-              evt.deltaY = windowHeight;
-              break;
-          case keyCodes.SPACE:
-              evt.deltaY = - windowHeight;
-              break;
-          default:
-              return;
-      }
-
-      this._notify(e);
-  };
-
-  VirtualScroll.prototype._bind = function() {
-      if(support.hasWheelEvent) this.el.addEventListener('wheel', this._onWheel, this.listenerOptions);
-      if(support.hasMouseWheelEvent) this.el.addEventListener('mousewheel', this._onMouseWheel, this.listenerOptions);
-
-      if(support.hasTouch && this.options.useTouch) {
-          this.el.addEventListener('touchstart', this._onTouchStart, this.listenerOptions);
-          this.el.addEventListener('touchmove', this._onTouchMove, this.listenerOptions);
-      }
-
-      if(support.hasPointer && support.hasTouchWin) {
-          this.bodyTouchAction = document.body.style.msTouchAction;
-          document.body.style.msTouchAction = 'none';
-          this.el.addEventListener('MSPointerDown', this._onTouchStart, true);
-          this.el.addEventListener('MSPointerMove', this._onTouchMove, true);
-      }
-
-      if(support.hasKeyDown && this.options.useKeyboard) document.addEventListener('keydown', this._onKeyDown);
-  };
-
-  VirtualScroll.prototype._unbind = function() {
-      if(support.hasWheelEvent) this.el.removeEventListener('wheel', this._onWheel);
-      if(support.hasMouseWheelEvent) this.el.removeEventListener('mousewheel', this._onMouseWheel);
-
-      if(support.hasTouch) {
-          this.el.removeEventListener('touchstart', this._onTouchStart);
-          this.el.removeEventListener('touchmove', this._onTouchMove);
-      }
-
-      if(support.hasPointer && support.hasTouchWin) {
-          document.body.style.msTouchAction = this.bodyTouchAction;
-          this.el.removeEventListener('MSPointerDown', this._onTouchStart, true);
-          this.el.removeEventListener('MSPointerMove', this._onTouchMove, true);
-      }
-
-      if(support.hasKeyDown && this.options.useKeyboard) document.removeEventListener('keydown', this._onKeyDown);
-  };
-
-  VirtualScroll.prototype.on = function(cb, ctx) {
-    this._emitter.on(EVT_ID, cb, ctx);
-
-    var events = this._emitter.e;
-    if (events && events[EVT_ID] && events[EVT_ID].length === 1) this._bind();
-  };
-
-  VirtualScroll.prototype.off = function(cb, ctx) {
-    this._emitter.off(EVT_ID, cb, ctx);
-
-    var events = this._emitter.e;
-    if (!events[EVT_ID] || events[EVT_ID].length <= 0) this._unbind();
-  };
-
-  VirtualScroll.prototype.reset = function() {
-      var evt = this._event;
-      evt.x = 0;
-      evt.y = 0;
-  };
-
-  VirtualScroll.prototype.destroy = function() {
-      this._emitter.off();
-      this._unbind();
-  };
+  function o(t,e){for(var o=0;o<e.length;o++){var i=e[o];i.enumerable=i.enumerable||!1,i.configurable=!0,"value"in i&&(i.writable=!0),Object.defineProperty(t,i.key,i);}}function i(t,e,i){return e&&o(t.prototype,e),i&&o(t,i),Object.defineProperty(t,"prototype",{writable:!1}),t}function r(){return r=Object.assign?Object.assign.bind():function(t){for(var e=1;e<arguments.length;e++){var o=arguments[e];for(var i in o)Object.prototype.hasOwnProperty.call(o,i)&&(t[i]=o[i]);}return t},r.apply(this,arguments)}function n(t,e){return n=Object.setPrototypeOf?Object.setPrototypeOf.bind():function(t,e){return t.__proto__=e,t},n(t,e)}function s(t,e,o){return Math.max(t,Math.min(e,o))}var l=["duration","easing"],c=/*#__PURE__*/function(){function t(){}var e=t.prototype;return e.to=function(t,e){var o=this,i=void 0===e?{}:e,n=i.duration,s=void 0===n?1:n,c=i.easing,a=void 0===c?function(t){return t}:c,h=function(t,e){if(null==t)return {};var o,i,r={},n=Object.keys(t);for(i=0;i<n.length;i++)e.indexOf(o=n[i])>=0||(r[o]=t[o]);return r}(i,l);this.target=t,this.fromKeys=r({},h),this.toKeys=r({},h),this.keys=Object.keys(r({},h)),this.keys.forEach(function(e){o.fromKeys[e]=t[e];}),this.duration=s,this.easing=a,this.currentTime=0,this.isRunning=!0;},e.raf=function(t){var e=this;if(this.isRunning){this.currentTime=Math.min(this.currentTime+.001*t,this.duration);var o=this.easing(this.progress);this.keys.forEach(function(t){var i=e.fromKeys[t];e.target[t]=i+(e.toKeys[t]-i)*o;}),1===o&&(this.isRunning=!1);}},i(t,[{key:"progress",get:function(){return this.currentTime/this.duration}}]),t}(),a=/*#__PURE__*/function(t){var o,r;function l(o){var i,r,n,l,a=void 0===o?{}:o,h=a.duration,p=void 0===h?1.2:h,u=a.easing,d=void 0===u?function(t){return 1===t?1:1-Math.pow(2,-10*t)}:u,f=a.smooth,v=void 0===f||f,g=a.smoothTouch,w=void 0!==g&&g,m=a.touchMultiplier,y=void 0===m?2:m,b=a.direction,S=void 0===b?"vertical":b,N=a.wrapper,O=void 0===N?window:N,z=a.content,R=void 0===z?document.body:z;(l=t.call(this)||this).onWindowResize=function(){l.wrapperWidth=window.innerWidth,l.wrapperHeight=window.innerHeight;},l.onWrapperResize=function(t){var e=t[0];if(e){var o=e.contentRect;l.wrapperWidth=o.width,l.wrapperHeight=o.height;}},l.onContentResize=function(t){var e=t[0];if(e){var o=e.contentRect;l.contentWidth=o.width,l.contentHeight=o.height;}},l.onVirtualScroll=function(t){var e=t.deltaY,o=t.originalEvent;o.ctrlKey||(l.smooth=o.changedTouches?l.smoothTouch:l.options.smooth,l.stopped?o.preventDefault():l.smooth&&4!==o.buttons&&(l.smooth&&o.preventDefault(),l.targetScroll-=e,l.targetScroll=s(0,l.targetScroll,l.limit),l.scrollTo(l.targetScroll)));},l.onScroll=function(t){l.isScrolling&&l.smooth||(l.targetScroll=l.scroll=l.lastScroll=l.wrapperNode[l.scrollProperty],l.notify());},void 0!==arguments[0].lerp&&console.warn("Lenis: lerp option is deprecated, you must use duration and easing options instead. See documentation https://github.com/studio-freight/lenis"),window.lenisVersion="0.2.6",l.options={duration:p,easing:d,smooth:v,smoothTouch:w,touchMultiplier:y,direction:S,wrapper:O,content:R},l.wrapperNode=O,l.contentNode=R,l.duration=p,l.easing=d,l.smooth=v,l.smoothTouch=w,l.touchMultiplier=y,l.direction=S,l.wrapperNode.addEventListener("scroll",l.onScroll),l.wrapperNode===window?(l.wrapperNode.addEventListener("resize",l.onWindowResize),l.onWindowResize()):(l.wrapperHeight=l.wrapperNode.offsetHeight,l.wrapperWidth=l.wrapperNode.offsetWidth,l.wrapperObserver=new ResizeObserver(l.onWrapperResize),l.wrapperObserver.observe(l.wrapperNode)),l.contentHeight=l.contentNode.offsetHeight,l.contentWidth=l.contentNode.offsetWidth,l.contentObserver=new ResizeObserver(l.onContentResize),l.contentObserver.observe(l.contentNode),l.targetScroll=l.scroll=l.lastScroll=l.wrapperNode[l.scrollProperty],l.animate=new c;var W=(null==(i=navigator)||null==(r=i.userAgentData)?void 0:r.platform)||(null==(n=navigator)?void 0:n.platform)||"unknown";return l.virtualScroll=new virtualscroll({el:l.wrapperNode,firefoxMultiplier:50,mouseMultiplier:W.includes("Win")?1:.4,useKeyboard:!1,touchMultiplier:l.touchMultiplier,useTouch:!0,passive:!1}),l.virtualScroll.on(l.onVirtualScroll),l}r=t,(o=l).prototype=Object.create(r.prototype),o.prototype.constructor=o,n(o,r);var a=l.prototype;return a.start=function(){this.stopped=!1;},a.stop=function(){this.stopped=!0;},a.destroy=function(){var t;this.wrapperNode===window&&this.wrapperNode.removeEventListener("resize",this.onWindowResize),this.wrapperNode.removeEventListener("scroll",this.onScroll),this.virtualScroll.destroy(),null==(t=this.wrapperObserver)||t.disconnect(),this.contentObserver.disconnect();},a.raf=function(t){var e=t-(this.now||0);this.now=t,!this.stopped&&this.smooth&&(this.lastScroll=this.scroll,this.animate.raf(e),Math.round(this.scroll)===Math.round(this.targetScroll)&&(this.lastScroll=this.targetScroll),this.isScrolling&&(this.setScroll(this.scroll),this.notify()),this.isScrolling=this.scroll!==this.targetScroll);},a.setScroll=function(t){"horizontal"===this.direction?this.wrapperNode.scrollTo(t,0):this.wrapperNode.scrollTo(0,t);},a.notify=function(){this.emit("scroll",{scroll:this.scroll,limit:this.limit,velocity:this.velocity,direction:this.direction,progress:this.scroll/this.limit});},a.scrollTo=function(t,e){var o,i=void 0===e?{}:e,r=i.offset,n=void 0===r?0:r,s=i.immediate,l=void 0!==s&&s,c=i.duration,a=void 0===c?this.duration:c,h=i.easing,p=void 0===h?this.easing:h;if("number"==typeof t)o=t;else if("top"===t||"#top"===t)o=0;else if("bottom"===t)o=this.limit;else {var u;if("string"==typeof t)u=document.querySelector(t);else {if(null==t||!t.nodeType)return;u=t;}if(!t)return;var d=0;if(this.wrapperNode!==window){var f=this.wrapperNode.getBoundingClientRect();d="horizontal"===this.direction?f.left:f.top;}var v=u.getBoundingClientRect();o=("horizontal"===this.direction?v.left:v.top)+this.scroll-d;}this.targetScroll=o+=n,!this.smooth||l?this.setScroll(this.targetScroll):this.animate.to(this,{duration:a,easing:p,scroll:this.targetScroll});},i(l,[{key:"scrollProperty",get:function(){return this.wrapperNode===window?"horizontal"===this.direction?"scrollX":"scrollY":"horizontal"===this.direction?"scrollLeft":"scrollTop"}},{key:"limit",get:function(){return "horizontal"===this.direction?this.contentWidth-this.wrapperWidth:this.contentHeight-this.wrapperHeight}},{key:"velocity",get:function(){return this.scroll-this.lastScroll}}]),l}(tinyEmitter);
 
   var _default$1 = /*#__PURE__*/function (_Core) {
     _inherits(_default, _Core);
@@ -1559,20 +1116,22 @@
         window.smoothscrollPolyfill.polyfill();
       }
 
-      _this.vs = new src({
-        el: _this.scrollFromAnywhere ? document : _this.el,
-        mouseMultiplier: navigator.platform.indexOf('Win') > -1 ? 1 : 0.4,
-        firefoxMultiplier: _this.firefoxMultiplier,
-        touchMultiplier: _this.touchMultiplier,
-        useKeyboard: false,
-        passive: true
+      _this.lenis = new a({
+        duration: 1.2,
+        easing: function easing(t) {
+          return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+        },
+        // https://easings.net
+        direction: 'vertical',
+        smooth: true,
+        smoothTouch: false,
+        touchMultiplier: 2
       });
+      _this.bindOnScroll = _this.onScroll.bind(_assertThisInitialized(_this));
 
-      _this.vs.on(function (e) {
-        requestAnimationFrame(function () {
-          _this.checkScroll(e);
-        });
-      });
+      _this.lenis.on('scroll', _this.bindOnScroll);
+
+      _this.raf(0);
 
       return _this;
     }
@@ -1580,74 +1139,52 @@
     _createClass(_default, [{
       key: "init",
       value: function init() {
-        this.instance.scroll.y = window.pageYOffset;
         this.addElements();
         this.detectElements();
 
         _get(_getPrototypeOf(_default.prototype), "init", this).call(this);
       }
     }, {
-      key: "checkScroll",
-      value: function checkScroll(e) {
+      key: "raf",
+      value: function raf(time) {
         var _this2 = this;
 
-        _get(_getPrototypeOf(_default.prototype), "checkScroll", this).call(this);
-
-        if (this.getDirection) {
-          this.addDirection();
-        }
-
-        if (this.getSpeed) {
-          this.addSpeed();
-          this.speedTs = Date.now();
-        }
-
-        var delta;
-        var gestureDirection = this[this.context] && this[this.context].gestureDirection ? this[this.context].gestureDirection : this.gestureDirection;
-
-        if (gestureDirection === 'both') {
-          delta = e.deltaX + e.deltaY;
-        } else if (gestureDirection === 'vertical') {
-          delta = e.deltaY;
-        } else if (gestureDirection === 'horizontal') {
-          delta = e.deltaX;
-        } else {
-          delta = e.deltaY;
-        }
-
-        this.instance.scroll[this.directionAxis] -= delta * this.multiplier;
-        console.log(this.instance.scroll);
-
-        if (Object.entries(this.els).length) {
-          if (!this.hasScrollTicking) {
-            requestAnimationFrame(function () {
-              _this2.detectElements();
-            });
-            this.hasScrollTicking = true;
-          }
-        }
+        this.lenis.raf(time);
+        this.rafInstance = requestAnimationFrame(function () {
+          return _this2.raf(Date.now());
+        });
       }
     }, {
-      key: "addDirection",
-      value: function addDirection() {
-        if (window.pageYOffset > this.instance.scroll.y) {
+      key: "onScroll",
+      value: function onScroll(_ref) {
+        var _this3 = this;
+
+        var scroll = _ref.scroll,
+            velocity = _ref.velocity;
+
+        if (scroll > this.instance.scroll[this.directionAxis]) {
           if (this.instance.direction !== 'down') {
             this.instance.direction = 'down';
           }
-        } else if (window.pageYOffset < this.instance.scroll.y) {
+        } else if (scroll < this.instance.scroll[this.directionAxis]) {
           if (this.instance.direction !== 'up') {
             this.instance.direction = 'up';
           }
         }
-      }
-    }, {
-      key: "addSpeed",
-      value: function addSpeed() {
-        if (window.pageYOffset != this.instance.scroll.y) {
-          this.instance.speed = (window.pageYOffset - this.instance.scroll.y) / Math.max(1, Date.now() - this.speedTs);
-        } else {
-          this.instance.speed = 0;
+
+        this.instance.scroll[this.directionAxis] = scroll;
+        this.instance.speed = velocity;
+
+        if (Object.entries(this.els).length) {
+          if (!this.hasScrollTicking) {
+            requestAnimationFrame(function () {
+              _this3.detectElements();
+            });
+            this.hasScrollTicking = true;
+          }
         }
+
+        _get(_getPrototypeOf(_default.prototype), "onScroll", this).call(this);
       }
     }, {
       key: "resize",
@@ -1660,20 +1197,20 @@
     }, {
       key: "addElements",
       value: function addElements() {
-        var _this3 = this;
+        var _this4 = this;
 
         this.els = {};
         var els = this.el.querySelectorAll('[data-' + this.name + ']');
         els.forEach(function (el, index) {
           var BCR = el.getBoundingClientRect();
-          var cl = el.dataset[_this3.name + 'Class'] || _this3["class"];
-          var id = typeof el.dataset[_this3.name + 'Id'] === 'string' ? el.dataset[_this3.name + 'Id'] : index;
+          var cl = el.dataset[_this4.name + 'Class'] || _this4["class"];
+          var id = typeof el.dataset[_this4.name + 'Id'] === 'string' ? el.dataset[_this4.name + 'Id'] : index;
           var top;
           var left;
-          var offset = typeof el.dataset[_this3.name + 'Offset'] === 'string' ? el.dataset[_this3.name + 'Offset'].split(',') : _this3.offset;
-          var repeat = el.dataset[_this3.name + 'Repeat'];
-          var call = el.dataset[_this3.name + 'Call'];
-          var target = el.dataset[_this3.name + 'Target'];
+          var offset = typeof el.dataset[_this4.name + 'Offset'] === 'string' ? el.dataset[_this4.name + 'Offset'].split(',') : _this4.offset;
+          var repeat = el.dataset[_this4.name + 'Repeat'];
+          var call = el.dataset[_this4.name + 'Call'];
+          var target = el.dataset[_this4.name + 'Target'];
           var targetEl;
 
           if (target !== undefined) {
@@ -1683,8 +1220,8 @@
           }
 
           var targetElBCR = targetEl.getBoundingClientRect();
-          top = targetElBCR.top + _this3.instance.scroll.y;
-          left = targetElBCR.left + _this3.instance.scroll.x;
+          top = targetElBCR.top + _this4.instance.scroll.y;
+          left = targetElBCR.left + _this4.instance.scroll.x;
           var bottom = top + targetEl.offsetHeight;
           var right = left + targetEl.offsetWidth;
 
@@ -1693,10 +1230,10 @@
           } else if (repeat != undefined) {
             repeat = true;
           } else {
-            repeat = _this3.repeat;
+            repeat = _this4.repeat;
           }
 
-          var relativeOffset = _this3.getRelativeOffset(offset);
+          var relativeOffset = _this4.getRelativeOffset(offset);
 
           top = top + relativeOffset[0];
           bottom = bottom - relativeOffset[1];
@@ -1715,31 +1252,31 @@
             inView: false,
             call: call
           };
-          _this3.els[id] = mappedEl;
+          _this4.els[id] = mappedEl;
 
           if (el.classList.contains(cl)) {
-            _this3.setInView(_this3.els[id], id);
+            _this4.setInView(_this4.els[id], id);
           }
         });
       }
     }, {
       key: "updateElements",
       value: function updateElements() {
-        var _this4 = this;
+        var _this5 = this;
 
-        Object.entries(this.els).forEach(function (_ref) {
-          var _ref2 = _slicedToArray(_ref, 2),
-              i = _ref2[0],
-              el = _ref2[1];
+        Object.entries(this.els).forEach(function (_ref2) {
+          var _ref3 = _slicedToArray(_ref2, 2),
+              i = _ref3[0],
+              el = _ref3[1];
 
-          var top = el.targetEl.getBoundingClientRect().top + _this4.instance.scroll.y;
+          var top = el.targetEl.getBoundingClientRect().top + _this5.instance.scroll.y;
 
           var bottom = top + el.targetEl.offsetHeight;
 
-          var relativeOffset = _this4.getRelativeOffset(el.offset);
+          var relativeOffset = _this5.getRelativeOffset(el.offset);
 
-          _this4.els[i].top = top + relativeOffset[0];
-          _this4.els[i].bottom = bottom - relativeOffset[1];
+          _this5.els[i].top = top + relativeOffset[0];
+          _this5.els[i].bottom = bottom - relativeOffset[1];
         });
         this.hasScrollTicking = false;
       }
@@ -1846,18 +1383,18 @@
       value: function destroy() {
         _get(_getPrototypeOf(_default.prototype), "destroy", this).call(this);
 
-        window.removeEventListener('scroll', this.checkScroll, false);
+        cancelAnimationFrame(this.rafInstance);
       }
     }]);
 
     return _default;
   }(_default);
 
-  var Smooth = /*#__PURE__*/function () {
-    function Smooth() {
+  var Main = /*#__PURE__*/function () {
+    function Main() {
       var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-      _classCallCheck(this, Smooth);
+      _classCallCheck(this, Main);
 
       this.options = options; // Override default options with given ones
 
@@ -1872,7 +1409,7 @@
       this.init();
     }
 
-    _createClass(Smooth, [{
+    _createClass(Main, [{
       key: "init",
       value: function init() {
         this.options.isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1 || window.innerWidth < this.tablet.breakpoint;
@@ -1930,9 +1467,9 @@
       }
     }]);
 
-    return Smooth;
+    return Main;
   }();
 
-  return Smooth;
+  return Main;
 
 })));

@@ -1,6 +1,6 @@
 import Core from './Core';
 import smoothscroll from 'smoothscroll-polyfill';
-import virtualScroll from 'virtual-scroll';
+import Lenis from '@studio-freight/lenis'
 
 export default class extends Core {
     constructor(options = {}) {
@@ -18,25 +18,22 @@ export default class extends Core {
             window.smoothscrollPolyfill.polyfill();
         }
 
-        this.vs = new virtualScroll({
-            el: this.scrollFromAnywhere ? document : this.el,
-            mouseMultiplier: navigator.platform.indexOf('Win') > -1 ? 1 : 0.4,
-            firefoxMultiplier: this.firefoxMultiplier,
-            touchMultiplier: this.touchMultiplier,
-            useKeyboard: false,
-            passive: true
+        this.lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)), // https://easings.net
+            direction: 'vertical',
+            smooth: true,
+            smoothTouch: false,
+            touchMultiplier: 2
         });
 
-        this.vs.on((e) => {
-            requestAnimationFrame(() => {
-                this.checkScroll(e)
-            });
-            
-        });
+        this.bindOnScroll = this.onScroll.bind(this);
+        this.lenis.on('scroll',this.bindOnScroll);
+        
+        this.raf(0);
     }
 
     init() {
-        this.instance.scroll.y = window.pageYOffset;
 
         this.addElements();
         this.detectElements();
@@ -44,37 +41,24 @@ export default class extends Core {
         super.init();
     }
 
-    checkScroll(e) {
-        super.checkScroll();
+    raf(time) {
+        this.lenis.raf(time);
+        this.rafInstance = requestAnimationFrame(() => this.raf(Date.now()));
+    }
 
-        if (this.getDirection) {
-            this.addDirection();
+    onScroll({scroll, velocity}) {
+
+        if (scroll > this.instance.scroll[this.directionAxis]) {
+            if (this.instance.direction !== 'down') {
+                this.instance.direction = 'down';
+            }
+        } else if (scroll < this.instance.scroll[this.directionAxis]) {
+            if (this.instance.direction !== 'up') {
+                this.instance.direction = 'up';
+            }
         }
-
-        if (this.getSpeed) {
-            this.addSpeed();
-            this.speedTs = Date.now();
-        }
-
-        let delta;
-        const gestureDirection =
-            this[this.context] && this[this.context].gestureDirection
-                ? this[this.context].gestureDirection
-                : this.gestureDirection;
-
-        if (gestureDirection === 'both') {
-            delta = e.deltaX + e.deltaY;
-        } else if (gestureDirection === 'vertical') {
-            delta = e.deltaY;
-        } else if (gestureDirection === 'horizontal') {
-            delta = e.deltaX;
-        } else {
-            delta = e.deltaY;
-        }
-
-        this.instance.scroll[this.directionAxis] -= delta * this.multiplier;
-
-        console.log(this.instance.scroll);
+        this.instance.scroll[this.directionAxis] = scroll;
+        this.instance.speed = velocity;
 
         if (Object.entries(this.els).length) {
             if (!this.hasScrollTicking) {
@@ -84,28 +68,9 @@ export default class extends Core {
                 this.hasScrollTicking = true;
             }
         }
-    }
 
-    addDirection() {
-        if (window.pageYOffset > this.instance.scroll.y) {
-            if (this.instance.direction !== 'down') {
-                this.instance.direction = 'down';
-            }
-        } else if (window.pageYOffset < this.instance.scroll.y) {
-            if (this.instance.direction !== 'up') {
-                this.instance.direction = 'up';
-            }
-        }
-    }
-
-    addSpeed() {
-        if (window.pageYOffset != this.instance.scroll.y) {
-            this.instance.speed =
-                (window.pageYOffset - this.instance.scroll.y) /
-                Math.max(1, Date.now() - this.speedTs);
-        } else {
-            this.instance.speed = 0;
-        }
+        super.onScroll();
+        
     }
 
     resize() {
@@ -296,7 +261,6 @@ export default class extends Core {
 
     destroy() {
         super.destroy();
-
-        window.removeEventListener('scroll', this.checkScroll, false);
+        cancelAnimationFrame(this.rafInstance);
     }
 }

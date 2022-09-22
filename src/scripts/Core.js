@@ -23,12 +23,16 @@ export default class {
         this.hasScrollTicking = false;
         this.hasCallEventSet = false;
 
-        this.checkScroll = this.checkScroll.bind(this);
+        this.onScroll = this.onScroll.bind(this);
         this.checkResize = this.checkResize.bind(this);
         this.checkEvent = this.checkEvent.bind(this);
 
         this.instance = {
             scroll: {
+                x: 0,
+                y: 0
+            },
+            delta: {
                 x: 0,
                 y: 0
             },
@@ -60,9 +64,7 @@ export default class {
             this.instance.direction = null;
         }
 
-        if (this.getDirection) {
-            this.instance.speed = 0;
-        }
+        this.instance.speed = 0;
 
         this.html.classList.add(this.initClass);
 
@@ -73,7 +75,7 @@ export default class {
         this.initEvents();
     }
 
-    checkScroll() {
+    onScroll() {
         this.dispatchScroll();
     }
 
@@ -296,9 +298,13 @@ export default class {
         });
     }
 
-    startScroll() {}
+    startScroll() {
+        this.stop = false;
+    }
 
-    stopScroll() {}
+    stopScroll() {
+        this.stop = true;
+    }
 
     setScroll(x, y) {
         this.instance.scroll = {

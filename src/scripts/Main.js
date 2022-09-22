@@ -1,7 +1,7 @@
 import { defaults } from './options';
 import NativeScroll from './Native';
 
-export class Smooth {
+export class Main {
     constructor(options = {}) {
         this.options = options;
 
@@ -81,4 +81,4 @@ export class Smooth {
     }
 }
 
-export default Smooth;
+export default Main;
