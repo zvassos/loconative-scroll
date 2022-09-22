@@ -6,8 +6,34 @@
         <img src="https://user-images.githubusercontent.com/4596862/58807621-67aeec00-85e6-11e9-8e3a-3fe4123ee76c.png" height="140">
     </a>
 </p>
-<h1 align="center">Locomotive (native) Scroll, updated by Quentin Hocdé. </h1>
+<h1 align="center">Locomotive (native) Scroll</h1>
 <p align="center">Merged with Lenis by Studio Freight to optimize the scrolling experience and keep native scrolling. I decided to merge the best of (for me) 2 great libraries for scrolling experiences<br>Detection of elements in viewport & smooth native scrolling</p>
+
+<p align="center">No more Smooth class with hikacking of the scroll</p>
+
+##Why locomotive-scroll as base
+
+<p align="center">Great managment and detections of everything linked to the scroll<p>
+
+<ul>
+    <li>In view class on scoped elements</li>
+    <li>JS callback to call everything you want when an element is in the viewport</li>
+    <li>Get the progress from the bottom to the top of each current elements (currently in the viewport)</li>
+    <li>Choose if the detection is repeatable or not</li>
+</ul>
+
+## and why Lenis by Studio Freight ?
+
+<p align="center">Native smooth scrolling without scroll hijacking<p>
+
+<ul>
+    <li>Performant</li>
+    <li>Native scrolling</li>
+    <li>Lightweight</li>
+    <li>Great for accessibility</li>
+</ul>
+
+
 
 ## Installation
 
