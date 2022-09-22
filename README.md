@@ -9,9 +9,9 @@
 <h1 align="center">Locomotive (native) Scroll</h1>
 <p align="center">Merged with Lenis by Studio Freight to optimize the scrolling experience and keep native scrolling. I decided to merge the best of (for me) 2 great libraries for scrolling experiences<br>Detection of elements in viewport & smooth native scrolling</p>
 
-<p align="center">No more Smooth class with hikacking of the scroll</p>
+<p align="center">No more Smooth Class = no more hikacking of the scroll</p>
 
-##Why locomotive-scroll as base
+<h2 align="center">Why locomotive-scroll as base</h2>
 
 <p align="center">Great managment and detections of everything linked to the scroll<p>
 
@@ -22,7 +22,7 @@
     <li>Choose if the detection is repeatable or not</li>
 </ul>
 
-## and why Lenis by Studio Freight ?
+<h2 align="center">And why Lenis by Studio Freight ?</h2>
 
 <p align="center">Native smooth scrolling without scroll hijacking<p>
 
