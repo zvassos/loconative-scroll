@@ -42,7 +42,7 @@ function scripts() {
                     file: file.dest + '.js',
                     name: 'LocomotiveNativeScroll',
                     format: file.format,
-                    banner: '/* locomotive-native-scroll v' + pkg.version + ' | MIT License | https://github.com/locomotivemtl/locomotive-scroll */'
+                    banner: '/* locomotive-native-scroll v' + pkg.version + ' | MIT License | https://github.com/quentinhocde/locomotive-native-scroll */'
                 });
             })
     });

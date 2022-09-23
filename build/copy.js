@@ -4,7 +4,7 @@ import error from './error.js';
 
 function copy() {
     return gulp
-        .src([`./node_modules/locomotive-scroll/assets/scripts/scroll/vendors/*`])
+        .src([`./node_modules/locomotive-native-scroll/assets/scripts/scroll/vendors/*`])
         .on('error', function(err) {
             error(this, err);
         })

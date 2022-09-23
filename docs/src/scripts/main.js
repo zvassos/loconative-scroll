@@ -1,4 +1,4 @@
-import LocomotiveNativeScroll from '../../../src/locomotive-scroll';
+import LocomotiveNativeScroll from '../../../src/locomotive-native-scroll';
 
 (function() {
 

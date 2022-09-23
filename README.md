@@ -4,13 +4,13 @@
 <h1 align="center">Locomotive (native) Scroll</h1>
 <p align="center">
 Detection of elements in viewport & smooth native scrolling.<br>
-The great locomotive-scroll without Smooth Class, merged with Lenis by Studio Freight to optimize the scrolling experience and keep native scrolling. I decided to merge the best of (for me) 2 great librairies for scrolling experiences.</p>
+The great locomotive-native-scroll without Smooth Class, merged with Lenis by Studio Freight to optimize the scrolling experience and keep native scrolling. I decided to merge the best of (for me) 2 great librairies for scrolling experiences.</p>
 
 <p align="center">No more Smooth Class = no more hikacking of the scroll.</p>
 
-<h2>Why locomotive-scroll as base</h2>
+<h2>Why locomotive-native-scroll as base</h2>
 
-<p>Great managment and detections of everything linked to the scroll. <a href="https://github.com/locomotivemtl/locomotive-scroll" target="_blank">See more.</a><p>
+<p>Great managment and detections of everything linked to the scroll. <a href="https://github.com/locomotivemtl/locomotive-native-scroll" target="_blank">See more.</a><p>
 
 <ul>
     <li>In view class on scoped elements</li>
@@ -32,10 +32,10 @@ The great locomotive-scroll without Smooth Class, merged with Lenis by Studio Fr
 </ul>
 
 
-## Installation - deprecated!
+## Installation
 
 ```sh
-# npm install locomotive-scroll
+npm install https://github.com/quentinhocde/locomotive-native-scroll
 ```
 
 ## Usage
@@ -43,7 +43,7 @@ The great locomotive-scroll without Smooth Class, merged with Lenis by Studio Fr
 #### CSS
 Add the base styles to your CSS file.
 
-[`locomotive-scroll.css`](https://github.com/quentinhocde/locomotive-scroll/blob/master/dist/locomotive-scroll.css)
+[`locomotive-native-scroll.css`](https://github.com/quentinhocde/locomotive-native-scroll/blob/master/dist/locomotive-native-scroll.css)
 
 ### Basic
 With simple detection, when your element will enter in the viewport, the `in-view` class will be added.
@@ -58,27 +58,27 @@ With simple detection, when your element will enter in the viewport, the `in-vie
 
 ##### With a bundler
 ```js
-import LocomotiveNativeScroll from 'locomotive-scroll';
+import LocomotiveNativeScroll from 'locomotive-native-scroll';
 
 const scroll = new LocomotiveNativeScroll();
 ```
 
 ##### Or without
 ```js
-<script src="locomotive-scroll.min.js"></script>
+<script src="locomotive-native-scroll.min.js"></script>
 <script>
     (function () {
         var scroll = new LocomotiveNativeScroll();
     })();
 </script>
 ```
-_Get the [JS file](https://github.com/quentinhocde/locomotive-scroll/blob/master/dist/locomotive-scroll.min.js)._
+_Get the [JS file](https://github.com/quentinhocde/locomotive-native-scroll/blob/master/dist/locomotive-native-scroll.min.js)._
 
 ### Smooth
 With smooth scrolling.
 
 ```js
-import LocomotiveNativeScroll from 'locomotive-scroll';
+import LocomotiveNativeScroll from 'locomotive-native-scroll';
 
 const scroll = new LocomotiveNativeScroll({
     smooth: true
@@ -94,7 +94,7 @@ Make it do what you want.
 ```
 
 ```js
-import LocomotiveNativeScroll from 'locomotive-scroll';
+import LocomotiveNativeScroll from 'locomotive-native-scroll';
 
 const scroll = new LocomotiveNativeScroll();
 const target = document.querySelector('#js-target');
@@ -119,7 +119,7 @@ scroll.scrollTo(target);
 ```
 
 ```js
-import LocomotiveNativeScroll from 'locomotive-scroll';
+import LocomotiveNativeScroll from 'locomotive-native-scroll';
 
 const scroll = new LocomotiveNativeScroll();
 
@@ -127,7 +127,7 @@ scroll.on('call', (func, way, obj) => {
     
     // func = [function, module, moduleID]
     // way = 'enter' or 'leave'
-    // obj = JS object from locomotive-scroll
+    // obj = JS object from locomotive-native-scroll
 
 });
 ```
@@ -152,10 +152,10 @@ scroll.on('call', (func, way, obj) => {
 | `multiplier`            | `number`  | `1`                    | ![Smooth only][smooth-only]<br>Factor applied to the scroll delta, allowing to boost/reduce scrolling speed (regardless of the platform).                                                                                                                                                          |
 | `firefoxMultiplier`     | `number`  | `50`                   | ![Smooth only][smooth-only]<br>Boost scrolling speed of Firefox on Windows.                                                                                                                                                                                                                        |
 | `touchMultiplier`       | `number`  | `2`                    | ![Smooth only][smooth-only]<br>Multiply touch action to scroll faster than finger movement.                                                                                                                                                                                                         |
-| `scrollFromAnywhere`    | `boolean` | `false`                | ![Smooth only][smooth-only]<br>By default locomotive-scroll listens for scroll events only on the scroll container (`el` option). With this option set to true, it listens on the whole document instead.                                                                                          |
+| `scrollFromAnywhere`    | `boolean` | `false`                | ![Smooth only][smooth-only]<br>By default locomotive-native-scroll listens for scroll events only on the scroll container (`el` option). With this option set to true, it listens on the whole document instead.                                                                                          |
 | `tablet` & `smartphone` | `object`  |                        | Object allowing to override some options for a particular context. You can specify: <ul><li>`smooth`</li><li>`direction`</li><li>`horizontalGesture`</li></ul>For `tablet` context you can also define `breakpoint` (_integer_, defaults to 1024) to set the max-width breakpoint for tablets.     |
 | `reloadOnContextChange` | `boolean` | `false`                | Allows to reload the page when switching between `desktop`, `tablet` and `smartphone` contexts. It can be useful if your page changes a lot between contexts and you want to reset everything.                                                                                                     |
-| `resetNativeScroll` | `boolean` | `true`                | Sets `history.scrollRestoration = 'manual'` and calls `window.scrollTo(0, 0)` on locomotive-scroll init in Native Class. Useful if you use transitions with native scrolling, otherwise we advise to set it to `false` if you don't want to break History API's scroll restoration feature. |
+| `resetNativeScroll` | `boolean` | `true`                | Sets `history.scrollRestoration = 'manual'` and calls `window.scrollTo(0, 0)` on locomotive-native-scroll init in Native Class. Useful if you use transitions with native scrolling, otherwise we advise to set it to `false` if you don't want to break History API's scroll restoration feature. |
 
 ## Element attributes
 
@@ -163,7 +163,7 @@ scroll.on('call', (func, way, obj) => {
 | ----------------------- | ------------------------ | ---------------------------------------------------------------------------------------- |
 | `data-scroll`           |                          | Detect if in-view.                                                                       |
 | `data-scroll-id`        | `string`                 | (Optional) Useful if you want to scope your element and get the progress of your element in the viewport for example. |
-| `data-scroll-container` |                          | Defines the scroll container. Required for [basic styling](https://github.com/quentinhocde/locomotive-scroll/blob/master/dist/locomotive-scroll.css).                                                                                     |
+| `data-scroll-container` |                          | Defines the scroll container. Required for [basic styling](https://github.com/quentinhocde/locomotive-native-scroll/blob/master/dist/locomotive-native-scroll.css).                                                                                     |
 | `data-scroll-section`   |                          | Defines a scrollable section. Splitting your page into sections may improve performance. |
 | `data-scroll-class`     | `string`                 | Element in-view class.                                                                   |
 | `data-scroll-offset`    | `string`                 | Element in-view trigger offset : `bottom,top`<br>First value is `bottom` offset, second (optional) is `top` offset.<br> Percent is relative to viewport height, otherwise it's absolute pixels.<br>E.g. `"10"`, `"100,50%"`, `"25%, 15%"`  |
@@ -250,7 +250,7 @@ Works on most modern browsers. Chrome, Firefox, Safari, Edge...
 
 ## Related
 
-- [Locomotive Scroll 🚂](https://github.com/locomotivemtl/locomotive-scroll)
+- [Locomotive Scroll 🚂](https://github.com/locomotivemtl/locomotive-native-scroll)
 - [Locomotive Boilerplate 🚂](https://github.com/locomotivemtl/locomotive-boilerplate)
 
 [smooth-only]: https://img.shields.io/badge/smooth-only-blue
