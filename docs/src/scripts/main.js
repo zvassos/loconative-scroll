@@ -1,4 +1,4 @@
-import LocomotiveScroll from '../../../src/locomotive-scroll';
+import LocomotiveNativeScroll from '../../../src/locomotive-scroll';
 
 (function() {
 
@@ -31,7 +31,7 @@ import LocomotiveScroll from '../../../src/locomotive-scroll';
     }
 
     setTimeout(() => {
-        const scroll = new LocomotiveScroll(options);
+        const scroll = new LocomotiveNativeScroll(options);
 
         let dynamicBackgrounds = [];
         let dynamicColorElements = [];

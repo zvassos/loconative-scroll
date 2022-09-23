@@ -1,6 +1,6 @@
 {
     "name": "locomotive-native-scroll",
-    "version": "0.9",
+    "version": "1.0.0",
     "description": "Detection of elements in viewport & smooth native scrolling.",
     "repository": "quentinhocde/locomotive-scroll",
     "author": "Quentin Hocdé <info@quentinhocde.com> (https://quentinhocde.com)",

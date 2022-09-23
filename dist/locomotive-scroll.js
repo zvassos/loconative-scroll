@@ -1,8 +1,8 @@
-/* locomotive-scroll v4.1.4 | MIT License | https://github.com/locomotivemtl/locomotive-scroll */
+/* locomotive-native-scroll v1.0.0 | MIT License | https://github.com/locomotivemtl/locomotive-scroll */
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
   typeof define === 'function' && define.amd ? define(factory) :
-  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.LocomotiveScroll = factory());
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.LocomotiveNativeScroll = factory());
 }(this, (function () { 'use strict';
 
   function _classCallCheck(instance, Constructor) {

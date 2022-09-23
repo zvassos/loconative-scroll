@@ -58,9 +58,9 @@ With simple detection, when your element will enter in the viewport, the `in-vie
 
 ##### With a bundler
 ```js
-import LocomotiveScroll from 'locomotive-scroll';
+import LocomotiveNativeScroll from 'locomotive-scroll';
 
-const scroll = new LocomotiveScroll();
+const scroll = new LocomotiveNativeScroll();
 ```
 
 ##### Or without
@@ -68,7 +68,7 @@ const scroll = new LocomotiveScroll();
 <script src="locomotive-scroll.min.js"></script>
 <script>
     (function () {
-        var scroll = new LocomotiveScroll();
+        var scroll = new LocomotiveNativeScroll();
     })();
 </script>
 ```
@@ -78,9 +78,9 @@ _Get the [JS file](https://github.com/quentinhocde/locomotive-scroll/blob/master
 With smooth scrolling.
 
 ```js
-import LocomotiveScroll from 'locomotive-scroll';
+import LocomotiveNativeScroll from 'locomotive-scroll';
 
-const scroll = new LocomotiveScroll({
+const scroll = new LocomotiveNativeScroll({
     el: document.querySelector('[data-scroll-container]'),
     smooth: true
 });
@@ -95,9 +95,9 @@ Make it do what you want.
 ```
 
 ```js
-import LocomotiveScroll from 'locomotive-scroll';
+import LocomotiveNativeScroll from 'locomotive-scroll';
 
-const scroll = new LocomotiveScroll();
+const scroll = new LocomotiveNativeScroll();
 const target = document.querySelector('#js-target');
 
 scroll.scrollTo(target);
@@ -120,9 +120,9 @@ scroll.scrollTo(target);
 ```
 
 ```js
-import LocomotiveScroll from 'locomotive-scroll';
+import LocomotiveNativeScroll from 'locomotive-scroll';
 
-const scroll = new LocomotiveScroll();
+const scroll = new LocomotiveNativeScroll();
 
 scroll.on('call', (func, way, obj) => {
     
