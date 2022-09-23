@@ -173,7 +173,7 @@ scroll.on('call', (func, way, obj) => {
 | `data-scroll-position`  | `string`                 | `top`, `bottom`, `left` or `right`<br>Window position of in-view trigger.                |
 | `data-scroll-speed`     | `number`                 | ![Smooth only][smooth-only]<br>Element parallax speed. A negative value will reverse the direction. |                          |
 | `data-scroll-direction` | `string`                 | ![Smooth only][smooth-only]<br>Element's parallax direction. `vertical` or `horizontal`  |
-| `data-scroll-sticky`    |                          | ![Smooth only][smooth-only]<br>Sticky element. Starts and stops at `data-scroll-target` position. |
+| `data-scroll-sticky`    |                          | <strong>Deprecated</strong> <br> Have fun and use `position: sticky` |
 | `data-scroll-target`    | `string`                 | ![Smooth only][smooth-only]<br>Target element's in-view position.                        |
 
 ## Instance methods
