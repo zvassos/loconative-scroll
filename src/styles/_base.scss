@@ -1,20 +1,17 @@
 html {
     scroll-behavior: initial;
-    
-    &.has-scroll-smooth {
-        overflow: hidden;
-    }
 
     &.has-scroll-dragging {
         user-select: none;
     }
 }
 
+html,
 body {
-    .has-scroll-smooth & {
-        overflow: hidden;
-    }
+  width: 100%;
+  min-height: 100%;
 }
+
 
 [data-scroll-container] {
     .has-scroll-smooth & {

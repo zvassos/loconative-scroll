@@ -27,6 +27,11 @@
     @media (max-width: $to-medium) {
         margin-bottom: rem($unit/2);
     }
+
+    &.-sticky {
+        position: sticky;
+        top: 0;
+    }
 }
 
 .c-section_infos_inner {

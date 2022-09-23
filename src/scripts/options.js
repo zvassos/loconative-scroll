@@ -7,7 +7,7 @@ export const defaults = {
     initPosition: { x: 0, y: 0 },
     direction: 'vertical',
     gestureDirection: 'vertical',
-    reloadOnContextChange: false,
+    reloadOnContextChange: true,
     class: 'is-inview',
     scrollingClass: 'has-scroll-scrolling',
     smoothClass: 'has-scroll-smooth',
@@ -17,10 +17,10 @@ export const defaults = {
     scrollFromAnywhere: false,
     multiplier: 1,
     firefoxMultiplier: 50,
-    touchMultiplier: 2,
+    touchMultiplier: 3,
     resetNativeScroll: true,
     tablet: {
-        smooth: false,
+        smooth: true,
         direction: 'vertical',
         gestureDirection: 'vertical',
         breakpoint: 1024

@@ -60,10 +60,7 @@ export default class {
             this.directionAxis = 'y';
         }
 
-        if (this.getDirection) {
-            this.instance.direction = null;
-        }
-
+        this.instance.direction = null;
         this.instance.speed = 0;
 
         this.html.classList.add(this.initClass);

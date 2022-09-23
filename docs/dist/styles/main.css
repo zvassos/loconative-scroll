@@ -533,12 +533,12 @@ h1, .o-h1 {
       font-size: 12vw; } }
   @media (min-width: 700px) and (max-width: 1599px) {
     h1, .o-h1 {
-      font-size: 13.5vw; }
+      font-size: 11vw; }
       h1.-huge, .o-h1.-huge {
         font-size: 36vh; } }
   @media (min-width: 1600px) {
     h1, .o-h1 {
-      font-size: 12vw; } }
+      font-size: 8vw; } }
 
 h2, .o-h2 {
   font-size: 2rem; }
@@ -782,8 +782,7 @@ h6, .o-h6 {
   transform: translateY(-50%); }
 
 .o-scroll {
-  background-color: #d4c9c9;
-  overflow: hidden; }
+  background-color: #d4c9c9; }
 
 .o-title {
   margin: 0;
@@ -813,7 +812,7 @@ h6, .o-h6 {
   .o-title_line span {
     display: inline-block;
     min-width: 0.05em;
-    font-size: 13.5vw; }
+    font-size: 11vw; }
 
 .o-image_wrapper {
   position: relative;
@@ -843,17 +842,18 @@ h6, .o-h6 {
   .o-image_wrapper.-full .o-image {
     align-self: center; }
 
-html.has-scroll-smooth {
-  overflow: hidden; }
+html {
+  scroll-behavior: initial; }
+  html.has-scroll-dragging {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none; }
 
-html.has-scroll-dragging {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none; }
-
-.has-scroll-smooth body {
-  overflow: hidden; }
+html,
+body {
+  width: 100%;
+  min-height: 100%; }
 
 .has-scroll-smooth [data-scroll-container] {
   min-height: 100vh; }
@@ -1009,28 +1009,20 @@ html.has-scroll-dragging {
 
 .c-fixed_wrapper {
   position: relative;
-  overflow: hidden;
   background-color: #D4C9C9; }
   @media (min-width: 1000px) {
     .c-fixed_wrapper {
-      height: 100vh; } }
+      height: 200vh; } }
   @media (max-width: 999px) {
     .c-fixed_wrapper {
-      height: 50vh; } }
-
-.c-fixed_target {
-  position: absolute;
-  top: -100vh;
-  bottom: -100vh;
-  right: 0;
-  left: 0; }
+      height: 200vh; } }
 
 .c-fixed {
-  position: absolute;
-  top: -100vh;
+  position: sticky;
+  top: 0;
   right: 0;
   left: 0;
-  height: 100%;
+  height: 100vh;
   background-size: cover;
   background-position: center center;
   opacity: 0.75;
@@ -1173,6 +1165,9 @@ html.has-scroll-dragging {
   @media (max-width: 999px) {
     .c-section_infos {
       margin-bottom: 1.875rem; } }
+  .c-section_infos.-sticky {
+    position: sticky;
+    top: 0; }
 
 .c-section_infos_inner > * {
   opacity: 0;
@@ -1606,6 +1601,10 @@ html.has-scroll-dragging {
 
 .u-text {
   font-size: 0.875rem; }
+
+.u-sticky {
+  position: sticky;
+  top: 0; }
 
 .u-clearfix::after {
   display: block;

@@ -20,7 +20,7 @@ The great locomotive-scroll without Smooth Class, merged with Lenis by Studio Fr
     <li>Context managment to set different options on tablet, mobile and desktop</li>
 </ul>
 
-<h2>And why Lenis by Studio Freight ?</h2>
+<h2>Why add Lenis by Studio Freight ?</h2>
 
 <p>Native smooth scrolling without scroll hijacking. <a href="https://github.com/studio-freight/lenis" target="_blank">See more.</a><p>
 
@@ -32,7 +32,6 @@ The great locomotive-scroll without Smooth Class, merged with Lenis by Studio Fr
 </ul>
 
 
-
 ## Installation - deprecated!
 
 ```sh
@@ -41,19 +40,19 @@ The great locomotive-scroll without Smooth Class, merged with Lenis by Studio Fr
 
 ## Usage
 
+#### CSS
+Add the base styles to your CSS file.
+
+[`locomotive-scroll.css`](https://github.com/quentinhocde/locomotive-scroll/blob/master/dist/locomotive-scroll.css)
+
 ### Basic
-With simple detection.
+With simple detection, when your element will enter in the viewport, the `in-view` class will be added.
 
 #### HTML
 ```html
 <h1 data-scroll>Hey</h1>
 <p data-scroll>👋</p>
 ```
-
-#### CSS
-Add the base styles to your CSS file.
-
-[`locomotive-scroll.css`](https://github.com/quentinhocde/locomotive-scroll/blob/master/dist/locomotive-scroll.css)
 
 #### JS
 
@@ -142,23 +141,19 @@ scroll.on('call', (func, way, obj) => {
 | `name`                  | `string`  | `'scroll'`             | Data attribute prefix (`data-scroll-xxxx`).                                                                                                                                                                                                                                                        |                                                                                                                                                                                                                                                               |
 | `offset`                | `array(2)`| `[0,0]`                | Global in-view trigger offset : `[bottom,top]`<br>Use a string with `%` to use a percentage of the viewport height.<br>Use a numeric value for absolute pixels unit.<br>E.g. `["30%",0]`, `[100,0]`, `["30%", 100]`                                                                                |
 | `repeat`                | `boolean` | `false`                | Repeat in-view detection.                                                                                                                                                                                                                                                                          |
-| `smooth`                | `boolean` | `false`                | Smooth scrolling.                                                                                                                                                                                                                                                                                  |
+| `smooth`                | `boolean` | `false`                | Native smooth scrolling. |
 | `initPosition`          | `object`  | `{ x: 0, y: 0 }`       | ![Smooth only][smooth-only]<br>An `object` defining the initial scroll coordinates on a smooth instance. For example: `{ x: 0, y: 1000 }` |
 | `direction`             | `string`  | `vertical`             | ![Smooth only][smooth-only]<br>Scroll direction: `vertical` or `horizontal`                                                                                                                                                                                                                        |
-| `duration`                  | `number`  | `1.2`                  | ![Smooth only][smooth-only             |
-| `easing`                  | `number`  | `(t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)),` | ![Smooth only][smooth-only</br>https://easings.net|
-                                                                                                                        
+| `duration`                  | `number`  | `1.2`                  | ![Smooth only][smooth-only]             |
+| `easing`                  | `number`  | `(t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t))` | ![Smooth only][smooth-only] </br>https://easings.net |
 | `class`                 | `string`  | `is-inview`            | Element in-view class.                                                                                                                                                                                                                                                                             |
 | `initClass`             | `string`  | `has-scroll-init`      | Initialize class.                                                                                                                                                                                                                                                                                  |
 | `scrollingClass`        | `string`  | `has-scroll-scrolling` | Is scrolling class.                                                                                                                                                                                                                                                                                |
-                                                                                                                                                                                                                                                
 | `smoothClass`           | `string`  | `has-scroll-smooth`    | Has smooth scrolling class.   |
-                                                                                                                        
 | `multiplier`            | `number`  | `1`                    | ![Smooth only][smooth-only]<br>Factor applied to the scroll delta, allowing to boost/reduce scrolling speed (regardless of the platform).                                                                                                                                                          |
 | `firefoxMultiplier`     | `number`  | `50`                   | ![Smooth only][smooth-only]<br>Boost scrolling speed of Firefox on Windows.                                                                                                                                                                                                                        |
 | `touchMultiplier`       | `number`  | `2`                    | ![Smooth only][smooth-only]<br>Multiply touch action to scroll faster than finger movement.                                                                                                                                                                                                         |
 | `scrollFromAnywhere`    | `boolean` | `false`                | ![Smooth only][smooth-only]<br>By default locomotive-scroll listens for scroll events only on the scroll container (`el` option). With this option set to true, it listens on the whole document instead.                                                                                          |
-
 | `tablet` & `smartphone` | `object`  |                        | Object allowing to override some options for a particular context. You can specify: <ul><li>`smooth`</li><li>`direction`</li><li>`horizontalGesture`</li></ul>For `tablet` context you can also define `breakpoint` (_integer_, defaults to 1024) to set the max-width breakpoint for tablets.     |
 | `reloadOnContextChange` | `boolean` | `false`                | Allows to reload the page when switching between `desktop`, `tablet` and `smartphone` contexts. It can be useful if your page changes a lot between contexts and you want to reset everything.                                                                                                     |
 | `resetNativeScroll` | `boolean` | `true`                | Sets `history.scrollRestoration = 'manual'` and calls `window.scrollTo(0, 0)` on locomotive-scroll init in Native Class. Useful if you use transitions with native scrolling, otherwise we advise to set it to `false` if you don't want to break History API's scroll restoration feature. |

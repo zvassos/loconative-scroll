@@ -1,5 +1,5 @@
 import { defaults } from './options';
-import NativeScroll from './Native';
+import Scroll from './Scroll';
 
 export class Main {
     constructor(options = {}) {
@@ -34,7 +34,18 @@ export class Main {
         this.options.isTablet =
             this.options.isMobile && window.innerWidth >= this.tablet.breakpoint;
 
-        this.scroll = new NativeScroll(this.options);
+
+        if (
+            (this.smooth && !this.options.isMobile) ||
+            (this.tablet.smooth && this.options.isTablet) ||
+            (this.smartphone.smooth && this.options.isMobile && !this.options.isTablet)
+        ) {
+            this.smooth = true;
+        } else {
+            this.smooth = false;
+        }
+
+        this.scroll = new Scroll(this.options);
 
         this.scroll.init();
 
