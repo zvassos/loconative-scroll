@@ -81,7 +81,6 @@ With smooth scrolling.
 import LocomotiveNativeScroll from 'locomotive-scroll';
 
 const scroll = new LocomotiveNativeScroll({
-    el: document.querySelector('[data-scroll-container]'),
     smooth: true
 });
 ```
@@ -141,7 +140,7 @@ scroll.on('call', (func, way, obj) => {
 | `name`                  | `string`  | `'scroll'`             | Data attribute prefix (`data-scroll-xxxx`).                                                                                                                                                                                                                                                        |                                                                                                                                                                                                                                                               |
 | `offset`                | `array(2)`| `[0,0]`                | Global in-view trigger offset : `[bottom,top]`<br>Use a string with `%` to use a percentage of the viewport height.<br>Use a numeric value for absolute pixels unit.<br>E.g. `["30%",0]`, `[100,0]`, `["30%", 100]`                                                                                |
 | `repeat`                | `boolean` | `false`                | Repeat in-view detection.                                                                                                                                                                                                                                                                          |
-| `smooth`                | `boolean` | `false`                | Native smooth scrolling. |
+| `smooth`                | `boolean` | `true`                | Native smooth scrolling. |
 | `initPosition`          | `object`  | `{ x: 0, y: 0 }`       | ![Smooth only][smooth-only]<br>An `object` defining the initial scroll coordinates on a smooth instance. For example: `{ x: 0, y: 1000 }` |
 | `direction`             | `string`  | `vertical`             | ![Smooth only][smooth-only]<br>Scroll direction: `vertical` or `horizontal`                                                                                                                                                                                                                        |
 | `duration`                  | `number`  | `1.2`                  | ![Smooth only][smooth-only]             |
