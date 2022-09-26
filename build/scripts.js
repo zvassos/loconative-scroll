@@ -40,9 +40,9 @@ function scripts() {
             }).then(bundle => {
                 return bundle.write({
                     file: file.dest + '.js',
-                    name: 'LocomotiveNativeScroll',
+                    name: 'LoconativeScroll',
                     format: file.format,
-                    banner: '/* locomotive-native-scroll v' + pkg.version + ' | MIT License | https://github.com/quentinhocde/locomotive-native-scroll */'
+                    banner: '/* loconative-scroll v' + pkg.version + ' | MIT License | https://github.com/quentinhocde/loconative-scroll */'
                 });
             })
     });

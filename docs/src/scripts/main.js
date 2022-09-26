@@ -1,4 +1,4 @@
-import LocomotiveNativeScroll from '../../../src/locomotive-native-scroll';
+import LoconativeScroll from '../../../src/loconative-scroll';
 
 (function() {
 
@@ -11,9 +11,7 @@ import LocomotiveNativeScroll from '../../../src/locomotive-native-scroll';
 
     let options = {
         el: document.querySelector('#js-scroll'),
-        smooth: true,
-        getSpeed: true,
-        getDirection: true
+        smooth: true
     }
 
     if(document.querySelector('#js-scroll').getAttribute('data-horizontal') == 'true') {
@@ -31,7 +29,7 @@ import LocomotiveNativeScroll from '../../../src/locomotive-native-scroll';
     }
 
     setTimeout(() => {
-        const scroll = new LocomotiveNativeScroll(options);
+        const scroll = new LoconativeScroll(options);
 
         let dynamicBackgrounds = [];
         let dynamicColorElements = [];

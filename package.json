@@ -1,12 +1,12 @@
 {
-    "name": "locomotive-native-scroll",
+    "name": "loconative-scroll",
     "version": "1.0.0",
     "description": "Detection of elements in viewport & smooth native scrolling.",
-    "repository": "quentinhocde/locomotive-native-scroll",
+    "repository": "quentinhocde/loconative-scroll",
     "author": "Quentin Hocdé <info@quentinhocde.com> (https://quentinhocde.com)",
     "license": "MIT",
-    "main": "./dist/locomotive-native-scroll.js",
-    "module": "./dist/locomotive-native-scroll.esm.js",
+    "main": "./dist/loconative-scroll.js",
+    "module": "./dist/loconative-scroll.esm.js",
     "scripts": {
         "start": "gulp",
         "format": "prettier --write 'src/**/*.js'",

@@ -9,7 +9,7 @@
   "styles": {
     "src": "./src/",
     "dest": "./dist/",
-    "main": "locomotive-native-scroll",
+    "main": "loconative-scroll",
     "docs": {
       "src": "./docs/src/styles/",
       "dest": "./docs/dist/styles/",
@@ -19,7 +19,7 @@
   "scripts": {
     "src": "./src/",
     "dest": "./dist/",
-    "main": "locomotive-native-scroll",
+    "main": "loconative-scroll",
     "docs": {
       "src": "./docs/src/scripts/",
       "dest": "./docs/dist/scripts/",

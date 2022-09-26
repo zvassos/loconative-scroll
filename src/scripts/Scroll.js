@@ -23,7 +23,7 @@ export default class extends Core {
         this.lenis = new Lenis({
             duration: this.duration,
             easing: this.easing,
-            direction: 'vertical',
+            direction: this.direction,
             smooth: this.smooth,
             smoothTouch: this.smooth,
             touchMultiplier: this.touchMultiplier
@@ -85,6 +85,7 @@ export default class extends Core {
         if (Object.entries(this.els).length) {
             this.windowHeight = window.innerHeight;
             this.updateElements();
+            this.transformElements(true);
         }
     }
 

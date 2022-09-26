@@ -214,7 +214,7 @@ var defaults = {
   touchMultiplier: 3,
   resetNativeScroll: true,
   tablet: {
-    smooth: true,
+    smooth: false,
     direction: 'vertical',
     gestureDirection: 'vertical',
     breakpoint: 1024
@@ -1130,7 +1130,7 @@ var _default$1 = /*#__PURE__*/function (_Core) {
     _this.lenis = new a({
       duration: _this.duration,
       easing: _this.easing,
-      direction: 'vertical',
+      direction: _this.direction,
       smooth: _this.smooth,
       smoothTouch: _this.smooth,
       touchMultiplier: _this.touchMultiplier
@@ -1147,6 +1147,10 @@ var _default$1 = /*#__PURE__*/function (_Core) {
   _createClass(_default, [{
     key: "init",
     value: function init() {
+      if (this.smooth) {
+        this.html.classList.add(this.smoothClass);
+      }
+
       this.addElements();
       this.detectElements();
       this.transformElements(true, true);
@@ -1203,6 +1207,7 @@ var _default$1 = /*#__PURE__*/function (_Core) {
       if (Object.entries(this.els).length) {
         this.windowHeight = window.innerHeight;
         this.updateElements();
+        this.transformElements(true);
       }
     }
   }, {

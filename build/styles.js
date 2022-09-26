@@ -32,7 +32,7 @@ function styles() {
             .pipe(autoprefixer({
                 cascade: false
             }))
-            .pipe(header('/*! locomotive-native-scroll v' + pkg.version + ' | MIT License | https://github.com/quentinhocde/locomotive-native-scroll */\n'))
+            .pipe(header('/*! loconative-scroll v' + pkg.version + ' | MIT License | https://github.com/quentinhocde/loconative-scroll */\n'))
             .pipe(gulp.dest(file.dest))
             .pipe(server.stream());
     });

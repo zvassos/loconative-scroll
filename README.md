@@ -35,7 +35,7 @@ The great locomotive-scroll without Smooth Class, merged with Lenis by Studio Fr
 ## Installation
 
 ```sh
-npm install https://github.com/quentinhocde/locomotive-native-scroll
+npm install https://github.com/quentinhocde/loconative-scroll
 ```
 
 ## Usage
@@ -43,7 +43,7 @@ npm install https://github.com/quentinhocde/locomotive-native-scroll
 #### CSS
 Add the base styles to your CSS file.
 
-[`locomotive-native-scroll.css`](https://github.com/quentinhocde/locomotive-native-scroll/blob/master/dist/locomotive-native-scroll.css)
+[`loconative-scroll.css`](https://github.com/quentinhocde/loconative-scroll/blob/master/dist/loconative-scroll.css)
 
 ### Basic
 With simple detection, when your element will enter in the viewport, the `in-view` class will be added.
@@ -58,29 +58,29 @@ With simple detection, when your element will enter in the viewport, the `in-vie
 
 ##### With a bundler
 ```js
-import LocomotiveNativeScroll from 'locomotive-native-scroll';
+import LoconativeScroll from 'loconative-scroll';
 
-const scroll = new LocomotiveNativeScroll();
+const scroll = new LoconativeScroll();
 ```
 
 ##### Or without
 ```js
-<script src="locomotive-native-scroll.min.js"></script>
+<script src="loconative-scroll.min.js"></script>
 <script>
     (function () {
-        var scroll = new LocomotiveNativeScroll();
+        var scroll = new LoconativeScroll();
     })();
 </script>
 ```
-_Get the [JS file](https://github.com/quentinhocde/locomotive-native-scroll/blob/master/dist/locomotive-native-scroll.min.js)._
+_Get the [JS file](https://github.com/quentinhocde/loconative-scroll/blob/master/dist/loconative-scroll.min.js)._
 
 ### Smooth
 With smooth scrolling.
 
 ```js
-import LocomotiveNativeScroll from 'locomotive-native-scroll';
+import LoconativeScroll from 'loconative-scroll';
 
-const scroll = new LocomotiveNativeScroll({
+const scroll = new LoconativeScroll({
     smooth: true
 });
 ```
@@ -94,9 +94,9 @@ Make it do what you want.
 ```
 
 ```js
-import LocomotiveNativeScroll from 'locomotive-native-scroll';
+import LoconativeScroll from 'loconative-scroll';
 
-const scroll = new LocomotiveNativeScroll();
+const scroll = new LoconativeScroll();
 const target = document.querySelector('#js-target');
 
 scroll.scrollTo(target);
@@ -119,15 +119,15 @@ scroll.scrollTo(target);
 ```
 
 ```js
-import LocomotiveNativeScroll from 'locomotive-native-scroll';
+import LoconativeScroll from 'loconative-scroll';
 
-const scroll = new LocomotiveNativeScroll();
+const scroll = new LoconativeScroll();
 
 scroll.on('call', (func, way, obj) => {
     
     // func = [function, module, moduleID]
     // way = 'enter' or 'leave'
-    // obj = JS object from locomotive-native-scroll
+    // obj = JS object from loconative-scroll
 
 });
 ```
@@ -152,10 +152,10 @@ scroll.on('call', (func, way, obj) => {
 | `multiplier`            | `number`  | `1`                    | ![Smooth only][smooth-only]<br>Factor applied to the scroll delta, allowing to boost/reduce scrolling speed (regardless of the platform).                                                                                                                                                          |
 | `firefoxMultiplier`     | `number`  | `50`                   | ![Smooth only][smooth-only]<br>Boost scrolling speed of Firefox on Windows.                                                                                                                                                                                                                        |
 | `touchMultiplier`       | `number`  | `2`                    | ![Smooth only][smooth-only]<br>Multiply touch action to scroll faster than finger movement.                                                                                                                                                                                                         |
-| `scrollFromAnywhere`    | `boolean` | `false`                | ![Smooth only][smooth-only]<br>By default locomotive-native-scroll listens for scroll events only on the scroll container (`el` option). With this option set to true, it listens on the whole document instead.                                                                                          |
+| `scrollFromAnywhere`    | `boolean` | `false`                | ![Smooth only][smooth-only]<br>By default loconative-scroll listens for scroll events only on the scroll container (`el` option). With this option set to true, it listens on the whole document instead.                                                                                          |
 | `tablet` & `smartphone` | `object`  |                        | Object allowing to override some options for a particular context. You can specify: <ul><li>`smooth`</li><li>`direction`</li><li>`horizontalGesture`</li></ul>For `tablet` context you can also define `breakpoint` (_integer_, defaults to 1024) to set the max-width breakpoint for tablets.     |
 | `reloadOnContextChange` | `boolean` | `false`                | Allows to reload the page when switching between `desktop`, `tablet` and `smartphone` contexts. It can be useful if your page changes a lot between contexts and you want to reset everything.                                                                                                     |
-| `resetNativeScroll` | `boolean` | `true`                | Sets `history.scrollRestoration = 'manual'` and calls `window.scrollTo(0, 0)` on locomotive-native-scroll init in Native Class. Useful if you use transitions with native scrolling, otherwise we advise to set it to `false` if you don't want to break History API's scroll restoration feature. |
+| `resetNativeScroll` | `boolean` | `true`                | Sets `history.scrollRestoration = 'manual'` and calls `window.scrollTo(0, 0)` on loconative-scroll init in Native Class. Useful if you use transitions with native scrolling, otherwise we advise to set it to `false` if you don't want to break History API's scroll restoration feature. |
 
 ## Element attributes
 
@@ -163,7 +163,7 @@ scroll.on('call', (func, way, obj) => {
 | ----------------------- | ------------------------ | ---------------------------------------------------------------------------------------- |
 | `data-scroll`           |                          | Detect if in-view.                                                                       |
 | `data-scroll-id`        | `string`                 | (Optional) Useful if you want to scope your element and get the progress of your element in the viewport for example. |
-| `data-scroll-container` |                          | Defines the scroll container. Required for [basic styling](https://github.com/quentinhocde/locomotive-native-scroll/blob/master/dist/locomotive-native-scroll.css).                                                                                     |
+| `data-scroll-container` |                          | Defines the scroll container. Required for [basic styling](https://github.com/quentinhocde/loconative-scroll/blob/master/dist/loconative-scroll.css).                                                                                     |
 | `data-scroll-section`   |                          | Defines a scrollable section. Splitting your page into sections may improve performance. |
 | `data-scroll-class`     | `string`                 | Element in-view class.                                                                   |
 | `data-scroll-offset`    | `string`                 | Element in-view trigger offset : `bottom,top`<br>First value is `bottom` offset, second (optional) is `top` offset.<br> Percent is relative to viewport height, otherwise it's absolute pixels.<br>E.g. `"10"`, `"100,50%"`, `"25%, 15%"`  |
@@ -250,7 +250,7 @@ Works on most modern browsers. Chrome, Firefox, Safari, Edge...
 
 ## Related
 
-- [Locomotive Scroll 🚂](https://github.com/locomotivemtl/locomotive-native-scroll)
+- [Locomotive Scroll 🚂](https://github.com/locomotivemtl/loconative-scroll)
 - [Locomotive Boilerplate 🚂](https://github.com/locomotivemtl/locomotive-boilerplate)
 
 [smooth-only]: https://img.shields.io/badge/smooth-only-blue

@@ -1,4 +1,4 @@
-/* locomotive-native-scroll v1.0.0 | MIT License | https://github.com/quentinhocde/locomotive-native-scroll */
+/* loconative-scroll v1.0.0 | MIT License | https://github.com/quentinhocde/loconative-scroll */
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
