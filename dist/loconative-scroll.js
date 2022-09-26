@@ -1164,6 +1164,7 @@
       value: function init() {
         if (this.smooth) {
           this.html.classList.add(this.smoothClass);
+          this.html.setAttribute("data-".concat(this.name, "-direction"), this.direction);
         }
 
         this.addElements();

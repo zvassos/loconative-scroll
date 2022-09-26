@@ -38,6 +38,7 @@ export default class extends Core {
     init() {
         if (this.smooth) {
             this.html.classList.add(this.smoothClass);
+            this.html.setAttribute(`data-${this.name}-direction`, this.direction);
         }
 
         this.addElements();

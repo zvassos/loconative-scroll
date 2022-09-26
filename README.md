@@ -1,5 +1,5 @@
 <p align="center">
-    🚧 WIP 🚧
+    🚧 WIP (horizontal scrolling is not working) 🚧
 </p>
 <h1 align="center">Loco(native) Scroll</h1>
 <p align="center">
