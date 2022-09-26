@@ -8,6 +8,18 @@ export default class {
         this.tablet = defaults.tablet;
         if (options.tablet) Object.assign(this.tablet, options.tablet);
 
+        this.isMobile =
+            /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+            (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) ||
+            this.windowWidth < this.tablet.breakpoint;
+        this.isTablet = this.isMobile && this.windowWidth >= this.tablet.breakpoint;
+
+        if (this.isMobile) {
+            this.smooth = this.smartphone.smooth;
+        } else if (this.isTablet) {
+            this.smooth = this.tablet.smooth;
+        }
+
         this.namespace = 'locomotive';
         this.html = document.documentElement;
         this.windowHeight = window.innerHeight;

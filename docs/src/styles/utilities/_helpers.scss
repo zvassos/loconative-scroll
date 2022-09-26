@@ -22,8 +22,10 @@
 }
 
 .u-sticky {
-    position: sticky;
-    top: 0;
+    html.has-scroll-smoth & {
+        position: sticky;
+        top: 0;
+    }
 }
 
 // Layout

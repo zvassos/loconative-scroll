@@ -8,16 +8,13 @@
         height: 200vh;
     }
     @media (max-width: $to-medium) {
-        height: 200vh;
+        // height: 00vh;
     }
 }
 
 
 .c-fixed {
-    position: sticky;
-    top: 0;
-    right: 0;
-    left: 0;
+    position: relative;
     height: 100vh;
     background-size: cover;
     background-position: center center;
@@ -27,4 +24,12 @@
     html:not(.has-scroll-smooth) & {
         top: 0;
     }
+
+    html.has-scroll-smoth & {
+        position: sticky;
+        top: 0;
+        right: 0;
+        left: 0;
+    }
+
 }
