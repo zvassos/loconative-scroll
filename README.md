@@ -8,7 +8,7 @@ The great locomotive-scroll without Smooth Class, merged with Lenis by Studio Fr
 
 <p align="center">No more Smooth Class = no more hikacking of the scroll.</p>
 
-<h2>Why locomotive-scroll as base</h2>
+<h2>Why locomotive-scroll as base ?</h2>
 
 <p>Great managment and detections of everything linked to the scroll. <a href="https://github.com/locomotivemtl/locomotive-scroll" target="_blank">See more.</a><p>
 
