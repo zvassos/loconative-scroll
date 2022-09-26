@@ -2,7 +2,7 @@ import Core from './Core';
 import smoothscroll from 'smoothscroll-polyfill';
 import { getTranslate } from './utils/transform';
 import { lerp } from './utils/maths';
-import Lenis from '@studio-freight/lenis'
+import Lenis from '@studio-freight/lenis';
 
 export default class extends Core {
     constructor(options = {}) {
@@ -30,16 +30,16 @@ export default class extends Core {
         });
 
         this.bindOnScroll = this.onScroll.bind(this);
-        this.lenis.on('scroll',this.bindOnScroll);
-        
+        this.lenis.on('scroll', this.bindOnScroll);
+
         this.raf(0);
     }
 
     init() {
-        if(this.smooth) {
+        if (this.smooth) {
             this.html.classList.add(this.smoothClass);
         }
-        
+
         this.addElements();
         this.detectElements();
         this.transformElements(true, true);
@@ -52,8 +52,7 @@ export default class extends Core {
         this.rafInstance = requestAnimationFrame(() => this.raf(Date.now()));
     }
 
-    onScroll({scroll, velocity}) {
-
+    onScroll({ scroll, velocity }) {
         if (scroll > this.instance.scroll[this.directionAxis]) {
             if (this.instance.direction !== 'down') {
                 this.instance.direction = 'down';
@@ -78,7 +77,6 @@ export default class extends Core {
         super.onScroll();
 
         this.transformElements();
-        
     }
 
     resize() {
@@ -133,7 +131,7 @@ export default class extends Core {
                 x: (right - left) / 2 + left,
                 y: (bottom - top) / 2 + top
             };
-            
+
             if (repeat == 'false') {
                 repeat = false;
             } else if (repeat != undefined) {
@@ -247,7 +245,7 @@ export default class extends Core {
     }
 
     transformElements(isForced, setAllElements = false) {
-        if(!this.smooth) return;
+        if (!this.smooth) return;
 
         const scrollRight = this.instance.scroll.x + this.windowWidth;
         const scrollBottom = this.instance.scroll.y + this.windowHeight;
@@ -363,12 +361,12 @@ export default class extends Core {
      * @return {void}
      */
     scrollTo(target, options = {}) {
-        this.lenis.scrollTo(target, {offset, immediate: false, duration: options.duration})
+        this.lenis.scrollTo(target, { offset, immediate: false, duration: options.duration });
 
         // Parse options
         let offset = parseInt(options.offset) || 0; // An offset to apply on top of given `target` or `sourceElem`'s target
         const callback = options.callback ? options.callback : false; // function called when scrollTo completes (note that it won't wait for lerp to stabilize)
-        
+
         if (typeof target === 'string') {
             // Selector or boundaries
             if (target === 'top') {
@@ -399,11 +397,11 @@ export default class extends Core {
         } else {
             offset = target + offset;
         }
-        
+
         const isTargetReached = () => {
             return parseInt(window.pageYOffset) === parseInt(offset);
         };
-        
+
         if (callback) {
             if (isTargetReached()) {
                 callback();
@@ -423,8 +421,6 @@ export default class extends Core {
         //     top: offset,
         //     behavior: options.duration === 0 ? 'auto' : 'smooth'
         // });
-
-
     }
 
     update() {

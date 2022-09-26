@@ -34,7 +34,6 @@ export class Main {
         this.options.isTablet =
             this.options.isMobile && window.innerWidth >= this.tablet.breakpoint;
 
-
         if (
             (this.smooth && !this.options.isMobile) ||
             (this.tablet.smooth && this.options.isTablet) ||
