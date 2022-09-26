@@ -1,16 +1,16 @@
 <p align="center">
     🚧 WIP 🚧
 </p>
-<h1 align="center">Locomotive (native) Scroll</h1>
+<h1 align="center">Loco(native) Scroll</h1>
 <p align="center">
 Detection of elements in viewport & smooth native scrolling.<br>
-The great locomotive-native-scroll without Smooth Class, merged with Lenis by Studio Freight to optimize the scrolling experience and keep native scrolling. I decided to merge the best of (for me) 2 great librairies for scrolling experiences.</p>
+The great locomotive-scroll without Smooth Class, merged with Lenis by Studio Freight to optimize the scrolling experience and keep native scrolling. I decided to merge the best of (for me) 2 great librairies for scrolling experiences.</p>
 
 <p align="center">No more Smooth Class = no more hikacking of the scroll.</p>
 
-<h2>Why locomotive-native-scroll as base</h2>
+<h2>Why locomotive-scroll as base</h2>
 
-<p>Great managment and detections of everything linked to the scroll. <a href="https://github.com/locomotivemtl/locomotive-native-scroll" target="_blank">See more.</a><p>
+<p>Great managment and detections of everything linked to the scroll. <a href="https://github.com/locomotivemtl/locomotive-scroll" target="_blank">See more.</a><p>
 
 <ul>
     <li>In view class on scoped elements</li>

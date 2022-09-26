@@ -1,6 +1,6 @@
 {
-    "name": "Locomotive Scroll",
-    "short_name": "Locomotive Scroll",
+    "name": "Locomotive Native Scroll",
+    "short_name": "Locomotive Native Scroll",
     "icons": [
         {
             "src": "dist/images/favicons/android-chrome-144x144.png",

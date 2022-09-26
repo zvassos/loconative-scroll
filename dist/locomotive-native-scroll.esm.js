@@ -1147,6 +1147,10 @@ var _default$1 = /*#__PURE__*/function (_Core) {
   _createClass(_default, [{
     key: "init",
     value: function init() {
+      if (this.smooth) {
+        this.html.classList.add(this.smoothClass);
+      }
+
       this.addElements();
       this.detectElements();
       this.transformElements(true, true);
