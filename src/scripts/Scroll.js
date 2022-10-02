@@ -33,11 +33,11 @@ export default class extends Core {
 
         this.bindOnScroll = this.onScroll.bind(this);
         this.lenis.on('scroll', this.bindOnScroll);
-        
+
         //get scroll value
         this.lenis.on('scroll', ({ scroll, limit, velocity, direction, progress }) => {
-            console.log({ scroll, limit, velocity, direction, progress })
-        })
+            console.log({ scroll, limit, velocity, direction, progress });
+        });
 
         this.raf(0);
     }
