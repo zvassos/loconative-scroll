@@ -21,9 +21,11 @@ export default class extends Core {
         }
 
         this.lenis = new Lenis({
+            content: this.el,
             duration: this.duration,
             easing: this.easing,
             direction: this.direction,
+            gestureDirection: this.gestureDirection,
             smooth: this.smooth,
             smoothTouch: this.smooth,
             touchMultiplier: this.touchMultiplier
@@ -31,6 +33,11 @@ export default class extends Core {
 
         this.bindOnScroll = this.onScroll.bind(this);
         this.lenis.on('scroll', this.bindOnScroll);
+        
+        //get scroll value
+        this.lenis.on('scroll', ({ scroll, limit, velocity, direction, progress }) => {
+            console.log({ scroll, limit, velocity, direction, progress })
+        })
 
         this.raf(0);
     }
@@ -50,6 +57,7 @@ export default class extends Core {
 
     raf(time) {
         this.lenis.raf(time);
+        console.log(this.lenis.contentWidth);
         this.rafInstance = requestAnimationFrame(() => this.raf(Date.now()));
     }
 
