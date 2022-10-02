@@ -1167,6 +1167,7 @@
           direction: direction,
           progress: progress
         });
+        console.log(_this.lenis);
       });
 
       _this.raf(0);

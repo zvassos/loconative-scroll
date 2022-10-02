@@ -36,7 +36,8 @@ export default class extends Core {
 
         //get scroll value
         this.lenis.on('scroll', ({ scroll, limit, velocity, direction, progress }) => {
-            console.log({ scroll, limit, velocity, direction, progress });
+            // console.log({ scroll, limit, velocity, direction, progress });
+            console.log(this.lenis);
         });
 
         this.raf(0);
@@ -90,6 +91,7 @@ export default class extends Core {
     resize() {
         if (Object.entries(this.els).length) {
             this.windowHeight = window.innerHeight;
+            this.windowWidth = window.innerWidth;
             this.updateElements();
             this.transformElements(true);
         }
@@ -352,37 +354,37 @@ export default class extends Core {
                 if (current.inView) {
                     if (this.direction === 'horizontal') {
                         transformDistance =
-                            this.instance.scroll.x - current.left + window.innerWidth;
+                            this.instance.scroll.x - current.left + this.windowWidth;
                     } else {
                         transformDistance =
-                            this.instance.scroll.y - current.top + window.innerHeight;
+                            this.instance.scroll.y - current.top + this.windowHeight;
                     }
                 } else {
                     if (this.direction === 'horizontal') {
                         if (
-                            this.instance.scroll.x < current.left - window.innerWidth &&
-                            this.instance.scroll.x < current.left - window.innerWidth / 2
+                            this.instance.scroll.x < current.left - this.windowWidth &&
+                            this.instance.scroll.x < current.left - this.windowWidth / 2
                         ) {
                             transformDistance = 0;
                         } else if (
                             this.instance.scroll.x > current.right &&
                             this.instance.scroll.x > current.right + 100
                         ) {
-                            transformDistance = current.right - current.left + window.innerWidth;
+                            transformDistance = current.right - current.left + this.windowWidth;
                         } else {
                             transformDistance = false;
                         }
                     } else {
                         if (
-                            this.instance.scroll.y < current.top - window.innerHeight &&
-                            this.instance.scroll.y < current.top - window.innerHeight / 2
+                            this.instance.scroll.y < current.top - this.windowHeight &&
+                            this.instance.scroll.y < current.top - this.windowHeight / 2
                         ) {
                             transformDistance = 0;
                         } else if (
                             this.instance.scroll.y > current.bottom &&
                             this.instance.scroll.y > current.bottom + 100
                         ) {
-                            transformDistance = current.bottom - current.top + window.innerHeight;
+                            transformDistance = current.bottom - current.top + this.windowHeight;
                         } else {
                             transformDistance = false;
                         }
@@ -444,7 +446,6 @@ export default class extends Core {
      * @return {void}
      */
     scrollTo(target, options = {}) {
-        this.lenis.scrollTo(target, { offset, immediate: false, duration: options.duration });
 
         // Parse options
         let offset = parseInt(options.offset) || 0; // An offset to apply on top of given `target` or `sourceElem`'s target
@@ -500,10 +501,8 @@ export default class extends Core {
             }
         }
 
-        // window.scrollTo({
-        //     top: offset,
-        //     behavior: options.duration === 0 ? 'auto' : 'smooth'
-        // });
+        this.lenis.scrollTo(target, { offset, immediate: false, duration: options.duration });
+
     }
 
     update() {

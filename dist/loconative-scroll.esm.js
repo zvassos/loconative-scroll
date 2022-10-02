@@ -1164,6 +1164,7 @@ var _default$1 = /*#__PURE__*/function (_Core) {
         direction: direction,
         progress: progress
       });
+      console.log(_this.lenis);
     });
 
     _this.raf(0);
