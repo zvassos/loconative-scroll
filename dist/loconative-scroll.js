@@ -1154,23 +1154,7 @@
       });
       _this.bindOnScroll = _this.onScroll.bind(_assertThisInitialized(_this));
 
-      _this.lenis.on('scroll', _this.bindOnScroll); //get scroll value
-
-
-      _this.lenis.on('scroll', function (_ref) {
-        var scroll = _ref.scroll,
-            limit = _ref.limit,
-            velocity = _ref.velocity,
-            direction = _ref.direction,
-            progress = _ref.progress;
-        console.log({
-          scroll: scroll,
-          limit: limit,
-          velocity: velocity,
-          direction: direction,
-          progress: progress
-        });
-      });
+      _this.lenis.on('scroll', _this.bindOnScroll);
 
       _this.raf(0);
 
@@ -1197,18 +1181,17 @@
         var _this2 = this;
 
         this.lenis.raf(time);
-        console.log(this.lenis.contentWidth);
         this.rafInstance = requestAnimationFrame(function () {
           return _this2.raf(Date.now());
         });
       }
     }, {
       key: "onScroll",
-      value: function onScroll(_ref2) {
+      value: function onScroll(_ref) {
         var _this3 = this;
 
-        var scroll = _ref2.scroll,
-            velocity = _ref2.velocity;
+        var scroll = _ref.scroll,
+            velocity = _ref.velocity;
 
         if (scroll > this.instance.scroll[this.directionAxis]) {
           if (this.instance.direction !== 'down') {
@@ -1390,10 +1373,10 @@
       value: function updateElements() {
         var _this5 = this;
 
-        Object.entries(this.els).forEach(function (_ref3) {
-          var _ref4 = _slicedToArray(_ref3, 2),
-              i = _ref4[0],
-              el = _ref4[1];
+        Object.entries(this.els).forEach(function (_ref2) {
+          var _ref3 = _slicedToArray(_ref2, 2),
+              i = _ref3[0],
+              el = _ref3[1];
 
           var top = el.targetEl.getBoundingClientRect().top + _this5.instance.scroll.y;
 
@@ -1437,10 +1420,10 @@
           x: this.instance.scroll.x + this.windowMiddle.x,
           y: this.instance.scroll.y + this.windowMiddle.y
         };
-        Object.entries(this.parallaxElements).forEach(function (_ref5) {
-          var _ref6 = _slicedToArray(_ref5, 2),
-              i = _ref6[0],
-              current = _ref6[1];
+        Object.entries(this.parallaxElements).forEach(function (_ref4) {
+          var _ref5 = _slicedToArray(_ref4, 2),
+              i = _ref5[0],
+              current = _ref5[1];
 
           var transformDistance = false;
 
