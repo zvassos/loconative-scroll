@@ -1240,6 +1240,12 @@ var _default$1 = /*#__PURE__*/function (_Core) {
         var position = el.dataset[_this4.name + 'Position'];
         var delay = el.dataset[_this4.name + 'Delay'];
         var direction = el.dataset[_this4.name + 'Direction'];
+        var sticky = typeof el.dataset[_this4.name + 'Sticky'] === 'string';
+
+        if (sticky) {
+          console.warn("You use data-scroll-sticky, it's not recommended for performances. Please adapt your code and play with position:sticky.");
+        }
+
         var target = el.dataset[_this4.name + 'Target'];
         var targetEl;
 
@@ -1250,14 +1256,32 @@ var _default$1 = /*#__PURE__*/function (_Core) {
         }
 
         var targetElBCR = targetEl.getBoundingClientRect();
-        top = targetElBCR.top + _this4.instance.scroll.y;
-        left = targetElBCR.left + _this4.instance.scroll.x;
+        top = targetElBCR.top + _this4.instance.scroll.y - getTranslate(targetEl).y;
+        left = targetElBCR.left + _this4.instance.scroll.x - getTranslate(targetEl).x;
         var bottom = top + targetEl.offsetHeight;
         var right = left + targetEl.offsetWidth;
         var middle = {
           x: (right - left) / 2 + left,
           y: (bottom - top) / 2 + top
         };
+
+        if (sticky) {
+          var elBCR = el.getBoundingClientRect();
+          var elTop = elBCR.top;
+          var elLeft = elBCR.left;
+          var elDistance = {
+            x: elLeft - left,
+            y: elTop - top
+          };
+          top += window.innerHeight;
+          left += window.innerWidth;
+          bottom = elTop + targetEl.offsetHeight - el.offsetHeight - elDistance[_this4.directionAxis];
+          right = elLeft + targetEl.offsetWidth - el.offsetWidth - elDistance[_this4.directionAxis];
+          middle = {
+            x: (right - left) / 2 + left,
+            y: (bottom - top) / 2 + top
+          };
+        }
 
         if (repeat == 'false') {
           repeat = false;
@@ -1322,7 +1346,8 @@ var _default$1 = /*#__PURE__*/function (_Core) {
           repeat: repeat,
           inView: false,
           call: call,
-          speed: speed
+          speed: speed,
+          sticky: sticky
         };
         _this4.els[id] = mappedEl;
 
@@ -1330,7 +1355,7 @@ var _default$1 = /*#__PURE__*/function (_Core) {
           _this4.setInView(_this4.els[id], id);
         }
 
-        if (speed !== false) {
+        if (speed !== false || sticky) {
           _this4.parallaxElements[id] = mappedEl;
         }
       });
@@ -1427,6 +1452,34 @@ var _default$1 = /*#__PURE__*/function (_Core) {
             default:
               transformDistance = (scrollMiddle[_this6.directionAxis] - current.middle[_this6.directionAxis]) * -current.speed;
               break;
+          }
+        }
+
+        if (current.sticky) {
+          if (current.inView) {
+            if (_this6.direction === 'horizontal') {
+              transformDistance = _this6.instance.scroll.x - current.left + window.innerWidth;
+            } else {
+              transformDistance = _this6.instance.scroll.y - current.top + window.innerHeight;
+            }
+          } else {
+            if (_this6.direction === 'horizontal') {
+              if (_this6.instance.scroll.x < current.left - window.innerWidth && _this6.instance.scroll.x < current.left - window.innerWidth / 2) {
+                transformDistance = 0;
+              } else if (_this6.instance.scroll.x > current.right && _this6.instance.scroll.x > current.right + 100) {
+                transformDistance = current.right - current.left + window.innerWidth;
+              } else {
+                transformDistance = false;
+              }
+            } else {
+              if (_this6.instance.scroll.y < current.top - window.innerHeight && _this6.instance.scroll.y < current.top - window.innerHeight / 2) {
+                transformDistance = 0;
+              } else if (_this6.instance.scroll.y > current.bottom && _this6.instance.scroll.y > current.bottom + 100) {
+                transformDistance = current.bottom - current.top + window.innerHeight;
+              } else {
+                transformDistance = false;
+              }
+            }
           }
         }
 

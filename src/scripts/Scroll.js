@@ -112,6 +112,13 @@ export default class extends Core {
             let position = el.dataset[this.name + 'Position'];
             let delay = el.dataset[this.name + 'Delay'];
             let direction = el.dataset[this.name + 'Direction'];
+            let sticky = typeof el.dataset[this.name + 'Sticky'] === 'string';
+
+            if (sticky) {
+                console.warn(
+                    "You use data-scroll-sticky, it's not recommended for performances. Please adapt your code and play with position:sticky."
+                );
+            }
 
             let target = el.dataset[this.name + 'Target'];
             let targetEl;
@@ -123,8 +130,8 @@ export default class extends Core {
             }
 
             const targetElBCR = targetEl.getBoundingClientRect();
-            top = targetElBCR.top + this.instance.scroll.y;
-            left = targetElBCR.left + this.instance.scroll.x;
+            top = targetElBCR.top + this.instance.scroll.y - getTranslate(targetEl).y;
+            left = targetElBCR.left + this.instance.scroll.x - getTranslate(targetEl).x;
 
             let bottom = top + targetEl.offsetHeight;
             let right = left + targetEl.offsetWidth;
@@ -132,6 +139,31 @@ export default class extends Core {
                 x: (right - left) / 2 + left,
                 y: (bottom - top) / 2 + top
             };
+
+            if (sticky) {
+                const elBCR = el.getBoundingClientRect();
+                const elTop = elBCR.top;
+                const elLeft = elBCR.left;
+
+                const elDistance = {
+                    x: elLeft - left,
+                    y: elTop - top
+                };
+
+                top += window.innerHeight;
+                left += window.innerWidth;
+                bottom =
+                    elTop +
+                    targetEl.offsetHeight -
+                    el.offsetHeight -
+                    elDistance[this.directionAxis];
+                right =
+                    elLeft + targetEl.offsetWidth - el.offsetWidth - elDistance[this.directionAxis];
+                middle = {
+                    x: (right - left) / 2 + left,
+                    y: (bottom - top) / 2 + top
+                };
+            }
 
             if (repeat == 'false') {
                 repeat = false;
@@ -200,7 +232,8 @@ export default class extends Core {
                 repeat,
                 inView: false,
                 call,
-                speed
+                speed,
+                sticky
             };
 
             this.els[id] = mappedEl;
@@ -208,7 +241,7 @@ export default class extends Core {
                 this.setInView(this.els[id], id);
             }
 
-            if (speed !== false) {
+            if (speed !== false || sticky) {
                 this.parallaxElements[id] = mappedEl;
             }
         });
@@ -305,6 +338,48 @@ export default class extends Core {
                                 current.middle[this.directionAxis]) *
                             -current.speed;
                         break;
+                }
+            }
+
+            if (current.sticky) {
+                if (current.inView) {
+                    if (this.direction === 'horizontal') {
+                        transformDistance =
+                            this.instance.scroll.x - current.left + window.innerWidth;
+                    } else {
+                        transformDistance =
+                            this.instance.scroll.y - current.top + window.innerHeight;
+                    }
+                } else {
+                    if (this.direction === 'horizontal') {
+                        if (
+                            this.instance.scroll.x < current.left - window.innerWidth &&
+                            this.instance.scroll.x < current.left - window.innerWidth / 2
+                        ) {
+                            transformDistance = 0;
+                        } else if (
+                            this.instance.scroll.x > current.right &&
+                            this.instance.scroll.x > current.right + 100
+                        ) {
+                            transformDistance = current.right - current.left + window.innerWidth;
+                        } else {
+                            transformDistance = false;
+                        }
+                    } else {
+                        if (
+                            this.instance.scroll.y < current.top - window.innerHeight &&
+                            this.instance.scroll.y < current.top - window.innerHeight / 2
+                        ) {
+                            transformDistance = 0;
+                        } else if (
+                            this.instance.scroll.y > current.bottom &&
+                            this.instance.scroll.y > current.bottom + 100
+                        ) {
+                            transformDistance = current.bottom - current.top + window.innerHeight;
+                        } else {
+                            transformDistance = false;
+                        }
+                    }
                 }
             }
 
