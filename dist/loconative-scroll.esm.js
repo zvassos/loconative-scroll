@@ -1157,13 +1157,7 @@ var _default$1 = /*#__PURE__*/function (_Core) {
           velocity = _ref.velocity,
           direction = _ref.direction,
           progress = _ref.progress;
-      console.log({
-        scroll: scroll,
-        limit: limit,
-        velocity: velocity,
-        direction: direction,
-        progress: progress
-      });
+      // console.log({ scroll, limit, velocity, direction, progress });
       console.log(_this.lenis);
     });
 
@@ -1235,6 +1229,7 @@ var _default$1 = /*#__PURE__*/function (_Core) {
     value: function resize() {
       if (Object.entries(this.els).length) {
         this.windowHeight = window.innerHeight;
+        this.windowWidth = window.innerWidth;
         this.updateElements();
         this.transformElements(true);
       }
@@ -1477,24 +1472,24 @@ var _default$1 = /*#__PURE__*/function (_Core) {
         if (current.sticky) {
           if (current.inView) {
             if (_this6.direction === 'horizontal') {
-              transformDistance = _this6.instance.scroll.x - current.left + window.innerWidth;
+              transformDistance = _this6.instance.scroll.x - current.left + _this6.windowWidth;
             } else {
-              transformDistance = _this6.instance.scroll.y - current.top + window.innerHeight;
+              transformDistance = _this6.instance.scroll.y - current.top + _this6.windowHeight;
             }
           } else {
             if (_this6.direction === 'horizontal') {
-              if (_this6.instance.scroll.x < current.left - window.innerWidth && _this6.instance.scroll.x < current.left - window.innerWidth / 2) {
+              if (_this6.instance.scroll.x < current.left - _this6.windowWidth && _this6.instance.scroll.x < current.left - _this6.windowWidth / 2) {
                 transformDistance = 0;
               } else if (_this6.instance.scroll.x > current.right && _this6.instance.scroll.x > current.right + 100) {
-                transformDistance = current.right - current.left + window.innerWidth;
+                transformDistance = current.right - current.left + _this6.windowWidth;
               } else {
                 transformDistance = false;
               }
             } else {
-              if (_this6.instance.scroll.y < current.top - window.innerHeight && _this6.instance.scroll.y < current.top - window.innerHeight / 2) {
+              if (_this6.instance.scroll.y < current.top - _this6.windowHeight && _this6.instance.scroll.y < current.top - _this6.windowHeight / 2) {
                 transformDistance = 0;
               } else if (_this6.instance.scroll.y > current.bottom && _this6.instance.scroll.y > current.bottom + 100) {
-                transformDistance = current.bottom - current.top + window.innerHeight;
+                transformDistance = current.bottom - current.top + _this6.windowHeight;
               } else {
                 transformDistance = false;
               }
@@ -1545,12 +1540,7 @@ var _default$1 = /*#__PURE__*/function (_Core) {
     key: "scrollTo",
     value: function scrollTo(target) {
       var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      this.lenis.scrollTo(target, {
-        offset: offset,
-        immediate: false,
-        duration: options.duration
-      }); // Parse options
-
+      // Parse options
       var offset = parseInt(options.offset) || 0; // An offset to apply on top of given `target` or `sourceElem`'s target
 
       var callback = options.callback ? options.callback : false; // function called when scrollTo completes (note that it won't wait for lerp to stabilize)
@@ -1601,11 +1591,13 @@ var _default$1 = /*#__PURE__*/function (_Core) {
 
           window.addEventListener('scroll', onScroll);
         }
-      } // window.scrollTo({
-      //     top: offset,
-      //     behavior: options.duration === 0 ? 'auto' : 'smooth'
-      // });
+      }
 
+      this.lenis.scrollTo(target, {
+        offset: offset,
+        immediate: false,
+        duration: options.duration
+      });
     }
   }, {
     key: "update",
