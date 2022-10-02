@@ -12,19 +12,22 @@ body {
   width: 100%;
   min-height: 100%; }
 
+body {
+  opacity: 0; }
+  .has-scroll-init body {
+    opacity: 1; }
+
 .has-scroll-smooth [data-scroll-container] {
   min-height: 100vh; }
 
 [data-scroll-direction="horizontal"] [data-scroll-container] {
-  height: 100vh;
-  display: inline-block;
-  white-space: nowrap; }
+  height: 100%;
+  display: inline-flex;
+  min-width: var(--scrollContainerWidth); }
 
 [data-scroll-direction="horizontal"] [data-scroll-section] {
-  display: inline-block;
-  vertical-align: top;
-  white-space: nowrap;
-  height: 100%; }
+  flex-shrink: 0;
+  height: 100vh; }
 
 .c-scrollbar {
   position: absolute;

@@ -19,6 +19,19 @@ export default class extends Core {
             window.smoothscrollPolyfill = smoothscroll;
             window.smoothscrollPolyfill.polyfill();
         }
+    }
+
+    init() {
+        if (this.smooth) {
+            this.html.classList.add(this.smoothClass);
+            this.html.setAttribute(`data-${this.name}-direction`, this.direction);
+        }
+
+        this.addElements();
+        this.detectElements();
+        this.transformElements(true, true);
+
+        this.initContainerSize();
 
         this.lenis = new Lenis({
             content: this.el,
@@ -37,21 +50,10 @@ export default class extends Core {
         //get scroll value
         this.lenis.on('scroll', ({ scroll, limit, velocity, direction, progress }) => {
             // console.log({ scroll, limit, velocity, direction, progress });
-            console.log(this.lenis);
+            // console.log(this.lenis);
         });
 
         this.raf(0);
-    }
-
-    init() {
-        if (this.smooth) {
-            this.html.classList.add(this.smoothClass);
-            this.html.setAttribute(`data-${this.name}-direction`, this.direction);
-        }
-
-        this.addElements();
-        this.detectElements();
-        this.transformElements(true, true);
 
         super.init();
     }
@@ -89,11 +91,30 @@ export default class extends Core {
     }
 
     resize() {
+        this.windowHeight = window.innerHeight;
+        this.windowWidth = window.innerWidth;
+        this.windowMiddle = {
+            x: this.windowWidth / 2,
+            y: this.windowHeight / 2
+        };
+
+        this.initContainerSize();
+
         if (Object.entries(this.els).length) {
-            this.windowHeight = window.innerHeight;
-            this.windowWidth = window.innerWidth;
             this.updateElements();
             this.transformElements(true);
+        }
+    }
+
+    initContainerSize() {
+        if (this.direction === 'horizontal') {
+            let elWidth = 0;
+
+            for (let childIndex = 0; childIndex < this.el.children.length; childIndex++) {
+                const child = this.el.children[childIndex];
+                elWidth += child.getBoundingClientRect().width;
+            }
+            this.el.style.setProperty('--scrollContainerWidth', elWidth + 'px');
         }
     }
 
@@ -182,6 +203,14 @@ export default class extends Core {
                 repeat = this.repeat;
             }
 
+            let speed = el.dataset[this.name + 'Speed']
+                ? parseFloat(el.dataset[this.name + 'Speed']) / 10
+                : false;
+
+            if (speed) {
+                offset = 0;
+            }
+
             let relativeOffset = [0, 0];
             if (offset) {
                 if (this.direction === 'horizontal') {
@@ -218,10 +247,6 @@ export default class extends Core {
                     bottom = bottom - relativeOffset[1];
                 }
             }
-
-            let speed = el.dataset[this.name + 'Speed']
-                ? parseFloat(el.dataset[this.name + 'Speed']) / 10
-                : false;
 
             const mappedEl = {
                 el: el,
@@ -446,7 +471,6 @@ export default class extends Core {
      * @return {void}
      */
     scrollTo(target, options = {}) {
-
         // Parse options
         let offset = parseInt(options.offset) || 0; // An offset to apply on top of given `target` or `sourceElem`'s target
         const callback = options.callback ? options.callback : false; // function called when scrollTo completes (note that it won't wait for lerp to stabilize)
@@ -502,7 +526,6 @@ export default class extends Core {
         }
 
         this.lenis.scrollTo(target, { offset, immediate: false, duration: options.duration });
-
     }
 
     update() {

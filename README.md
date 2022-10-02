@@ -214,6 +214,40 @@ scroll.on('scroll', (args) => {
 });
 ```
 
+## How to switch from locomotive-scroll to loconative-scroll
+⚠️ Disclaimer
+locomotive-scroll has more 37k+ downloads per month so it's impossible to manage every cases. 
+But you can try to swith your projet on loconative-scroll with these following steps
+
+```
+npm install https://github.com/quentinhocde/loconative-scroll --save
+```
+
+In your Javascript, replace LocomotiveScroll instance and imports
+```
+import LoconativeScroll from 'loconative-scroll';
+
+const scroll = new LoconativeScroll();
+```
+
+Make sure you remove all `overflow:hidden` on your scroll containers, `<html>` and `<body>`, and add this in your CSS :
+```
+    html {
+        scroll-behavior: initial;
+    }
+
+    html,
+    body {
+        width: 100%;
+        min-height: 100%;
+    }
+
+```
+
+[instance events]: #instance-events
+[Virtual Scroll]: https://github.com/ayamflow/virtual-scroll
+[Lenis]: https://github.com/studio-freight/lenis/
+
 
 ## Dependencies
 

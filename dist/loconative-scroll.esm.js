@@ -1136,33 +1136,6 @@ var _default$1 = /*#__PURE__*/function (_Core) {
       window.smoothscrollPolyfill.polyfill();
     }
 
-    _this.lenis = new a({
-      content: _this.el,
-      duration: _this.duration,
-      easing: _this.easing,
-      direction: _this.direction,
-      gestureDirection: _this.gestureDirection,
-      smooth: _this.smooth,
-      smoothTouch: _this.smooth,
-      touchMultiplier: _this.touchMultiplier
-    });
-    _this.bindOnScroll = _this.onScroll.bind(_assertThisInitialized(_this));
-
-    _this.lenis.on('scroll', _this.bindOnScroll); //get scroll value
-
-
-    _this.lenis.on('scroll', function (_ref) {
-      var scroll = _ref.scroll,
-          limit = _ref.limit,
-          velocity = _ref.velocity,
-          direction = _ref.direction,
-          progress = _ref.progress;
-      // console.log({ scroll, limit, velocity, direction, progress });
-      console.log(_this.lenis);
-    });
-
-    _this.raf(0);
-
     return _this;
   }
 
@@ -1177,6 +1150,30 @@ var _default$1 = /*#__PURE__*/function (_Core) {
       this.addElements();
       this.detectElements();
       this.transformElements(true, true);
+      this.initContainerSize();
+      this.lenis = new a({
+        content: this.el,
+        duration: this.duration,
+        easing: this.easing,
+        direction: this.direction,
+        gestureDirection: this.gestureDirection,
+        smooth: this.smooth,
+        smoothTouch: this.smooth,
+        touchMultiplier: this.touchMultiplier
+      });
+      this.bindOnScroll = this.onScroll.bind(this);
+      this.lenis.on('scroll', this.bindOnScroll); //get scroll value
+
+      this.lenis.on('scroll', function (_ref) {// console.log({ scroll, limit, velocity, direction, progress });
+        // console.log(this.lenis);
+
+        var scroll = _ref.scroll,
+            limit = _ref.limit,
+            velocity = _ref.velocity,
+            direction = _ref.direction,
+            progress = _ref.progress;
+      });
+      this.raf(0);
 
       _get(_getPrototypeOf(_default.prototype), "init", this).call(this);
     }
@@ -1227,11 +1224,31 @@ var _default$1 = /*#__PURE__*/function (_Core) {
   }, {
     key: "resize",
     value: function resize() {
+      this.windowHeight = window.innerHeight;
+      this.windowWidth = window.innerWidth;
+      this.windowMiddle = {
+        x: this.windowWidth / 2,
+        y: this.windowHeight / 2
+      };
+      this.initContainerSize();
+
       if (Object.entries(this.els).length) {
-        this.windowHeight = window.innerHeight;
-        this.windowWidth = window.innerWidth;
         this.updateElements();
         this.transformElements(true);
+      }
+    }
+  }, {
+    key: "initContainerSize",
+    value: function initContainerSize() {
+      if (this.direction === 'horizontal') {
+        var elWidth = 0;
+
+        for (var childIndex = 0; childIndex < this.el.children.length; childIndex++) {
+          var child = this.el.children[childIndex];
+          elWidth += child.getBoundingClientRect().width;
+        }
+
+        this.el.style.setProperty('--scrollContainerWidth', elWidth + 'px');
       }
     }
   }, {
@@ -1305,6 +1322,12 @@ var _default$1 = /*#__PURE__*/function (_Core) {
           repeat = _this4.repeat;
         }
 
+        var speed = el.dataset[_this4.name + 'Speed'] ? parseFloat(el.dataset[_this4.name + 'Speed']) / 10 : false;
+
+        if (speed) {
+          offset = 0;
+        }
+
         var relativeOffset = [0, 0];
 
         if (offset) {
@@ -1341,7 +1364,6 @@ var _default$1 = /*#__PURE__*/function (_Core) {
           }
         }
 
-        var speed = el.dataset[_this4.name + 'Speed'] ? parseFloat(el.dataset[_this4.name + 'Speed']) / 10 : false;
         var mappedEl = {
           el: el,
           targetEl: targetEl,
