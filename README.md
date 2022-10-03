@@ -234,7 +234,7 @@ import LoconativeScroll from 'loconative-scroll';
 const scroll = new LoconativeScroll();
 ```
 
-Make sure you remove all `overflow:hidden` on your scroll containers, `<html>` and `<body>`, and add this in your CSS :
+Make sure you remove all LS related CSS on `<html>` and `<body>`, and update your CSS :
 ```
 html {
     scroll-behavior: initial;
