@@ -12,11 +12,12 @@ export default class {
             /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
             (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) ||
             this.windowWidth < this.tablet.breakpoint;
-        this.isTablet = this.isMobile && this.windowWidth >= this.tablet.breakpoint;
+        this.isTablet = this.isMobile && window.innerWidth >= this.tablet.breakpoint;
 
         if (this.isMobile) {
             this.smooth = this.smartphone.smooth;
-        } else if (this.isTablet) {
+        }
+        if (this.isTablet) {
             this.smooth = this.tablet.smooth;
         }
 
@@ -66,6 +67,7 @@ export default class {
         }
 
         if (this.isMobile) this.direction = this[this.context].direction;
+        if (this.isMobile) this.gestureDirection = this[this.context].gestureDirection;
         if (this.direction === 'horizontal') {
             this.directionAxis = 'x';
         } else {

@@ -16,14 +16,12 @@ export const defaults = {
     duration: 1.2,
     easing: (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)), // https://easings.net
     scrollFromAnywhere: false,
-    multiplier: 1,
-    firefoxMultiplier: 50,
     touchMultiplier: 3,
     resetNativeScroll: true,
     tablet: {
-        smooth: false,
+        smooth: true,
         direction: 'vertical',
-        gestureDirection: 'vertical',
+        gestureDirection: 'horizontal',
         breakpoint: 1024
     },
     smartphone: {

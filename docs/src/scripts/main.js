@@ -16,11 +16,8 @@ import LoconativeScroll from '../../../src/loconative-scroll';
 
     if(document.querySelector('#js-scroll').getAttribute('data-horizontal') == 'true') {
         options.direction = 'horizontal';
-        options.gestureDirection = 'both';
         options.tablet = {
-            smooth: true,
             direction: 'horizontal',
-            horizontalGesture: true
         }
         options.smartphone = {
             smooth: false

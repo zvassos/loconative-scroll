@@ -20,6 +20,18 @@ body {
     }
 }
 
+[data-scroll-wrapper] {
+    [data-scroll-direction="vertical"] & {
+        height: 100vh;
+        overflow-x: hidden;
+        overflow-y: scroll;
+    }
+    [data-scroll-direction="horizontal"] & {
+        width: 100vw;
+        height: 100vh;
+        overflow-x: scroll;
+    }
+} 
 
 [data-scroll-container] {
     .has-scroll-smooth & {
