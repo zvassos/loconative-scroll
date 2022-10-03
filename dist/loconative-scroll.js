@@ -1559,7 +1559,7 @@
        * Scroll to a desired target.
        *
        * @param  Available options :
-       *          target {node, string, "top", "bottom", int} - The DOM element we want to scroll to
+       *          target - node, string, "top", "bottom", int - The DOM element we want to scroll to
        *          options {object} - Options object for additional settings.
        * @return {void}
        */
@@ -1571,60 +1571,11 @@
         // Parse options
         var offset = parseInt(options.offset) || 0; // An offset to apply on top of given `target` or `sourceElem`'s target
 
-        var callback = options.callback ? options.callback : false; // function called when scrollTo completes (note that it won't wait for lerp to stabilize)
-
-        if (typeof target === 'string') {
-          // Selector or boundaries
-          if (target === 'top') {
-            target = this.html;
-          } else if (target === 'bottom') {
-            target = this.html.offsetHeight - window.innerHeight;
-          } else {
-            target = document.querySelector(target); // If the query fails, abort
-
-            if (!target) {
-              return;
-            }
-          }
-        } else if (typeof target === 'number') {
-          // Absolute coordinate
-          target = parseInt(target);
-        } else if (target && target.tagName) ; else {
-          console.warn('`target` parameter is not valid');
-          return;
-        } // We have a target that is not a coordinate yet, get it
-
-
-        if (typeof target !== 'number') {
-          offset = target.getBoundingClientRect().top + offset + this.instance.scroll.y;
-        } else {
-          offset = target + offset;
-        }
-
-        var isTargetReached = function isTargetReached() {
-          return parseInt(window.pageYOffset) === parseInt(offset);
-        };
-
-        if (callback) {
-          if (isTargetReached()) {
-            callback();
-            return;
-          } else {
-            var onScroll = function onScroll() {
-              if (isTargetReached()) {
-                window.removeEventListener('scroll', onScroll);
-                callback();
-              }
-            };
-
-            window.addEventListener('scroll', onScroll);
-          }
-        }
-
+        var duration = options.duration || 1;
         this.lenis.scrollTo(target, {
           offset: offset,
-          immediate: false,
-          duration: options.duration
+          immediate: options.immediate,
+          duration: duration
         });
       }
     }, {
