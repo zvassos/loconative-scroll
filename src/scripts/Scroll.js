@@ -34,6 +34,7 @@ export default class extends Core {
         this.initContainerSize();
 
         this.lenis = new Lenis({
+            wrapper: this.wrapper,
             content: this.el,
             duration: this.duration,
             easing: this.easing,

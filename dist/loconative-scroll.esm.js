@@ -188,6 +188,7 @@ function _nonIterableRest() {
 
 var defaults = {
   el: document,
+  wrapper: window,
   name: 'scroll',
   offset: [0, 0],
   repeat: false,
@@ -1152,6 +1153,7 @@ var _default$1 = /*#__PURE__*/function (_Core) {
       this.transformElements(true, true);
       this.initContainerSize();
       this.lenis = new a({
+        wrapper: this.wrapper,
         content: this.el,
         duration: this.duration,
         easing: this.easing,

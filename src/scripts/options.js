@@ -1,5 +1,6 @@
 export const defaults = {
     el: document,
+    wrapper: window,
     name: 'scroll',
     offset: [0, 0],
     repeat: false,
