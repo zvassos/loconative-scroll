@@ -19,7 +19,7 @@ export const defaults = {
     touchMultiplier: 3,
     resetNativeScroll: true,
     tablet: {
-        smooth: true,
+        smooth: false,
         direction: 'vertical',
         gestureDirection: 'horizontal',
         breakpoint: 1024
