@@ -136,7 +136,8 @@ scroll.on('call', (func, way, obj) => {
 
 | Option                  | Type      | Default                | Description                                                                                                                                                                                                                                                                                        |
 | ----------------------- | --------- | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `el`                    | `object`  | `document`             | Scroll container element.                                                                                                                                                                                                                                                                          |
+| `el`                    | `DOMElement`  | `document`             | Scroll container |
+| `wrapper`               | `DOMElement`  | `window`             | Scroll wrapper, important to add a custom wrapper if you want multiple loconative-scroll in a page. |
 | `name`                  | `string`  | `'scroll'`             | Data attribute prefix (`data-scroll-xxxx`).                                                                                                                                                                                                                                                        |                                                                                                                                                                                                                                                               |
 | `offset`                | `array(2)`| `[0,0]`                | Global in-view trigger offset : `[bottom,top]`<br>Use a string with `%` to use a percentage of the viewport height.<br>Use a numeric value for absolute pixels unit.<br>E.g. `["30%",0]`, `[100,0]`, `["30%", 100]`                                                                                |
 | `repeat`                | `boolean` | `false`                | Repeat in-view detection.                                                                                                                                                                                                                                                                          |
@@ -217,9 +218,10 @@ scroll.on('scroll', (args) => {
 ## How to switch from locomotive-scroll to loconative-scroll
 ⚠️ Disclaimer
 locomotive-scroll has more 37k+ downloads per month so it's impossible to manage every cases. Due to the update of the scroll system (from container translate to a native scroll) it will not be really seamless.
-If you have multiple loconative-scroll instance in a page, don't forget to add `wrapper` option to catch the mousewheel on it and not on the window.
+<br>
+If you have multiple loconative-scroll instances in a page, don't forget to add `wrapper` option to catch the mousewheel on it and not on the window.
 Let every data-attributes and options as is.
-You can try to swith your projet on loconative-scroll with these following steps
+You can try to switch your projet on loconative-scroll with these following steps
 
 ```
 npm install https://github.com/quentinhocde/loconative-scroll --save
@@ -234,16 +236,15 @@ const scroll = new LoconativeScroll();
 
 Make sure you remove all `overflow:hidden` on your scroll containers, `<html>` and `<body>`, and add this in your CSS :
 ```
-    html {
-        scroll-behavior: initial;
-    }
+html {
+    scroll-behavior: initial;
+}
 
-    html,
-    body {
-        width: 100%;
-        min-height: 100%;
-    }
-
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+}
 ```
 
 [instance events]: #instance-events
