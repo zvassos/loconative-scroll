@@ -482,6 +482,7 @@ export default class extends Core {
     update() {
         this.addElements();
         this.detectElements();
+        this.transformElements(true);
     }
 
     destroy() {

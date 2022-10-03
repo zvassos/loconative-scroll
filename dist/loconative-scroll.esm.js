@@ -1579,6 +1579,7 @@ var _default$1 = /*#__PURE__*/function (_Core) {
     value: function update() {
       this.addElements();
       this.detectElements();
+      this.transformElements(true);
     }
   }, {
     key: "destroy",

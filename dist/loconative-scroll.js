@@ -1585,6 +1585,7 @@
       value: function update() {
         this.addElements();
         this.detectElements();
+        this.transformElements(true);
       }
     }, {
       key: "destroy",
