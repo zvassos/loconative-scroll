@@ -268,23 +268,6 @@ body {
 Works on most modern browsers. Chrome, Firefox, Safari, Edge...
 
 
-## Who's using Locomotive Scroll?
-- [thierrychopain.com](https://thierrychopain.com/)
-- [clmt.paris](https://clmt.paris/)
-- [miragefestival.com/2020](https://www.miragefestival.com/2020/)
-- [mazellier.design](https://www.mazellier.design/)
-- [ccccontemple.com](https://ccccontemple.com/)
-- [abhishekjha.me/muteza](https://abhishekjha.me/muteza/)
-- [normal.studio](https://normal.studio/en/)
-- [mixlegno.com](https://www.mixlegno.com/)
-- [nfq.group](https://nfq.group/)
-- [works.studio](https://works.studio/)
-- [beangels.eu](https://www.beangels.eu/)
-- [izakaya-caen.fr](https://www.izakaya-caen.fr/)
-- [white-elephant.fr](https://www.white-elephant.fr/)
-- [henge07.com](https://www.henge07.com/)
-- [loirevalleylodges.com](https://loirevalleylodges.com/)
-
 ## Related
 
 - [Locomotive Scroll 🚂](https://github.com/locomotivemtl/loconative-scroll)
