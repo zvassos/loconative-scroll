@@ -216,7 +216,7 @@ scroll.on('scroll', (args) => {
 ```
 
 ## How to switch from locomotive-scroll to loconative-scroll
-⚠️ Disclaimer
+⚠️ Disclaimer ⚠️  
 locomotive-scroll has more 37k+ downloads per month so it's impossible to manage every cases. Due to the update of the scroll system (from container translate to a native scroll) the switch will not be really seamless.
 <br>
 If you have multiple loconative-scroll instances in a page, don't forget to add `wrapper` option to catch the mousewheel on it and not on the window.
