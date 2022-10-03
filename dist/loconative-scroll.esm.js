@@ -1167,19 +1167,14 @@ var _default$1 = /*#__PURE__*/function (_Core) {
       this.bindOnScroll = this.onScroll.bind(this);
       this.lenis.on('scroll', this.bindOnScroll); //get scroll value
 
-      this.lenis.on('scroll', function (_ref) {
+      this.lenis.on('scroll', function (_ref) {// console.log({ scroll, limit, velocity, direction, progress });
+        // console.log(this.lenis);
+
         var scroll = _ref.scroll,
             limit = _ref.limit,
             velocity = _ref.velocity,
             direction = _ref.direction,
             progress = _ref.progress;
-        console.log({
-          scroll: scroll,
-          limit: limit,
-          velocity: velocity,
-          direction: direction,
-          progress: progress
-        }); // console.log(this.lenis);
       });
       this.raf(0);
 

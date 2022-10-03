@@ -50,7 +50,7 @@ export default class extends Core {
 
         //get scroll value
         this.lenis.on('scroll', ({ scroll, limit, velocity, direction, progress }) => {
-            console.log({ scroll, limit, velocity, direction, progress });
+            // console.log({ scroll, limit, velocity, direction, progress });
             // console.log(this.lenis);
         });
 
