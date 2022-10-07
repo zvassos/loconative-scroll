@@ -271,7 +271,7 @@ Works on most modern browsers. Chrome, Firefox, Safari, Edge...
 
 ## Related
 
-- [Locomotive Scroll 🚂](https://github.com/locomotivemtl/loconative-scroll)
+- [Locomotive Scroll 🚂](https://github.com/locomotivemtl/locomotive-scroll)
 - [Locomotive Boilerplate 🚂](https://github.com/locomotivemtl/locomotive-boilerplate)
 
 [smooth-only]: https://img.shields.io/badge/smooth-only-blue
